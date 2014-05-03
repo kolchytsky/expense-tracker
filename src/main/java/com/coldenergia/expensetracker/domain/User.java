@@ -9,7 +9,6 @@ import java.util.List;
  * Date: 5/2/14
  * Time: 4:02 PM
  */
-// TODO: Add uniqueness attributes test-first in all domain classes
 @Entity
 @Table(name = "users")
 public class User {
@@ -56,6 +55,14 @@ public class User {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override

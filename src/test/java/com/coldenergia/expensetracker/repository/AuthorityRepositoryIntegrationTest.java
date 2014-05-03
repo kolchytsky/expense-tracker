@@ -1,6 +1,9 @@
-package com.coldenergia.expensetracker.domain;
+package com.coldenergia.expensetracker.repository;
 
+import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.config.JpaConfiguration;
+import com.coldenergia.expensetracker.domain.Authority;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -8,24 +11,28 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import static org.junit.Assert.*;
 
 /**
  * User: coldenergia
- * Date: 5/2/14
- * Time: 5:00 PM
+ * Date: 5/3/14
+ * Time: 9:09 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-public abstract class MappingIntegrationTest {
+public class AuthorityRepositoryIntegrationTest {
 
     @Autowired
-    private EntityManager entityManager;
+    private AuthorityRepository authorityRepository;
 
-    public EntityManager getEntityManager() {
-        return entityManager;
+    @Test
+    public void shouldCreateAuthority() {
+        Authority authority = new AuthorityBuilder().build();
+        Authority retrievedAuthority = authorityRepository.save(authority);
+        assertNotNull(retrievedAuthority);
+        assertEquals(authority, retrievedAuthority);
     }
 
 }

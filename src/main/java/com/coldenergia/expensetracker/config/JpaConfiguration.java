@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
@@ -21,6 +22,7 @@ import javax.sql.DataSource;
  * Time: 2:05 PM
  */
 @Configuration
+@EnableJpaRepositories(basePackages = "com.coldenergia.expensetracker.repository")
 @EnableTransactionManagement
 public class JpaConfiguration {
 
