@@ -75,4 +75,10 @@ public class UserRepositoryIntegrationTest {
         assertEquals(kraagesh, retrievedUser);
     }
 
+    @Test
+    public void shouldReturnNullIfUserNotFoundByName() {
+        User mandible = userRepository.findByName("Mandible");
+        assertNull(mandible);
+    }
+
 }

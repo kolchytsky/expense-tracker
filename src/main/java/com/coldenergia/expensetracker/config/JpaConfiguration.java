@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -23,6 +24,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.coldenergia.expensetracker.repository")
+@ComponentScan(basePackages = "com.coldenergia.expensetracker.service")
 @EnableTransactionManagement
 public class JpaConfiguration {
 
