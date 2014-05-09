@@ -54,6 +54,7 @@ public class UserDetailsServiceTest {
         verify(userRepository).findByName("Gkublok");
         assertNotNull(userDetails);
         assertEquals("Gkublok", userDetails.getUsername());
+        assertNotNull("Had to retrieve user password", userDetails.getPassword());
     }
 
     @Test

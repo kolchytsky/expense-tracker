@@ -35,6 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         UserSecurityDetails userDetails = new UserSecurityDetails();
         userDetails.setUsername(username);
+        userDetails.setPassword(user.getPassword());
         List<Authority> authorities = user.getAuthorities();
         // According to UserDetailsService contract, the user must have GrantedAuthorities
         if (authorities == null || authorities.isEmpty()) {

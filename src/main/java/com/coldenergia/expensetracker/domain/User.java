@@ -20,6 +20,19 @@ public class User {
     @Column(length = 40)
     private String name;
 
+    /*
+    * The password column length is set to 50, since the password is bcrypt-encoded,
+    * and the bcrypt specification says:
+    * "The key argument is a secret encryption key, which can be a user-chosen
+    * password of up to 56 bytes (including a terminating zero byte
+    * when the key is an ASCII string)."
+    * So one could infer a maximum input password length of 55 characters
+    * (not counting the terminating zero). And that is true only for ASCII characters,
+    * Unicode characters can take up to 4 bytes. So the safest option is 50 here.
+    * */
+    @Column(length = 50)
+    private String password;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "created_date")
     private Date created;
@@ -47,6 +60,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Date getCreated() {

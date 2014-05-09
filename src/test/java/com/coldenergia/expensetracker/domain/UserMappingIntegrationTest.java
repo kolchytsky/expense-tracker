@@ -21,6 +21,7 @@ public class UserMappingIntegrationTest extends MappingIntegrationTest {
     public void shouldCreateColumnsForUsersTable() {
         assertTableHasColumn(getEntityManager(), "users", "id");
         assertTableHasColumn(getEntityManager(), "users", "name");
+        assertTableHasColumn(getEntityManager(), "users", "password");
         assertTableHasColumn(getEntityManager(), "users", "created_date");
     }
 

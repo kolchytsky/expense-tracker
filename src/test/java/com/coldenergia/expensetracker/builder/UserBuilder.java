@@ -22,6 +22,7 @@ public class UserBuilder {
         user = new User();
         user.setId(null);
         user.setName("Gkublok");
+        user.setPassword("ssss");
         Date createdDate;
         try {
             createdDate = new SimpleDateFormat("MM/dd/yyyy").parse("03/16/2004");
