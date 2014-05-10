@@ -3,9 +3,12 @@ package com.coldenergia.expensetracker.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,8 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * Time: 9:08 PM
  */
 @Configuration
-//@EnableWebMvcSecurity
 @EnableWebSecurity
+@EnableWebMvcSecurity
+@Import({ JpaConfiguration.class })
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -36,6 +40,37 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Override this method to configure the {@link org.springframework.security.config.annotation.web.builders.HttpSecurity}.
+     * Typically subclasses should not invoke this method by calling super
+     * as it may override their configuration. The default configuration is:
+     * <p/>
+     * <pre>
+     * http
+     *     .authorizeRequests()
+     *         .anyRequest().authenticated().and()
+     *     .formLogin().and()
+     *     .httpBasic();
+     * </pre>
+     *
+     * @param http the {@link org.springframework.security.config.annotation.web.builders.HttpSecurity} to modify
+     * @throws Exception if an error occurs
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                .logout()
+                    .permitAll()
+                    .and()
+                .authorizeRequests()
+                    .antMatchers("/resources/**").permitAll()
+                    .anyRequest().authenticated();
     }
 
 }
