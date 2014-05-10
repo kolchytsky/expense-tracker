@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="row"><h1>Hello, world!</h1></div>
+    <div class="row"><h1><spring:message code="expense.tracker" text="default text" /></h1></div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="${contextPath}/resources/js/jquery-1.11.1.js"></script>
