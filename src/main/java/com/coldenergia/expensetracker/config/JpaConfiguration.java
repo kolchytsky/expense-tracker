@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * User: coldenergia
@@ -24,7 +25,11 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.coldenergia.expensetracker.repository")
-@ComponentScan(basePackages = "com.coldenergia.expensetracker.service")
+@ComponentScan(basePackages = {
+        "com.coldenergia.expensetracker.service",
+        "com.coldenergia.expensetracker.defaultdata",
+        "com.coldenergia.expensetracker.validator"
+})
 @EnableTransactionManagement
 public class JpaConfiguration {
 
@@ -43,9 +48,16 @@ public class JpaConfiguration {
         factory.setJpaVendorAdapter(jpaVendorAdapter);
         factory.setPackagesToScan("com.coldenergia.expensetracker.domain");
         factory.setDataSource(dataSource());
+        turnOnHibernateSqlOutput(factory);
         factory.afterPropertiesSet();
 
         return factory.getObject();
+    }
+
+    private void turnOnHibernateSqlOutput(LocalContainerEntityManagerFactoryBean factory) {
+        Properties properties = new Properties();
+        properties.put("hibernate.show_sql", true);
+        factory.setJpaProperties(properties);
     }
 
     @Bean

@@ -1,7 +1,9 @@
 package com.coldenergia.expensetracker.repository;
 
+import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.config.JpaConfiguration;
+import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -20,13 +25,16 @@ import static org.junit.Assert.*;
  * Time: 9:04 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {JpaConfiguration.class})
+@ContextConfiguration(classes = { JpaConfiguration.class })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class UserRepositoryIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     private User kraagesh;
 
@@ -80,5 +88,21 @@ public class UserRepositoryIntegrationTest {
         User mandible = userRepository.findByName("Mandible");
         assertNull(mandible);
     }
+
+    @Test
+    public void shouldCascadePersistAuthoritiesWhenSavingUser() {
+        long initialAuthorityCount = authorityRepository.count();
+        List<Authority> authorities = new ArrayList<Authority>(2);
+        authorities.add(new AuthorityBuilder().withName("defender").build());
+        authorities.add(new AuthorityBuilder().withName("shield_master").build());
+        User guardian = new UserBuilder().withAuthorities(authorities).build();
+        assertNull(guardian.getAuthorities().get(0).getId());
+        userRepository.save(guardian);
+        long finalAuthorityCount = authorityRepository.count();
+        assertEquals(2L, finalAuthorityCount - initialAuthorityCount);
+        assertNotNull(guardian.getAuthorities().get(0).getId());
+    }
+
+    // TODO: Test for user name uniquness here ;)
 
 }

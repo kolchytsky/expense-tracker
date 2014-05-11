@@ -27,11 +27,11 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Time: 11:51 AM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PasswordEncodingTest.TestConfig.class})
+@ContextConfiguration(classes = { PasswordEncodingTest.TestConfig.class })
 public class PasswordEncodingTest {
 
     @Configuration
-    @Import({SecurityConfiguration.class})
+    @Import({ SecurityConfiguration.class })
     public static class TestConfig {
 
         @Bean

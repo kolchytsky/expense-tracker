@@ -5,6 +5,7 @@ import com.coldenergia.expensetracker.domain.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -30,10 +31,9 @@ public class UserBuilder {
             createdDate = new Date();
         }
         user.setCreated(createdDate);
-        Authority[] authorities = {
-                new AuthorityBuilder().build()
-        };
-        user.setAuthorities(Arrays.asList(authorities));
+        List<Authority> authorities = new ArrayList<Authority>();
+        authorities.add(new AuthorityBuilder().build());
+        user.setAuthorities(authorities);
     }
 
     public User build() {
@@ -50,13 +50,27 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder withPassword(String password) {
+        user.setPassword(password);
+        return this;
+    }
+
     public UserBuilder withAuthorities(List<Authority> authorities) {
         user.setAuthorities(authorities);
         return this;
     }
 
     public UserBuilder withAuthorities(Authority[] authorities) {
-        user.setAuthorities(Arrays.asList(authorities));
+        List<Authority> authorityList = new ArrayList<Authority>(authorities.length);
+        for (Authority a : authorities) {
+            authorityList.add(a);
+        }
+        user.setAuthorities(authorityList);
+        return this;
+    }
+
+    public UserBuilder withCreated(Date created) {
+        user.setCreated(created);
         return this;
     }
 

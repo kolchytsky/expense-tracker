@@ -31,7 +31,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Time: 7:44 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {JpaConfiguration.class})
+@ContextConfiguration(classes = { JpaConfiguration.class })
 public class UserDetailsServiceTest {
 
     @InjectMocks
