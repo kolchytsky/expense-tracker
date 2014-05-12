@@ -34,9 +34,10 @@ public class UserServiceIntegrationTest {
     @Test
     public void shouldSaveValidUser() {
         User valid = new UserBuilder().build();
+        long initialUserCount = userRepository.count();
         userService.save(valid);
-        User retrieved = userRepository.findOne(valid.getId());
-        assertEquals(valid, retrieved);
+        long finalUserCount = userRepository.count();
+        assertEquals(1L, finalUserCount - initialUserCount);
     }
 
 }

@@ -1,59 +1,65 @@
 package com.coldenergia.expensetracker.validator;
 
 import com.coldenergia.expensetracker.domain.User;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import static org.springframework.validation.ValidationUtils.rejectIfEmpty;
+import static org.springframework.validation.ValidationUtils.rejectIfEmptyOrWhitespace;
 
 import static com.coldenergia.expensetracker.validator.RegexPatterns.ALPHANUMERIC_AND_UNDERSCORES_ONLY;
 import static com.coldenergia.expensetracker.validator.RegexPatterns.ASCII_CHARS_ONLY;
 
 /**
+ * User: coldenergia
+ * Date: 5/11/14
+ * Time: 10:42 AM
+ */
+/**
  * I've decided to use such validators in the service layer, despite
  * what that <a href="http://www.petrikainulainen.net/software-development/design/the-biggest-flaw-of-spring-web-applications/">
  * article</a> says. I don't really want my domain model cluttered with all sorts of annotations,
  * even if they are like those JSR ones - @NotNull and so on - because I am sure there want be enough
- * annotations to cover all potential cases.<br>
- * User: coldenergia
- * Date: 5/12/14
- * Time: 10:22 PM
- */
-@Component
-public class UserValidator {
+ * annotations to cover all potential cases.
+ * */
+//@Component
+public class OldSpringUserValidator implements Validator {
 
-    public ValidationResult validate(User user) {
-        ValidationResult result = new ValidationResult();
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return User.class.equals(clazz);
+    }
 
+    @Override
+    public void validate(Object target, Errors errors) {
+        User user = (User) target;
+
+        rejectIfEmpty(errors, "name", "user.name.empty");
         String name = user.getName();
-        if (StringUtils.isEmpty(name)) {
-            result.rejectValue("name", "user.name.empty");
-        }
         if (user.getAuthorities() == null || user.getAuthorities().isEmpty()) {
-            result.rejectValue("authorities", "user.authorities.empty");
+            errors.rejectValue("authorities", "user.authorities.empty");
         }
         if (name != null) {
             if (name.length() > 40) {
-                result.rejectValue("name", "user.name.too.long");
+                errors.rejectValue("name", "user.name.too.long");
             }
             if (!name.matches(ALPHANUMERIC_AND_UNDERSCORES_ONLY)) {
-                result.rejectValue("name", "user.name.contains.special.chars");
+                errors.rejectValue("name", "user.name.contains.special.chars");
             }
         }
 
+        rejectIfEmpty(errors, "password", "user.password.empty");
         String password = user.getPassword();
-        if (StringUtils.isEmpty(password)) {
-            result.rejectValue("password", "user.password.empty");
-        }
         if (password != null) {
             if (password.length() > 50) {
-                result.rejectValue("password", "user.password.too.long");
+                errors.rejectValue("password", "user.password.too.long");
             }
             // Password must be comprised solely of ASCII characters.
             if (!password.matches(ASCII_CHARS_ONLY)) {
-                result.rejectValue("password", "user.password.non.ascii");
+                errors.rejectValue("password", "user.password.non.ascii");
             }
         }
-
-        return result;
     }
 
 }
