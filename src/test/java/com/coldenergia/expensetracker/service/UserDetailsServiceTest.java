@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -30,20 +31,16 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Date: 5/6/14
  * Time: 7:44 PM
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfiguration.class })
 public class UserDetailsServiceTest {
 
-    @InjectMocks
-    @Autowired
     private UserDetailsService userDetailsService;
 
-    @Mock
     private UserRepository userRepository;
 
     @Before
-    public void setUp() {
-        initMocks(this);
+    public void setup() {
+        userRepository = mock(UserRepository.class);
+        userDetailsService = new UserDetailsServiceImpl(userRepository);
     }
 
     @Test

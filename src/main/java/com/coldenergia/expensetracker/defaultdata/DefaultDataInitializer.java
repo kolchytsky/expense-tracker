@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_PASSWORD;
+
 /**
  * User: coldenergia
  * Date: 5/10/14
@@ -37,14 +40,25 @@ public class DefaultDataInitializer {
         Authority userAuthority = new Authority();
         userAuthority.setName("USER");
 
-        List<Authority> authorityList = new ArrayList<Authority>();
-        authorityList.add(adminAuthority);
+        createDefaultAdminIfThereIsntOne(adminAuthority);
+    }
 
-        User admin = new User();
-        admin.setName("admin");
-        admin.setPassword("mandible");
-        admin.setAuthorities(authorityList);
-        userService.save(admin);
+    // TODO: Transactions, transactions, transactions - test for them!
+    /**
+     * Creates a default administrator user if there isn't one.
+     * */
+    private void createDefaultAdminIfThereIsntOne(Authority adminAuthority) {
+        boolean isDefaultAdminNotCreated = userService.findByName(DEFAULT_ADMIN_NAME) == null;
+        if (isDefaultAdminNotCreated) {
+            List<Authority> authorityList = new ArrayList<Authority>();
+            authorityList.add(adminAuthority);
+
+            User admin = new User();
+            admin.setName(DEFAULT_ADMIN_NAME);
+            admin.setPassword(DEFAULT_ADMIN_PASSWORD);
+            admin.setAuthorities(authorityList);
+            userService.save(admin);
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.UserValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserValidator userValidator;
 
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * That's where I finally decided to abandon field injection,
      * as the test configuration became more and more verbose and complicated,
@@ -30,9 +33,10 @@ public class UserServiceImpl implements UserService {
      *     field injection is evil</a>.
      * */
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator) {
+    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -43,6 +47,11 @@ public class UserServiceImpl implements UserService {
         }
         User u = userRepository.save(user);
         return u;
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findByName(name);
     }
 
     private boolean exists(User user) {

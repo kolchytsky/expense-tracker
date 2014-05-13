@@ -11,4 +11,6 @@ public interface AuthorityService {
 
     Authority save(Authority authority);
 
+    Authority findByName(String name);
+
 }

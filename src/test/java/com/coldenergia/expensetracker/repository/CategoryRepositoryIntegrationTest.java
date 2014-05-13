@@ -1,16 +1,10 @@
 package com.coldenergia.expensetracker.repository;
 
 import com.coldenergia.expensetracker.builder.CategoryBuilder;
-import com.coldenergia.expensetracker.config.JpaConfiguration;
 import com.coldenergia.expensetracker.domain.Category;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
@@ -21,11 +15,7 @@ import static org.junit.Assert.*;
  * Date: 5/3/14
  * Time: 4:38 PM
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {JpaConfiguration.class})
-@Transactional
-@TransactionConfiguration(defaultRollback = true)
-public class CategoryRepositoryIntegrationTest {
+public class CategoryRepositoryIntegrationTest extends RepositoryIntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;

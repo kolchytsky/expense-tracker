@@ -11,6 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * User: coldenergia
@@ -74,6 +75,15 @@ public class AuthorityServiceTest {
     public void shouldSaveAuthorityWithAlphanumericAndUnderscoreCharsInName() {
         Authority valid = new AuthorityBuilder().withName("GUARDIAN_UT_2004").build();
         authorityService.save(valid);
+    }
+
+    @Test
+    public void shouldFindAuthorityByName() {
+        Authority authority = new AuthorityBuilder().withName("destroyer").build();
+        when(authorityRepository.findByName("destroyer")).thenReturn(authority);
+        Authority retrievedAuthority = authorityService.findByName("destroyer");
+        verify(authorityRepository).findByName("destroyer");
+        assertEquals(authority, retrievedAuthority);
     }
 
     private void assertExceptionOnSave(Authority invalid, String errorCode) {

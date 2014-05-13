@@ -32,6 +32,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         return authorityRepository.save(authority);
     }
 
+    @Override
+    public Authority findByName(String name) {
+        return authorityRepository.findByName(name);
+    }
+
     private void validate(Authority authority) {
         ValidationResult result = authorityValidator.validate(authority);
         if (result.hasErrors()) {

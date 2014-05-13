@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class UserServiceTest {
     @Before
     public void setup() {
         userRepository = mock(UserRepository.class);
-        userService = new UserServiceImpl(userRepository, new UserValidator());
+        userService = new UserServiceImpl(userRepository, new UserValidator(), mock(PasswordEncoder.class));
     }
 
     @Test
@@ -152,6 +153,15 @@ public class UserServiceTest {
         verify(userRepository).save(userArgumentCaptor.capture());
         User capturedGkublok = userArgumentCaptor.getValue();
         assertEquals(gkublokDate, capturedGkublok.getCreated());
+    }
+
+    @Test
+    public void shouldFindUserByName() {
+        User gkublok = new UserBuilder().withName("Gkublok").build();
+        when(userRepository.findByName("Gkublok")).thenReturn(gkublok);
+        User retrievedGkublok = userService.findByName("Gkublok");
+        verify(userRepository).findByName("Gkublok");
+        assertEquals(gkublok, retrievedGkublok);
     }
 
     private void assertExceptionOnSave(User invalid, String errorCode) {

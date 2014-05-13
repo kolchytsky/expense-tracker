@@ -9,4 +9,7 @@ import org.springframework.data.repository.CrudRepository;
  * Time: 9:12 PM
  */
 public interface AuthorityRepository extends CrudRepository<Authority, Integer> {
+
+    Authority findByName(String name);
+
 }

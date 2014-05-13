@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.defaultdata;
 
 import com.coldenergia.expensetracker.config.JpaConfiguration;
+import com.coldenergia.expensetracker.config.SecurityConfiguration;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  * Time: 6:30 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfiguration.class })
+@ContextConfiguration(classes = { JpaConfiguration.class, SecurityConfiguration.class })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class DefaultDataInitializerIntegrationTest {
