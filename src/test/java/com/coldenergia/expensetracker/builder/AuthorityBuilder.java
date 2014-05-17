@@ -2,6 +2,8 @@ package com.coldenergia.expensetracker.builder;
 
 import com.coldenergia.expensetracker.domain.Authority;
 
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
+
 /**
  * User: coldenergia
  * Date: 5/2/14
@@ -14,8 +16,7 @@ public class AuthorityBuilder {
     public AuthorityBuilder() {
         authority = new Authority();
         authority.setId(null);
-        // TODO: Refactor authorities references. Should either create an enum, or a class with static final fields
-        authority.setName("ADMIN");
+        authority.setName(ADMIN_AUTHORITY_NAME);
     }
 
     public Authority build() {

@@ -11,6 +11,10 @@ public final class DefaultDataConstants {
 
     public static final String DEFAULT_ADMIN_PASSWORD = "mandible";
 
+    public static final String ADMIN_AUTHORITY_NAME = "ADMIN";
+
+    public static final String USER_AUTHORITY_NAME = "USER";
+
     private DefaultDataConstants() {
         // Restrict instantiation
     }

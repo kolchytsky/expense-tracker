@@ -1,16 +1,23 @@
 package com.coldenergia.expensetracker.defaultdata;
 
+import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
+import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.service.AuthorityService;
 import com.coldenergia.expensetracker.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.List;
+
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.USER_AUTHORITY_NAME;
 import static org.junit.Assert.assertEquals;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
 import static org.mockito.Mockito.*;
@@ -26,10 +33,13 @@ public class DefaultDataInitializerTest {
 
     private UserService userService;
 
+    private AuthorityService authorityService;
+
     @Before
     public void setup() {
         userService = mock(UserService.class);
-        defaultDataInitializer = new DefaultDataInitializer(userService);
+        authorityService = mock(AuthorityService.class);
+        defaultDataInitializer = new DefaultDataInitializer(userService, authorityService);
     }
 
     @Test
@@ -47,6 +57,34 @@ public class DefaultDataInitializerTest {
         when(userService.findByName(DEFAULT_ADMIN_NAME)).thenReturn(defaultAdmin);
         defaultDataInitializer.insertInitialDataIntoDb();
         verify(userService, never()).save(any(User.class));
+    }
+
+    @Test
+    public void shouldCreateDefaultAuthoritiesIfThereArentAny() {
+        defaultDataInitializer.insertInitialDataIntoDb();
+        ArgumentCaptor<Authority> authorityArgumentCaptor = ArgumentCaptor.forClass(Authority.class);
+        // Verify that the save method is called two times
+        verify(authorityService, times(2)).save(authorityArgumentCaptor.capture());
+        List<Authority> capturedAuthorities = authorityArgumentCaptor.getAllValues();
+        assertEquals(2, capturedAuthorities.size());
+        for (Authority authority : capturedAuthorities) {
+            String name = authority.getName();
+            boolean nameIsValid = name.equals(ADMIN_AUTHORITY_NAME) || name.equals(USER_AUTHORITY_NAME);
+            assertTrue(nameIsValid);
+        }
+    }
+
+    @Test
+    public void shouldNotAttemptToCreateAuthoritiesIfTheyExist() {
+        Authority adminAuthority = new AuthorityBuilder().withName(ADMIN_AUTHORITY_NAME).build();
+        when(authorityService.findByName(ADMIN_AUTHORITY_NAME)).thenReturn(adminAuthority);
+
+        Authority userAuthority = new AuthorityBuilder().withName(USER_AUTHORITY_NAME).build();
+        when(authorityService.findByName(USER_AUTHORITY_NAME)).thenReturn(userAuthority);
+
+        defaultDataInitializer.insertInitialDataIntoDb();
+        verify(authorityService, never()).save(any(Authority.class));
+        verify(authorityService, never()).save(any(Iterable.class));
     }
 
 }

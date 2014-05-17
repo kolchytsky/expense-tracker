@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.defaultdata;
 
 import com.coldenergia.expensetracker.config.JpaConfiguration;
 import com.coldenergia.expensetracker.config.SecurityConfiguration;
+import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,10 +31,21 @@ public class DefaultDataInitializerIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AuthorityRepository authorityRepository;
+
     @Test
-    public void shouldCreateAdminUserIfThereIsntOne() {
+    public void shouldCreateDefaultAdminUserIfThereIsntOne() {
         defaultDataInitializer.insertInitialDataIntoDb();
         Long userCount = userRepository.count();
         assertEquals(1L, (long) userCount);
     }
+
+    @Test
+    public void shouldCreateAuthoritiesIfThereArentAny() {
+        defaultDataInitializer.insertInitialDataIntoDb();
+        Long authorityCount = authorityRepository.count();
+        assertEquals(2L, (long) authorityCount);
+    }
+
 }

@@ -33,6 +33,14 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
+    public Iterable<Authority> save(Iterable<Authority> authorities) {
+        for (Authority authority : authorities) {
+            validate(authority);
+        }
+        return authorityRepository.save(authorities);
+    }
+
+    @Override
     public Authority findByName(String name) {
         return authorityRepository.findByName(name);
     }

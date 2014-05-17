@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 /**
  * User: coldenergia
@@ -44,6 +45,17 @@ public class AuthorityServiceIntegrationTest {
         // A delta assertion
         assertEquals(1L, finalAuthorityCount - initialAuthorityCount);
         assertNotNull(authority.getId());
+    }
+
+    @Test
+    public void shouldNotSaveAuthorityWithNonUniqueName() {
+        Authority prototype = new AuthorityBuilder().withName("prototype").build();
+        authorityRepository.save(prototype);
+        Authority prototypeClone = new AuthorityBuilder().withName("prototype").build();
+        try {
+            authorityRepository.save(prototypeClone);
+            fail("Should've thrown an exception when attempting to save an authority with a non-unique name");
+        } catch (Exception expected) {}
     }
 
 }

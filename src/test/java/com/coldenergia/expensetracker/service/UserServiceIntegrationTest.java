@@ -50,4 +50,15 @@ public class UserServiceIntegrationTest {
         assertEquals(1L, finalUserCount - initialUserCount);
     }
 
+    @Test
+    public void shouldNotSaveUserWithNonUniqueName() {
+        User gkublok = new UserBuilder().withName("Gkublok").build();
+        userService.save(gkublok);
+        User gkublokImpostor = new UserBuilder().withName("Gkublok").build();
+        try {
+            userService.save(gkublokImpostor);
+            fail("Should've thrown an exception when attempting to save a user with a non-unique name");
+        } catch (Exception expected) {}
+    }
+
 }

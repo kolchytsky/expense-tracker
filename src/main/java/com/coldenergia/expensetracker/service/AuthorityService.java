@@ -11,6 +11,8 @@ public interface AuthorityService {
 
     Authority save(Authority authority);
 
+    Iterable<Authority> save(Iterable<Authority> authorities);
+
     Authority findByName(String name);
 
 }

@@ -8,6 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -84,6 +87,29 @@ public class AuthorityServiceTest {
         Authority retrievedAuthority = authorityService.findByName("destroyer");
         verify(authorityRepository).findByName("destroyer");
         assertEquals(authority, retrievedAuthority);
+    }
+
+    @Test
+    public void shouldSaveAuthorities() {
+        List<Authority> authorities = new ArrayList<Authority>(2);
+        authorities.add(new AuthorityBuilder().withName("defender").build());
+        authorities.add(new AuthorityBuilder().withName("guardian").build());
+        authorityService.save(authorities);
+        verify(authorityRepository).save(authorities);
+    }
+
+    @Test
+    public void shouldNotSaveAuthoritiesIfAtLeastOneIsNotValid() {
+        List<Authority> authorities = new ArrayList<Authority>(2);
+        authorities.add(new AuthorityBuilder().withName("defender").build());
+        authorities.add(new AuthorityBuilder().withName(null).build());
+        try {
+            authorityService.save(authorities);
+            fail("Should've thrown an exception here");
+        } catch (ServiceException expected) {
+            assertNotNull(expected.getMessage());
+            assertTrue(expected.getMessage().contains("authority.name.empty"));
+        }
     }
 
     private void assertExceptionOnSave(Authority invalid, String errorCode) {

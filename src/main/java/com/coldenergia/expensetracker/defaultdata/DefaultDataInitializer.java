@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.defaultdata;
 
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.service.AuthorityService;
 import com.coldenergia.expensetracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_PASSWORD;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.*;
 
 /**
  * User: coldenergia
@@ -25,32 +25,29 @@ public class DefaultDataInitializer {
 
     private final UserService userService;
 
+    private final AuthorityService authorityService;
+
     @Autowired
-    public DefaultDataInitializer(UserService userService) {
+    public DefaultDataInitializer(UserService userService, AuthorityService authorityService) {
         this.userService = userService;
+        this.authorityService = authorityService;
     }
 
     @Transactional
     public void insertInitialDataIntoDb() {
-        // TODO: Need proper checks here, to ensure that there are no such authorities / user - uniqueness will be handled by DB constaints then...
-        // Create authorities
-        Authority adminAuthority = new Authority();
-        adminAuthority.setName("ADMIN");
-
-        Authority userAuthority = new Authority();
-        userAuthority.setName("USER");
-
-        createDefaultAdminIfThereIsntOne(adminAuthority);
+        createAuthorities();
+        createDefaultAdminIfThereIsntOne();
     }
 
     // TODO: Transactions, transactions, transactions - test for them!
     /**
      * Creates a default administrator user if there isn't one.
      * */
-    private void createDefaultAdminIfThereIsntOne(Authority adminAuthority) {
+    private void createDefaultAdminIfThereIsntOne() {
         boolean isDefaultAdminNotCreated = userService.findByName(DEFAULT_ADMIN_NAME) == null;
         if (isDefaultAdminNotCreated) {
             List<Authority> authorityList = new ArrayList<Authority>();
+            Authority adminAuthority = authorityService.findByName(ADMIN_AUTHORITY_NAME);
             authorityList.add(adminAuthority);
 
             User admin = new User();
@@ -58,6 +55,18 @@ public class DefaultDataInitializer {
             admin.setPassword(DEFAULT_ADMIN_PASSWORD);
             admin.setAuthorities(authorityList);
             userService.save(admin);
+        }
+    }
+
+    private void createAuthorities() {
+        String[] authorityNames = { ADMIN_AUTHORITY_NAME, USER_AUTHORITY_NAME };
+        for (String authorityName : authorityNames) {
+            boolean isAuthorityAbsent = authorityService.findByName(authorityName) == null;
+            if (isAuthorityAbsent) {
+                Authority authority = new Authority();
+                authority.setName(authorityName);
+                authorityService.save(authority);
+            }
         }
     }
 

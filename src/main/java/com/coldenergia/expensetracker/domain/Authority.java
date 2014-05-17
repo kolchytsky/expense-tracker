@@ -16,7 +16,7 @@ public class Authority {
     @GeneratedValue
     private Integer id;
 
-    @Column(length = 60)
+    @Column(length = 60, unique = true)
     private String name;
 
     public Integer getId() {

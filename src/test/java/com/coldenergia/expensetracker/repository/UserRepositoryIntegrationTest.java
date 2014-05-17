@@ -4,7 +4,6 @@ import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,14 +24,6 @@ public class UserRepositoryIntegrationTest extends RepositoryIntegrationTest {
 
     @Autowired
     private AuthorityRepository authorityRepository;
-
-    private User kraagesh;
-
-    @Before
-    public void setUp() {
-        kraagesh = new UserBuilder().withName("Kraagesh").build();
-        userRepository.save(kraagesh);
-    }
 
     /* Avoid false positives when testing ORM code
     * When you test application code that manipulates the state of the Hibernate session,
@@ -68,6 +59,8 @@ public class UserRepositoryIntegrationTest extends RepositoryIntegrationTest {
 
     @Test
     public void shouldFindUserByName() {
+        User kraagesh = new UserBuilder().withName("Kraagesh").build();
+        userRepository.save(kraagesh);
         User retrievedUser = userRepository.findByName("Kraagesh");
         assertNotNull(retrievedUser);
         assertEquals(kraagesh, retrievedUser);
@@ -92,7 +85,5 @@ public class UserRepositoryIntegrationTest extends RepositoryIntegrationTest {
         assertEquals(2L, finalAuthorityCount - initialAuthorityCount);
         assertNotNull(guardian.getAuthorities().get(0).getId());
     }
-
-    // TODO: Test for user name uniquness here ;)
 
 }

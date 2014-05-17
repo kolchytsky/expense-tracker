@@ -17,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 40)
+    @Column(length = 40, unique = true)
     private String name;
 
     /*
