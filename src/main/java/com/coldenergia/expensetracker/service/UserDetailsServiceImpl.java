@@ -9,16 +9,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* Without @Transactional I had org.hibernate.LazyInitializationException - perhaps
+* I could create a test for such behaviour.
+* */
 /**
  * User: coldenergia
  * Date: 5/6/14
  * Time: 8:17 PM
  */
 @Service
+@Transactional(readOnly = true)
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;

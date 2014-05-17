@@ -41,9 +41,9 @@
         <div class="alert alert-success"><spring:message code="logout.msg" /></div>
       </c:if>
       <spring:message code="name" var="msgName" />
-      <input type="username" class="form-control" placeholder="${msgName}" required autofocus>
+      <input name="username" type="text" class="form-control" placeholder="${msgName}" required autofocus>
       <spring:message code="password" var="msgPassword" />
-      <input type="password" class="form-control" placeholder="${msgPassword}" required>
+      <input name="password" type="password" class="form-control" placeholder="${msgPassword}" required>
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         <spring:message code="login" />

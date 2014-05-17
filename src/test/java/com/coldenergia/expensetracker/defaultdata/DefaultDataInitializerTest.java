@@ -12,14 +12,12 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.USER_AUTHORITY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.*;
 import static org.junit.Assert.assertEquals;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
 import static org.mockito.Mockito.*;
 
 /**
@@ -46,7 +44,7 @@ public class DefaultDataInitializerTest {
     public void shouldCreateDefaultAdminUserIfThereIsntOne() {
         defaultDataInitializer.insertInitialDataIntoDb();
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userService).save(userArgumentCaptor.capture());
+        verify(userService).saveUserWithNewPassword(userArgumentCaptor.capture(), eq(DEFAULT_ADMIN_PASSWORD));
         User admin = userArgumentCaptor.getValue();
         assertEquals(admin.getName(), DEFAULT_ADMIN_NAME);
     }

@@ -52,9 +52,9 @@ public class DefaultDataInitializer {
 
             User admin = new User();
             admin.setName(DEFAULT_ADMIN_NAME);
-            admin.setPassword(DEFAULT_ADMIN_PASSWORD);
+            admin.setPassword(null);
             admin.setAuthorities(authorityList);
-            userService.save(admin);
+            userService.saveUserWithNewPassword(admin, DEFAULT_ADMIN_PASSWORD);
         }
     }
 
