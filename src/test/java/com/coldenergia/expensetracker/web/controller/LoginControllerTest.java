@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -34,5 +35,11 @@ public class LoginControllerTest extends ControllerTest {
     public void shouldRedirectToLoginForProtectedResources() throws Exception {
         this.mockMvc.perform(get("/")).andExpect(redirectedUrlPattern("**/login*"));
     }
+
+    /*@Test
+    public void shouldRedirectAdminToAdminMainPage() throws Exception {
+        this.mockMvc.perform(post("/login").param("username", "admin").param("password", "mandible"))
+                .andExpect(view().name("admin/main"));
+    }*/
 
 }

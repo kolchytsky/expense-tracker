@@ -54,8 +54,9 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+        // FIXME: There's something terribly wrong with this kind of architecture..Finally decide where to put this DbInit
         // Internally the following method registers a Spring Context Loader listener - this has to be done...
-        registerContextLoaderListener(servletContext);
+        // registerContextLoaderListener(servletContext);
         // ...before registering our own listener, which will use @Autowired
         servletContext.addListener(new DatabaseInitializer());
     }

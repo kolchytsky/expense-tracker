@@ -1,5 +1,6 @@
 package com.coldenergia.expensetracker.config;
 
+import com.coldenergia.expensetracker.web.controller.AuthorityBasedAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,6 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
+                    .successHandler(new AuthorityBasedAuthSuccessHandler())
                     .and()
                 .logout()
                     .permitAll()
