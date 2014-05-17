@@ -38,7 +38,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldSaveValidUser() {
+    public void shouldSaveUser() {
         User valid = new UserBuilder().build();
         userService.save(valid);
         verify(userRepository).save(any(User.class));
@@ -99,37 +99,59 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldNotSaveUserWithEmptyPassword() {
+    public void shouldNotSaveUserWithEmptyEncodedPassword() {
         User invalid = new UserBuilder().withPassword(null).build();
-        assertExceptionOnSave(invalid, "user.password.empty");
+        assertExceptionOnSave(invalid, "user.encoded.password.empty");
         invalid = new UserBuilder().withPassword("").build();
-        assertExceptionOnSave(invalid, "user.password.empty");
+        assertExceptionOnSave(invalid, "user.encoded.password.empty");
     }
 
     @Test
-    public void shouldNotSaveUserWithPasswordExceedingFiftyChars() {
+    public void shouldNotSaveUserWithEncodedPasswordExceedingSixtyChars() {
+        String unexpectedEncodedPassword = StringUtils.repeat("a", 61);
+        User invalid = new UserBuilder().withPassword(unexpectedEncodedPassword).build();
+        assertExceptionOnSave(invalid, "user.encoded.password.too.long");
+    }
+
+    @Test
+    public void shouldSaveUserWithNewPassword() {
+        User user = new UserBuilder().build();
+        userService.saveUserWithNewPassword(user, "d0m1n4t0r");
+        verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    public void shouldNotSaveUserWithNewPasswordWithEmptyPassword() {
+        User user = new UserBuilder().build();
+        assertExceptionOnSaveUserWithNewPassword(user, null, "user.password.empty");
+        user = new UserBuilder().build();
+        assertExceptionOnSaveUserWithNewPassword(user, "", "user.password.empty");
+    }
+
+    @Test
+    public void shouldNotSaveUserWithNewPasswordExceedingFiftyChars() {
         String invalidPwd = StringUtils.repeat("a", 51);
-        User invalid = new UserBuilder().withPassword(invalidPwd).build();
-        assertExceptionOnSave(invalid, "user.password.too.long");
+        User user = new UserBuilder().build();
+        assertExceptionOnSaveUserWithNewPassword(user, invalidPwd, "user.password.too.long");
     }
 
     @Test
-    public void shouldSaveUserWithPasswordNotExceedingFiftyChars() {
+    public void shouldSaveUserWithNewPasswordNotExceedingFiftyChars() {
         String validPwd = StringUtils.repeat("a", 50);
-        User valid = new UserBuilder().withPassword(validPwd).build();
-        userService.save(valid);
+        User user = new UserBuilder().build();
+        userService.saveUserWithNewPassword(user, validPwd);
     }
 
     @Test
-    public void shouldNotSaveUserWithNonASCIICharsInPassword() {
-        User invalid = new UserBuilder().withPassword("Ukrainian_char:\u0456").build();
-        assertExceptionOnSave(invalid, "user.password.non.ascii");
+    public void shouldNotSaveUserWithNewPasswordWithNonASCIICharsInPassword() {
+        User user = new UserBuilder().build();
+        assertExceptionOnSaveUserWithNewPassword(user, "Ukrainian_char:\u0456", "user.password.non.ascii");
     }
 
     @Test
-    public void shouldSaveUserWithSpecialCharsInPassword() {
-        User valid = new UserBuilder().withPassword("&#*@&$@#_ 34/\\").build();
-        userService.save(valid);
+    public void shouldSaveUserWithNewPasswordWithSpecialCharsInPassword() {
+        User user = new UserBuilder().build();
+        userService.saveUserWithNewPassword(user, "&#*@&$@#_ 34/\\");
     }
 
     @Test
@@ -172,6 +194,16 @@ public class UserServiceTest {
         try {
             userService.save(invalid);
             fail(failMessage);
+        } catch (ServiceException expected) {
+            assertNotNull(expected.getMessage());
+            assertTrue(expected.getMessage().contains(errorCode));
+        }
+    }
+
+    private void assertExceptionOnSaveUserWithNewPassword(User invalid, String rawPassword, String errorCode) {
+        try {
+            userService.saveUserWithNewPassword(invalid, rawPassword);
+            fail("Should've thrown an exception here");
         } catch (ServiceException expected) {
             assertNotNull(expected.getMessage());
             assertTrue(expected.getMessage().contains(errorCode));

@@ -42,16 +42,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         validate(user);
-        if (!exists(user)) {
-            user.setCreated(new Date());
-        }
-        User u = userRepository.save(user);
-        return u;
+        user = saveUser(user);
+        return user;
+    }
+
+    @Override
+    public User saveUserWithNewPassword(User user, String rawPassword) {
+        validate(user, rawPassword);
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        user = saveUser(user);
+        return user;
     }
 
     @Override
     public User findByName(String name) {
         return userRepository.findByName(name);
+    }
+
+    private User saveUser(User user) {
+        if (!exists(user)) {
+            user.setCreated(new Date());
+        }
+        User u = userRepository.save(user);
+        return u;
     }
 
     private boolean exists(User user) {
@@ -71,24 +84,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    // THIS IS DITCHED NOW...
-    /**
-     * @param objectName I don't think it serves any important purpose, perhaps it is more for web layer
-     *                   (name of the object when JSTL is being used)
-     * @throws ServiceException As of now this exception is being thrown if any errors are found. Also, the exception message
-     * contains the error codes.
-     * */
-    /*private static void validate(Validator validator, Object objectToValidate, String objectName) {
-        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(objectToValidate, objectName);
-        validator.validate(objectToValidate, bindingResult);
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMessageAggregator = new StringBuilder();
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                String errorCode = error.getCode();
-                errorMessageAggregator.append(errorCode).append(",\n");
-            }
-            throw new ServiceException(errorMessageAggregator.toString());
+    private void validate(User user, String rawPassword) {
+        ValidationResult result = userValidator.validate(user, rawPassword);
+        if (result.hasErrors()) {
+            throw new ServiceException(result.getAggregatedErrorCodes());
         }
-    }*/
+    }
 
 }

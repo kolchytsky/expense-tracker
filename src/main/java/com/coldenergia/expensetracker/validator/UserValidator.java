@@ -23,6 +23,44 @@ public class UserValidator {
     public ValidationResult validate(User user) {
         ValidationResult result = new ValidationResult();
 
+        validateCommonAttributes(user, result);
+
+        String encodedPassword = user.getPassword();
+        if (StringUtils.isEmpty(encodedPassword)) {
+            result.rejectValue("password", "user.encoded.password.empty");
+        }
+        if (encodedPassword != null) {
+            if (encodedPassword.length() > 60) {
+                result.rejectValue("password", "user.encoded.password.too.long");
+            }
+        }
+
+        return result;
+    }
+
+    public ValidationResult validate(User user, String rawPassword) {
+        ValidationResult result = new ValidationResult();
+
+        // TODO: Create a test necessitating a validateCommonAttributes call
+        validateCommonAttributes(user, result);
+
+        if (StringUtils.isEmpty(rawPassword)) {
+            result.reject("user.password.empty");
+        }
+        if (rawPassword != null) {
+            if (rawPassword.length() > 50) {
+                result.reject("user.password.too.long");
+            }
+            // Password must be comprised solely of ASCII characters.
+            if (!rawPassword.matches(ASCII_CHARS_ONLY)) {
+                result.reject("user.password.non.ascii");
+            }
+        }
+
+        return result;
+    }
+
+    private void validateCommonAttributes(User user, ValidationResult result) {
         String name = user.getName();
         if (StringUtils.isEmpty(name)) {
             result.rejectValue("name", "user.name.empty");
@@ -38,22 +76,6 @@ public class UserValidator {
                 result.rejectValue("name", "user.name.contains.special.chars");
             }
         }
-
-        String password = user.getPassword();
-        if (StringUtils.isEmpty(password)) {
-            result.rejectValue("password", "user.password.empty");
-        }
-        if (password != null) {
-            if (password.length() > 50) {
-                result.rejectValue("password", "user.password.too.long");
-            }
-            // Password must be comprised solely of ASCII characters.
-            if (!password.matches(ASCII_CHARS_ONLY)) {
-                result.rejectValue("password", "user.password.non.ascii");
-            }
-        }
-
-        return result;
     }
 
 }

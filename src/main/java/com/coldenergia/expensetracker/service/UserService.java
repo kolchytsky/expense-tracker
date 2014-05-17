@@ -12,6 +12,13 @@ public interface UserService {
 
     User save(User user);
 
+    /**
+     * Saves the user and sets a new user password (encoding it in the process).
+     * @param user
+     * @param rawPassword New raw (plain) password for the user
+     * */
+    User saveUserWithNewPassword(User user, String rawPassword);
+
     User findByName(String name);
 
 }

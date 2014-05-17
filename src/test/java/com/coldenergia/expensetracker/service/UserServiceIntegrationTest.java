@@ -33,10 +33,19 @@ public class UserServiceIntegrationTest {
     private UserRepository userRepository;
 
     @Test
-    public void shouldSaveValidUser() {
+    public void shouldSaveUser() {
         User valid = new UserBuilder().build();
         long initialUserCount = userRepository.count();
         userService.save(valid);
+        long finalUserCount = userRepository.count();
+        assertEquals(1L, finalUserCount - initialUserCount);
+    }
+
+    @Test
+    public void shouldSaveUserWithNewPassword() {
+        User user = new UserBuilder().build();
+        long initialUserCount = userRepository.count();
+        userService.saveUserWithNewPassword(user, "d0m1n4t0r");
         long finalUserCount = userRepository.count();
         assertEquals(1L, finalUserCount - initialUserCount);
     }

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.Assert.assertEquals;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -36,14 +37,23 @@ public class UserServicePasswordEncodingTest {
     }
 
     @Test
-    public void shouldBcryptEncodeUserPasswordOnSave() {
+    public void shouldNotBcryptEncodeUserPasswordOnSave() {
         User dominator = new UserBuilder().withPassword("d0m1n4t0r").build();
         userService.save(dominator);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
         User capturedDominator = userArgumentCaptor.getValue();
-        String expectedEncodedPassword = passwordEncoder.encode("d0m1n4t0r");
-        assertEquals(expectedEncodedPassword, capturedDominator.getPassword());
+        assertEquals("d0m1n4t0r", capturedDominator.getPassword());
+    }
+
+    @Test
+    public void shouldBcryptEncodeUserPasswordOnSaveAndEncode() {
+        User dominator = new UserBuilder().withPassword("this value doesn't matter").build();
+        userService.saveUserWithNewPassword(dominator, "d0m1n4t0r");
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
+        User capturedDominator = userArgumentCaptor.getValue();
+        assertTrue(passwordEncoder.matches("d0m1n4t0r", capturedDominator.getPassword()));
     }
 
 }

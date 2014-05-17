@@ -29,8 +29,10 @@ public class User {
     * So one could infer a maximum input password length of 55 characters
     * (not counting the terminating zero). And that is true only for ASCII characters,
     * Unicode characters can take up to 4 bytes. So the safest option is 50 here.
+    *
+    * However for the encoded password, we need something like 60 characters.
     * */
-    @Column(length = 50)
+    @Column(length = 60)
     private String password;
 
     @Temporal(TemporalType.DATE)
