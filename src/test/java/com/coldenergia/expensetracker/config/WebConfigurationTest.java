@@ -1,5 +1,6 @@
 package com.coldenergia.expensetracker.config;
 
+import com.coldenergia.expensetracker.config.test.TestDataSourceConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 // TODO: That's rather a bad test for configuration - it passed without DispatcherServlet mapping and WebAppInitializer...ask someone
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { SecurityConfiguration.class, JpaConfiguration.class })
+@ContextConfiguration(classes = {
+        TestDataSourceConfiguration.class,
+        JpaConfiguration.class,
+        SecurityConfiguration.class
+})
 @WebAppConfiguration
 public class WebConfigurationTest {
 

@@ -1,11 +1,10 @@
 package com.coldenergia.expensetracker.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -27,17 +26,13 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "com.coldenergia.expensetracker.repository")
 @ComponentScan(basePackages = {
         "com.coldenergia.expensetracker.service",
-        "com.coldenergia.expensetracker.defaultdata",
         "com.coldenergia.expensetracker.validator"
 })
 @EnableTransactionManagement
 public class JpaConfiguration {
 
-    @Bean
-    public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.HSQL).build();
-    }
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -47,7 +42,7 @@ public class JpaConfiguration {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(jpaVendorAdapter);
         factory.setPackagesToScan("com.coldenergia.expensetracker.domain");
-        factory.setDataSource(dataSource());
+        factory.setDataSource(dataSource);
         turnOnHibernateSqlOutput(factory);
         factory.afterPropertiesSet();
 

@@ -1,7 +1,6 @@
 package com.coldenergia.expensetracker.domain;
 
-import com.coldenergia.expensetracker.config.JpaConfiguration;
-import com.coldenergia.expensetracker.config.SecurityConfiguration;
+import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +16,7 @@ import javax.persistence.EntityManager;
  * Time: 5:00 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfiguration.class, SecurityConfiguration.class })
+@ContextConfiguration(classes = { IntegrationTestsConfiguration.class })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public abstract class MappingIntegrationTest {

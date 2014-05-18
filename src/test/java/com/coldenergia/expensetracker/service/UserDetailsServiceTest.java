@@ -2,21 +2,14 @@ package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
-import com.coldenergia.expensetracker.config.JpaConfiguration;
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 
@@ -24,7 +17,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  * User: coldenergia

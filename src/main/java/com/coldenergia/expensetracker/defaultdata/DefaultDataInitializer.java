@@ -4,6 +4,8 @@ import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.service.AuthorityService;
 import com.coldenergia.expensetracker.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.*;
 @Transactional(readOnly = true)
 public class DefaultDataInitializer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDataInitializer.class);
+
     private final UserService userService;
 
     private final AuthorityService authorityService;
@@ -35,8 +39,10 @@ public class DefaultDataInitializer {
 
     @Transactional
     public void insertInitialDataIntoDb() {
+        LOGGER.info("Checking presence of / inserting initial data...");
         createAuthorities();
         createDefaultAdminIfThereIsntOne();
+        LOGGER.info("Ensured all necessary default data is present.");
     }
 
     // TODO: Transactions, transactions, transactions - test for them!

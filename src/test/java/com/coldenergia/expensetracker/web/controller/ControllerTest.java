@@ -1,5 +1,6 @@
 package com.coldenergia.expensetracker.web.controller;
 
+import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
 import com.coldenergia.expensetracker.config.SecurityConfiguration;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,13 @@ import org.springframework.web.context.WebApplicationContext;
  * Date: 5/9/14
  * Time: 9:49 PM
  */
+// TODO: Consider mocking some of the things instead of passing IntegrationTestsConfiguration here.
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { com.coldenergia.expensetracker.config.WebAppConfiguration.class, SecurityConfiguration.class })
+@ContextConfiguration(classes = {
+        IntegrationTestsConfiguration.class,
+        com.coldenergia.expensetracker.config.WebAppConfiguration.class,
+        SecurityConfiguration.class
+})
 @WebAppConfiguration
 public abstract class ControllerTest {
 

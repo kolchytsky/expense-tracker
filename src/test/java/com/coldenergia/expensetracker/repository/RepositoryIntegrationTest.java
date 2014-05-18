@@ -1,7 +1,6 @@
 package com.coldenergia.expensetracker.repository;
 
-import com.coldenergia.expensetracker.config.JpaConfiguration;
-import com.coldenergia.expensetracker.config.SecurityConfiguration;
+import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Time: 9:04 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfiguration.class, SecurityConfiguration.class })
+@ContextConfiguration(classes = { IntegrationTestsConfiguration.class })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public abstract class RepositoryIntegrationTest {

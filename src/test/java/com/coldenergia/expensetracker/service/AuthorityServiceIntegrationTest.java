@@ -1,8 +1,7 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.builder.AuthorityBuilder;
-import com.coldenergia.expensetracker.config.JpaConfiguration;
-import com.coldenergia.expensetracker.config.SecurityConfiguration;
+import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import org.junit.Test;
@@ -24,7 +23,7 @@ import static org.junit.Assert.fail;
  * Time: 10:31 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfiguration.class, SecurityConfiguration.class })
+@ContextConfiguration(classes = { IntegrationTestsConfiguration.class })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class AuthorityServiceIntegrationTest {

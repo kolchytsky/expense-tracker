@@ -1,5 +1,6 @@
-package com.coldenergia.expensetracker.config;
+package com.coldenergia.expensetracker.config.initializer;
 
+import com.coldenergia.expensetracker.config.production.ProductionSecurityConfiguration;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
@@ -10,7 +11,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
 
     public SecurityWebApplicationInitializer() {
-        super(SecurityConfiguration.class);
+        super(ProductionSecurityConfiguration.class);
     }
 
 }

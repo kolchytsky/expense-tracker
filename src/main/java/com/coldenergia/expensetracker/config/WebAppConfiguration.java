@@ -7,7 +7,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -34,7 +33,7 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public ViewResolver getViewResolver(){
+    public ViewResolver getViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/view/");
         resolver.setSuffix(".jsp");
@@ -82,4 +81,5 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
     }
+
 }

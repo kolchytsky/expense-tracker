@@ -1,8 +1,7 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.builder.UserBuilder;
-import com.coldenergia.expensetracker.config.JpaConfiguration;
-import com.coldenergia.expensetracker.config.SecurityConfiguration;
+import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
 import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import org.junit.Test;
@@ -21,7 +20,7 @@ import static org.junit.Assert.*;
  * Time: 2:39 PM
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { JpaConfiguration.class, SecurityConfiguration.class })
+@ContextConfiguration(classes = { IntegrationTestsConfiguration.class })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class UserServiceIntegrationTest {
