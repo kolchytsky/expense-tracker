@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
@@ -19,6 +20,7 @@ import java.util.Locale;
  * Time: 4:47 PM
  */
 @Configuration
+@ComponentScan(basePackages = { "com.coldenergia.expensetracker.web.controller" })
 @EnableWebMvc
 public class WebAppConfiguration extends WebMvcConfigurerAdapter {
 

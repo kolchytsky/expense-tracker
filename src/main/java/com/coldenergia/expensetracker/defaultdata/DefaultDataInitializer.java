@@ -65,7 +65,7 @@ public class DefaultDataInitializer {
     }
 
     private void createAuthorities() {
-        String[] authorityNames = { ADMIN_AUTHORITY_NAME, USER_AUTHORITY_NAME };
+        String[] authorityNames = { ADMIN_AUTHORITY_NAME, SPENDER_AUTHORITY_NAME};
         for (String authorityName : authorityNames) {
             boolean isAuthorityAbsent = authorityService.findByName(authorityName) == null;
             if (isAuthorityAbsent) {

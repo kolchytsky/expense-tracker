@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
+
 /**
  * Configures Spring Security. This class is used in both the tests and production.<br>
  * User: coldenergia
@@ -71,6 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers("/resources/**").permitAll()
+                    .antMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY_NAME)
                     .anyRequest().authenticated();
     }
 

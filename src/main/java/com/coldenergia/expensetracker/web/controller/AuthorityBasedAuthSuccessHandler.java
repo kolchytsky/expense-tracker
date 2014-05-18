@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.USER_AUTHORITY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
  * User: coldenergia
@@ -34,7 +34,7 @@ public class AuthorityBasedAuthSuccessHandler implements AuthenticationSuccessHa
         if (hasAuthority(authentication, ADMIN_AUTHORITY_NAME)) {
             // Redirect to main administrator page
             response.sendRedirect(request.getContextPath() + "/admin");
-        } else if (hasAuthority(authentication, USER_AUTHORITY_NAME)) {
+        } else if (hasAuthority(authentication, SPENDER_AUTHORITY_NAME)) {
             // Redirect to main user page
             response.sendRedirect(request.getContextPath());
         } else {

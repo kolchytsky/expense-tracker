@@ -67,7 +67,7 @@ public class DefaultDataInitializerTest {
         assertEquals(2, capturedAuthorities.size());
         for (Authority authority : capturedAuthorities) {
             String name = authority.getName();
-            boolean nameIsValid = name.equals(ADMIN_AUTHORITY_NAME) || name.equals(USER_AUTHORITY_NAME);
+            boolean nameIsValid = name.equals(ADMIN_AUTHORITY_NAME) || name.equals(SPENDER_AUTHORITY_NAME);
             assertTrue(nameIsValid);
         }
     }
@@ -77,8 +77,8 @@ public class DefaultDataInitializerTest {
         Authority adminAuthority = new AuthorityBuilder().withName(ADMIN_AUTHORITY_NAME).build();
         when(authorityService.findByName(ADMIN_AUTHORITY_NAME)).thenReturn(adminAuthority);
 
-        Authority userAuthority = new AuthorityBuilder().withName(USER_AUTHORITY_NAME).build();
-        when(authorityService.findByName(USER_AUTHORITY_NAME)).thenReturn(userAuthority);
+        Authority userAuthority = new AuthorityBuilder().withName(SPENDER_AUTHORITY_NAME).build();
+        when(authorityService.findByName(SPENDER_AUTHORITY_NAME)).thenReturn(userAuthority);
 
         defaultDataInitializer.insertInitialDataIntoDb();
         verify(authorityService, never()).save(any(Authority.class));

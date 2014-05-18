@@ -13,7 +13,7 @@ public final class DefaultDataConstants {
 
     public static final String ADMIN_AUTHORITY_NAME = "ADMIN";
 
-    public static final String USER_AUTHORITY_NAME = "USER";
+    public static final String SPENDER_AUTHORITY_NAME = "USER";
 
     private DefaultDataConstants() {
         // Restrict instantiation
