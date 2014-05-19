@@ -1,15 +1,19 @@
 package com.coldenergia.expensetracker.web.controller;
 
+import com.coldenergia.expensetracker.builder.CsrfTokenBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
+import static com.coldenergia.expensetracker.web.CsrfConstants.CSRF_TOKEN_VALUE_FOR_TEST;
+import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_TOKEN_ATTR_NAME;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_PARAMETER_NAME;
 
 /**
  * User: coldenergia
@@ -36,10 +40,15 @@ public class LoginControllerTest extends ControllerTest {
         this.mockMvc.perform(get("/")).andExpect(redirectedUrlPattern("**/login*"));
     }
 
-    /*@Test
+    @Test
     public void shouldRedirectAdminToAdminMainPage() throws Exception {
-        this.mockMvc.perform(post("/login").param("username", "admin").param("password", "mandible"))
-                .andExpect(view().name("admin/main"));
-    }*/
+        this.mockMvc.perform(
+                post("/login")
+                        .param("username", DEFAULT_ADMIN_NAME)
+                        .param("password", "mandible")
+                        .param(DEFAULT_CSRF_PARAMETER_NAME, CSRF_TOKEN_VALUE_FOR_TEST)
+                        .sessionAttr(DEFAULT_CSRF_TOKEN_ATTR_NAME, new CsrfTokenBuilder().build()))
+                .andExpect(status().isMovedTemporarily());//.andExpect(redirectedUrlPattern("**admin"));
+    }
 
 }
