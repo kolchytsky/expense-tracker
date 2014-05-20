@@ -14,6 +14,7 @@
     <h2><spring:message code="create.new.user" /></h2>
 
     <label><spring:message code="name" /> <input name="name" type="text" /></label><br>
+    <label><spring:message code="password" /> <input name="password" type="password" /></label><br>
     <label><spring:message code="authority" />:</label>
     <label><spring:message code="authority.spender" /> <input name="authority" type="radio" value="spender" /></label>
     <label><spring:message code="authority.admin" /> <input name="authority" type="radio" value="admin" /></label>

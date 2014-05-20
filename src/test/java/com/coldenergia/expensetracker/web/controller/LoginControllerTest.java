@@ -1,19 +1,15 @@
 package com.coldenergia.expensetracker.web.controller;
 
-import com.coldenergia.expensetracker.builder.CsrfTokenBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
-import static com.coldenergia.expensetracker.web.CsrfConstants.CSRF_TOKEN_VALUE_FOR_TEST;
-import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_TOKEN_ATTR_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_PASSWORD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-
-import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_PARAMETER_NAME;
 
 /**
  * User: coldenergia
@@ -43,12 +39,20 @@ public class LoginControllerTest extends ControllerTest {
     @Test
     public void shouldRedirectAdminToAdminMainPage() throws Exception {
         this.mockMvc.perform(
+                addCsrfToken(post("/login"))
+                        .param("username", DEFAULT_ADMIN_NAME)
+                        .param("password", DEFAULT_ADMIN_PASSWORD))
+                .andExpect(status().isMovedTemporarily())
+                .andExpect(redirectedUrl("/admin"));
+    }
+
+    @Test
+    public void shouldNotAllowToLoginWithoutCsrfToken() throws Exception {
+        this.mockMvc.perform(
                 post("/login")
                         .param("username", DEFAULT_ADMIN_NAME)
-                        .param("password", "mandible")
-                        .param(DEFAULT_CSRF_PARAMETER_NAME, CSRF_TOKEN_VALUE_FOR_TEST)
-                        .sessionAttr(DEFAULT_CSRF_TOKEN_ATTR_NAME, new CsrfTokenBuilder().build()))
-                .andExpect(status().isMovedTemporarily());//.andExpect(redirectedUrlPattern("**admin"));
+                        .param("password", "mandible"))
+                .andExpect(status().isForbidden());
     }
 
 }

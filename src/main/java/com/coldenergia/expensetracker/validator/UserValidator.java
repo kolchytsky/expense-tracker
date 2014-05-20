@@ -41,7 +41,6 @@ public class UserValidator {
     public ValidationResult validate(User user, String rawPassword) {
         ValidationResult result = new ValidationResult();
 
-        // TODO: Create a test necessitating a validateCommonAttributes call
         validateCommonAttributes(user, result);
 
         if (StringUtils.isEmpty(rawPassword)) {

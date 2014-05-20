@@ -1,5 +1,6 @@
 package com.coldenergia.expensetracker.web.controller;
 
+import com.coldenergia.expensetracker.builder.CsrfTokenBuilder;
 import com.coldenergia.expensetracker.config.SecurityConfiguration;
 import com.coldenergia.expensetracker.domain.UserSecurityDetails;
 import org.junit.runner.RunWith;
@@ -8,20 +9,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.*;
+import static com.coldenergia.expensetracker.web.CsrfConstants.CSRF_TOKEN_VALUE_FOR_TEST;
+import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_PARAMETER_NAME;
+import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_TOKEN_ATTR_NAME;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
  * User: coldenergia
@@ -56,6 +60,7 @@ public abstract class ControllerTest {
         private UserDetails constructAdminDetails() {
             UserSecurityDetails adminDetails = new UserSecurityDetails();
             adminDetails.setUsername(DEFAULT_ADMIN_NAME);
+            adminDetails.setPassword(new BCryptPasswordEncoder().encode(DEFAULT_ADMIN_PASSWORD));
             List<String> adminAuthorityNames = new ArrayList<String>(1);
             adminAuthorityNames.add(ADMIN_AUTHORITY_NAME);
             adminDetails.setAuthorities(adminAuthorityNames);
@@ -86,5 +91,20 @@ public abstract class ControllerTest {
 
     @Autowired
     protected FilterChainProxy springSecurityFilterChain;
+
+    /**
+     * Adds CsrfToken as a request parameter and as a session attribute
+     * (so that {@link org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository} would
+     * be able to check the provided request parameter against this token). The solution has been nicely
+     * described in this
+     * <a href="http://www.petrikainulainen.net/programming/spring-framework/adding-social-sign-in-to-a-spring-mvc-web-application-registration-and-login/">blog post</a>
+     * and documented in this
+     * <a href="https://github.com/pkainulainen/spring-social-examples/blob/master/sign-in/spring-mvc-normal/src/integration-test/java/net/petrikainulainen/spring/social/signinmvc/security/CsrfTokenBuilder.java">github repository</a>.
+     * */
+    protected static MockHttpServletRequestBuilder addCsrfToken(MockHttpServletRequestBuilder requestBuilder) {
+        return requestBuilder
+                .param(DEFAULT_CSRF_PARAMETER_NAME, CSRF_TOKEN_VALUE_FOR_TEST)
+                .sessionAttr(DEFAULT_CSRF_TOKEN_ATTR_NAME, new CsrfTokenBuilder().build());
+    }
 
 }

@@ -20,7 +20,10 @@ import java.util.Locale;
  * Time: 4:47 PM
  */
 @Configuration
-@ComponentScan(basePackages = { "com.coldenergia.expensetracker.web.controller" })
+@ComponentScan(basePackages = {
+        "com.coldenergia.expensetracker.web.controller",
+        "com.coldenergia.expensetracker.web.view.model.validator"
+})
 @EnableWebMvc
 public class WebAppConfiguration extends WebMvcConfigurerAdapter {
 
