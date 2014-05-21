@@ -9,6 +9,7 @@ import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,8 +22,7 @@ import java.util.Set;
  * Time: 8:18 PM
  */
 @Service
-// TODO: Create an integration test for transaction demarcation test
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final AuthorityRepository authorityRepository;
@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     @Override
     public User save(User user) {
         validate(user);
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public User saveUserWithNewPassword(User user, String rawPassword) {
         validate(user, rawPassword);
@@ -66,6 +68,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public User saveUserWithNewPassword(User user, Set<String> authorityNames, String rawPassword) {
         List<Authority> authorities = retrieveAuthoritiesByNames(authorityNames);

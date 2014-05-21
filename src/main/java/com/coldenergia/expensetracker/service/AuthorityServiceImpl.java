@@ -6,14 +6,15 @@ import com.coldenergia.expensetracker.validator.AuthorityValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * User: coldenergia
  * Date: 5/12/14
  * Time: 8:34 PM
  */
-// TODO: Notice - again no transactional declarations
 @Service
+@Transactional(readOnly = true)
 public class AuthorityServiceImpl implements AuthorityService {
 
     private final AuthorityRepository authorityRepository;
@@ -26,12 +27,14 @@ public class AuthorityServiceImpl implements AuthorityService {
         this.authorityValidator = authorityValidator;
     }
 
+    @Transactional
     @Override
     public Authority save(Authority authority) {
         validate(authority);
         return authorityRepository.save(authority);
     }
 
+    @Transactional
     @Override
     public Iterable<Authority> save(Iterable<Authority> authorities) {
         for (Authority authority : authorities) {

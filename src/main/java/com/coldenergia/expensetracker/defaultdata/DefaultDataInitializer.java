@@ -20,7 +20,6 @@ import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.*;
  * Date: 5/10/14
  * Time: 5:54 PM
  */
-// TODO: No @transactional is intentional - I want an integration test for it, perhaps
 @Component
 @Transactional(readOnly = true)
 public class DefaultDataInitializer {
@@ -45,7 +44,6 @@ public class DefaultDataInitializer {
         LOGGER.info("Ensured all necessary default data is present.");
     }
 
-    // TODO: Transactions, transactions, transactions - test for them!
     /**
      * Creates a default administrator user if there isn't one.
      * */
