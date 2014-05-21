@@ -39,6 +39,7 @@ public class UserController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initCreationForm(Model model) {
         // TODO: Consider specifying route mappings somewhere, or at least /admin prefix
+        // TODO: Make a nicer form. Have a label and then its input on a newline.
         model.addAttribute("userForm", new UserForm());
         return "admin/users/new-user";
     }
