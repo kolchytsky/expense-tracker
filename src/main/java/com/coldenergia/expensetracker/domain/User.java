@@ -40,7 +40,7 @@ public class User {
     private Date created;
 
     // User entity is the owning side of this many-to-many relationship
-    @ManyToMany(cascade = { CascadeType.PERSIST })
+    @ManyToMany
     @JoinTable(
             name = "user_authorities",
             joinColumns = @JoinColumn(name = "user_id"),

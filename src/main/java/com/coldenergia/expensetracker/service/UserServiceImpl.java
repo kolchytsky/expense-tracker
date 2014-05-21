@@ -1,6 +1,8 @@
 package com.coldenergia.expensetracker.service;
 
+import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.UserValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
@@ -8,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * User: coldenergia
@@ -19,6 +24,8 @@ import java.util.Date;
 // TODO: Create an integration test for transaction demarcation test
 //@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
+
+    private final AuthorityRepository authorityRepository;
 
     private final UserRepository userRepository;
 
@@ -33,7 +40,12 @@ public class UserServiceImpl implements UserService {
      *     field injection is evil</a>.
      * */
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserValidator userValidator, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(
+            AuthorityRepository authorityRepository,
+            UserRepository userRepository,
+            UserValidator userValidator,
+            PasswordEncoder passwordEncoder) {
+        this.authorityRepository = authorityRepository;
         this.userRepository = userRepository;
         this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
@@ -52,6 +64,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(rawPassword));
         user = saveUser(user);
         return user;
+    }
+
+    @Override
+    public User saveUserWithNewPassword(User user, Set<String> authorityNames, String rawPassword) {
+        List<Authority> authorities = retrieveAuthoritiesByNames(authorityNames);
+        // Surely whatever was in user authorities is discarded at this point
+        user.setAuthorities(authorities);
+        return saveUserWithNewPassword(user, rawPassword);
     }
 
     @Override
@@ -75,6 +95,17 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    private List<Authority> retrieveAuthoritiesByNames(Set<String> authorityNames) {
+        List<Authority> authorities = new ArrayList<>(authorityNames.size());
+        for (String authorityName : authorityNames) {
+            Authority authority = authorityRepository.findByName(authorityName);
+            if (authority != null) {
+                authorities.add(authority);
+            }
+        }
+        return authorities;
     }
 
     private void validate(User user) {

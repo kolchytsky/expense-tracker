@@ -1,15 +1,20 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
+import com.coldenergia.expensetracker.service.UserService;
 import com.coldenergia.expensetracker.web.controller.ControllerTest;
 import com.coldenergia.expensetracker.web.view.model.UserForm;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
 import static com.coldenergia.expensetracker.web.util.SecurityRequestPostProcessors.userDetailsService;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -20,7 +25,18 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * Date: 5/18/14
  * Time: 3:56 PM
  */
+@ContextConfiguration(classes = { UserControllerTest.TestConfiguration.class })
 public class UserControllerTest extends ControllerTest {
+
+    @Configuration
+    public static class TestConfiguration {
+
+        @Bean
+        public UserService userService() {
+            return mock(UserService.class);
+        }
+
+    }
 
     private MockMvc mockMvc;
 

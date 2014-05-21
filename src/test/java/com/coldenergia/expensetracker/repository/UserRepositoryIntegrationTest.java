@@ -1,14 +1,9 @@
 package com.coldenergia.expensetracker.repository;
 
-import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
-import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -70,20 +65,6 @@ public class UserRepositoryIntegrationTest extends RepositoryIntegrationTest {
     public void shouldReturnNullIfUserNotFoundByName() {
         User mandible = userRepository.findByName("Mandible");
         assertNull(mandible);
-    }
-
-    @Test
-    public void shouldCascadePersistAuthoritiesWhenSavingUser() {
-        long initialAuthorityCount = authorityRepository.count();
-        List<Authority> authorities = new ArrayList<Authority>(2);
-        authorities.add(new AuthorityBuilder().withName("defender").build());
-        authorities.add(new AuthorityBuilder().withName("shield_master").build());
-        User guardian = new UserBuilder().withAuthorities(authorities).build();
-        assertNull(guardian.getAuthorities().get(0).getId());
-        userRepository.save(guardian);
-        long finalAuthorityCount = authorityRepository.count();
-        assertEquals(2L, finalAuthorityCount - initialAuthorityCount);
-        assertNotNull(guardian.getAuthorities().get(0).getId());
     }
 
 }

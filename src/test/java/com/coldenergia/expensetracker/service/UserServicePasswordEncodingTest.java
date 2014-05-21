@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.UserValidator;
 import org.junit.Before;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.verify;
  */
 public class UserServicePasswordEncodingTest {
 
+    private AuthorityRepository authorityRepository;
+
     private UserService userService;
 
     private UserRepository userRepository;
@@ -31,9 +34,10 @@ public class UserServicePasswordEncodingTest {
 
     @Before
     public void setup() {
+        authorityRepository = mock(AuthorityRepository.class);
         userRepository = mock(UserRepository.class);
         passwordEncoder = new BCryptPasswordEncoder();
-        userService = new UserServiceImpl(userRepository, new UserValidator(), passwordEncoder);
+        userService = new UserServiceImpl(authorityRepository, userRepository, new UserValidator(), passwordEncoder);
     }
 
     @Test

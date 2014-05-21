@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/view/include/top.jsp"/>
 <div class="row">
-  <form action="${contextPath}/admin/new" role="form" method="post" class="create-user-form">
+  <form action="${contextPath}/admin/users" role="form" method="post" class="create-user-form">
     <h2><spring:message code="create.new.user" /></h2>
 
     <label><spring:message code="name" /> <input name="name" type="text" /></label><br>

@@ -45,16 +45,18 @@ public class DefaultDataInitializerIntegrationTest {
 
     @Test
     public void shouldCreateDefaultAdminUserIfThereIsntOne() {
+        Long initialCount = userRepository.count();
         defaultDataInitializer.insertInitialDataIntoDb();
-        Long userCount = userRepository.count();
-        assertEquals(1L, (long) userCount);
+        Long finalCount = userRepository.count();
+        assertEquals(1L, (long) finalCount - initialCount);
     }
 
     @Test
     public void shouldCreateAuthoritiesIfThereArentAny() {
+        Long initialCount = authorityRepository.count();
         defaultDataInitializer.insertInitialDataIntoDb();
-        Long authorityCount = authorityRepository.count();
-        assertEquals(2L, (long) authorityCount);
+        Long finalCount = authorityRepository.count();
+        assertEquals(2L, (long) finalCount - initialCount);
     }
 
 }

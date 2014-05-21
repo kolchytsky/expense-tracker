@@ -1,8 +1,10 @@
 package com.coldenergia.expensetracker.service;
 
+import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.UserValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -12,13 +14,14 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * User: coldenergia
@@ -29,12 +32,15 @@ public class UserServiceTest {
 
     private UserService userService;
 
+    private AuthorityRepository authorityRepository;
+
     private UserRepository userRepository;
 
     @Before
     public void setup() {
+        authorityRepository = mock(AuthorityRepository.class);
         userRepository = mock(UserRepository.class);
-        userService = new UserServiceImpl(userRepository, new UserValidator(), mock(PasswordEncoder.class));
+        userService = new UserServiceImpl(authorityRepository, userRepository, new UserValidator(), mock(PasswordEncoder.class));
     }
 
     @Test
@@ -184,6 +190,24 @@ public class UserServiceTest {
         User retrievedGkublok = userService.findByName("Gkublok");
         verify(userRepository).findByName("Gkublok");
         assertEquals(gkublok, retrievedGkublok);
+    }
+
+    @Test
+    public void shouldSaveUserWithAuthorityNames() {
+        Authority authority = new AuthorityBuilder().withName("defender").build();
+        when(authorityRepository.findByName("defender")).thenReturn(authority);
+        User guardian = new UserBuilder().withAuthorities(new ArrayList<Authority>()).withName("Guardian").build();
+        Set<String> authorityNames = new HashSet<>(1);
+        authorityNames.add("defender");
+
+        userService.saveUserWithNewPassword(guardian, authorityNames, "somepassword");
+
+        ArgumentCaptor<User> guardianCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(guardianCaptor.capture());
+
+        User capturedGuardian = guardianCaptor.getValue();
+        assertFalse(capturedGuardian.getAuthorities().isEmpty());
+        assertEquals(authority.getName(), capturedGuardian.getAuthorities().get(0).getName());
     }
 
     private void assertExceptionOnSave(User invalid, String errorCode) {
