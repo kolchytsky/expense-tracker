@@ -86,8 +86,15 @@ public class UserServiceImpl implements UserService {
         if (!exists(user)) {
             user.setCreated(new Date());
         }
+        if (isUserNameAlreadyTaken(user.getName())) {
+            throw new UserNameIsTakenException("Name " + user.getName() + " has already been taken.");
+        }
         User u = userRepository.save(user);
         return u;
+    }
+
+    private boolean isUserNameAlreadyTaken(String name) {
+        return userRepository.findByName(name) != null;
     }
 
     private boolean exists(User user) {

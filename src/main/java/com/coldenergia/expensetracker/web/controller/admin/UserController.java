@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.service.UserNameIsTakenException;
 import com.coldenergia.expensetracker.service.UserService;
 import com.coldenergia.expensetracker.web.view.model.UserForm;
 import com.coldenergia.expensetracker.web.view.model.validator.UserFormValidator;
@@ -8,16 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
  * User: coldenergia
@@ -54,8 +51,13 @@ public class UserController {
             setAuthorityNames(model);
             return "admin/users/new-user";
         }
-        // TODO: wrap this in a catch block and watch for uniqueness exception
-        userService.saveUserWithNewPassword(map(userForm), getAuthorityNames(userForm), userForm.getPassword());
+        try {
+            userService.saveUserWithNewPassword(map(userForm), getAuthorityNames(userForm), userForm.getPassword());
+        } catch (UserNameIsTakenException e) {
+            result.rejectValue("name", "user.name.has.already.been.taken");
+            setAuthorityNames(model);
+            return "admin/users/new-user";
+        }
         return "redirect:/admin/users";
     }
 

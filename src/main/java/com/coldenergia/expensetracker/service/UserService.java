@@ -11,12 +11,16 @@ import java.util.Set;
  */
 public interface UserService {
 
+    /**
+     * @throws UserNameIsTakenException If user name has already been taken by another user.
+     * */
     User save(User user);
 
     /**
      * Saves the user and sets a new user password (encoding it in the process).
      * @param user
      * @param rawPassword New raw (plain) password for the user
+     * @throws UserNameIsTakenException If user name has already been taken by another user.
      * */
     User saveUserWithNewPassword(User user, String rawPassword);
 
@@ -27,6 +31,7 @@ public interface UserService {
      * @param user
      * @param authorityNames List of authority names matching names of already existing authorities
      * @param rawPassword New raw (plain) password for the user
+     * @throws UserNameIsTakenException If user name has already been taken by another user.
      * */
     User saveUserWithNewPassword(User user, Set<String> authorityNames, String rawPassword);
 
