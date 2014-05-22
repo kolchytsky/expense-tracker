@@ -1,5 +1,8 @@
 package com.coldenergia.expensetracker.web.view.model;
 
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
+
 /**
  * User: coldenergia
  * Date: 5/18/14
@@ -11,8 +14,7 @@ public class UserForm {
 
     private String password;
 
-    // TODO: Refactor as enum later
-    private String authority;
+    private AuthorityName authority;
 
     public String getName() {
         return name;
@@ -30,12 +32,40 @@ public class UserForm {
         this.password = password;
     }
 
-    public String getAuthority() {
+    public AuthorityName getAuthority() {
         return authority;
     }
 
-    public void setAuthority(String authority) {
+    public void setAuthority(AuthorityName authority) {
         this.authority = authority;
+    }
+
+    public static enum AuthorityName {
+
+        ADMIN(ADMIN_AUTHORITY_NAME, "authority.admin"),
+
+        SPENDER(SPENDER_AUTHORITY_NAME, "authority.spender");
+
+        private final String value;
+
+        /**
+         * Message code in localization files.
+         * */
+        private final String messageCode;
+
+        private AuthorityName(String value, String messageCode) {
+            this.value = value;
+            this.messageCode = messageCode;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getMessageCode() {
+            return messageCode;
+        }
+
     }
 
 }

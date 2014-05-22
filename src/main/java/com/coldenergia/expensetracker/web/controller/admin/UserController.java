@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,17 +43,24 @@ public class UserController {
         // TODO: Consider specifying route mappings somewhere, or at least /admin prefix
         // TODO: Make a nicer form. Have a label and then its input on a newline.
         model.addAttribute("userForm", new UserForm());
+        setAuthorityNames(model);
         return "admin/users/new-user";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String processCreationForm(UserForm userForm, BindingResult result) {
+    public String processCreationForm(UserForm userForm, Model model, BindingResult result) {
         userFormValidator.validate(userForm, result);
         if (result.hasErrors()) {
+            setAuthorityNames(model);
             return "admin/users/new-user";
         }
+        // TODO: wrap this in a catch block and watch for uniqueness exception
         userService.saveUserWithNewPassword(map(userForm), getAuthorityNames(userForm), userForm.getPassword());
         return "redirect:/admin/users";
+    }
+
+    public void setAuthorityNames(Model model) {
+        model.addAttribute("authorityNames", Arrays.asList(UserForm.AuthorityName.values()));
     }
 
     private User map(UserForm userForm) {
@@ -62,12 +71,8 @@ public class UserController {
 
     private Set<String> getAuthorityNames(UserForm userForm) {
         Set<String> authorityNames = new HashSet<>(1);
-        String chosenAuthority = userForm.getAuthority();
-        if ("admin".equals(chosenAuthority)) {
-            authorityNames.add(ADMIN_AUTHORITY_NAME);
-        } else if ("spender".equals(chosenAuthority)) {
-            authorityNames.add(SPENDER_AUTHORITY_NAME);
-        }
+        String chosenAuthority = userForm.getAuthority().getValue();
+        authorityNames.add(chosenAuthority);
         return authorityNames;
     }
 

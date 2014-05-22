@@ -52,14 +52,9 @@ public class UserFormValidator implements Validator {
             }
         }
 
-        String authority = userForm.getAuthority();
-        if (isAuthorityInvalid(authority)) {
+        if (userForm.getAuthority() == null) {
             errors.rejectValue("authority", "user.authorities.no.authority.was.chosen");
         }
-    }
-
-    private boolean isAuthorityInvalid(String authority) {
-        return (!"admin".equals(authority) && !"spender".equals(authority));
     }
 
 }

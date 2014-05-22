@@ -60,7 +60,7 @@ public class UserControllerTest extends ControllerTest {
                 addCsrfToken(post("/admin/users"))
                         .param("name", "Gkublok")
                         .param("password", "mandible")
-                        .param("authority", "spender")
+                        .param("authority", "SPENDER")
                 .with(userDetailsService(DEFAULT_ADMIN_NAME)))
                 .andExpect(status().isMovedTemporarily())
                 .andExpect(redirectedUrl("/admin/users"));
@@ -74,7 +74,6 @@ public class UserControllerTest extends ControllerTest {
                         .param("authority", "")
                         .with(userDetailsService(DEFAULT_ADMIN_NAME)))
                 .andExpect(view().name("admin/users/new-user"));
-                //.andExpect(model().attribute());
     }
 
     @Test
@@ -84,7 +83,7 @@ public class UserControllerTest extends ControllerTest {
         mockMvc.perform(
                 addCsrfToken(post("/admin/users"))
                         .param("name", "Gkublok")
-                        .param("authority", "spender")
+                        .param("authority", "SPENDER")
                         .with(userDetailsService(THORAX)))
                 .andExpect(status().isForbidden());
     }

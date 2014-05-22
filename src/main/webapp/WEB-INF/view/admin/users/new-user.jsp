@@ -14,7 +14,6 @@
   <form:form action="${contextPath}/admin/users" modelAttribute="userForm" method="post" cssClass="create-user-form">
     <h2><spring:message code="create.new.user" /></h2>
 
-    <%-- <spring:hasBindErrors name="name"></spring:hasBindErrors> --%>
     <fieldset>
       <div class="form-group">
         <form:label path="name"><spring:message code="name" /></form:label>
@@ -28,8 +27,10 @@
       </div>
       <div class="form-group">
         <form:label path="authority"><spring:message code="authority" />:</form:label><br>
-        <form:radiobutton path="authority" value="spender" /><spring:message code="authority.spender" /><br>
-        <form:radiobutton path="authority" value="admin" /><spring:message code="authority.admin" /><br>
+        <c:forEach var="authorityName" items="${authorityNames}">
+          <form:radiobutton path="authority" value="${authorityName}" />
+          <spring:message code="${authorityName.messageCode}" /><br>
+        </c:forEach>
         <form:errors path="authority" cssClass="text-danger" />
       </div>
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
