@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -211,6 +212,18 @@ public class UserServiceTest {
         User capturedGuardian = guardianCaptor.getValue();
         assertFalse(capturedGuardian.getAuthorities().isEmpty());
         assertEquals(authority.getName(), capturedGuardian.getAuthorities().get(0).getName());
+    }
+
+    @Test
+    public void shouldFindAllUsers() {
+        userService.findAll();
+        verify(userRepository).findAll();
+    }
+
+    @Test
+    public void shouldFindAllSpenders() {
+        userService.findAllSpenders();
+        verify(userRepository).findAllUsersHavingAuthority(SPENDER_AUTHORITY_NAME);
     }
 
     private void assertExceptionOnSave(User invalid, String errorCode) {

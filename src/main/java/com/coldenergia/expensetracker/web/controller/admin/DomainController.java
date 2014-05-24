@@ -1,22 +1,24 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
 import com.coldenergia.expensetracker.domain.Domain;
+import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
-import com.coldenergia.expensetracker.web.view.model.DomainForm;
-import com.coldenergia.expensetracker.web.view.model.DomainViewModel;
+import com.coldenergia.expensetracker.service.UserService;
+import com.coldenergia.expensetracker.web.view.model.domain.DomainForm;
+import com.coldenergia.expensetracker.web.view.model.domain.DomainUsersForm;
+import com.coldenergia.expensetracker.web.view.model.domain.DomainViewModel;
 import com.coldenergia.expensetracker.web.view.model.validator.DomainFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-// TODO: Implement /admin/domains which would list all domains
 /**
  * User: coldenergia
  * Date: 5/24/14
@@ -28,11 +30,17 @@ public class DomainController {
 
     private final DomainService domainService;
 
+    private final UserService userService;
+
     private final DomainFormValidator domainFormValidator;
 
     @Autowired
-    public DomainController(DomainService domainService, DomainFormValidator domainFormValidator) {
+    public DomainController(
+            DomainService domainService,
+            UserService userService,
+            DomainFormValidator domainFormValidator) {
         this.domainService = domainService;
+        this.userService = userService;
         this.domainFormValidator = domainFormValidator;
     }
 
@@ -62,6 +70,42 @@ public class DomainController {
         List<Domain> domains = domainService.findAll();
         model.addAttribute("domains", map(domains));
         return "admin/domains/list-domains";
+    }
+
+    @RequestMapping(value = "/{domainId}/users/edit", method = RequestMethod.GET)
+    public String initDomainUsersForm(@PathVariable Long domainId, Model model) {
+        Domain domain = domainService.findOneAndInitUserList(domainId);
+        // TODO: This should be a relatively temporary solution. Because the amount of users can be huge.
+        List<User> users = userService.findAllSpenders();
+        List<User> currentDomainUsers = domain.getUsers();
+        DomainUsersForm form = new DomainUsersForm();
+        form.setUserIds(getUserIdSet(currentDomainUsers));
+
+        model.addAttribute("domain", map(domain));
+        model.addAttribute("userMap", constructUserIdToUserNameMap(users));
+        model.addAttribute("domainUsersForm", form);
+        return "admin/domains/edit-domain-users";
+    }
+
+    /**
+     * Constructs a map with userId as key and user name as value.
+     * This map will be used by Spring MVC to render checkbox list.
+     * */
+    private Map<Long, String> constructUserIdToUserNameMap(List<User> users) {
+        Map<Long, String> map = new HashMap<>(users.size());
+        for (User u : users) {
+            map.put(u.getId(), u.getName());
+        }
+        return map;
+    }
+
+    private Set<Long> getUserIdSet(List<User> users) {
+        // TODO: Think about predicates.
+        Set<Long> userIds = new HashSet<>(users.size());
+        for (User u : users) {
+            userIds.add(u.getId());
+        }
+        return userIds;
     }
 
     // TODO: Come with some nice solution to mapping.

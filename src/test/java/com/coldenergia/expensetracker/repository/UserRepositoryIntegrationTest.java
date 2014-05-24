@@ -1,9 +1,13 @@
 package com.coldenergia.expensetracker.repository;
 
+import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
+import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -65,6 +69,25 @@ public class UserRepositoryIntegrationTest extends RepositoryIntegrationTest {
     public void shouldReturnNullIfUserNotFoundByName() {
         User mandible = userRepository.findByName("Mandible");
         assertNull(mandible);
+    }
+
+    @Test
+    public void shouldFindUsersHavingAuthority() {
+        Authority guardian = new AuthorityBuilder().withName("guardian").build();
+        Authority destroyer = new AuthorityBuilder().withName("destroyer").build();
+
+        authorityRepository.save(guardian);
+        authorityRepository.save(destroyer);
+
+        User kraagesh = new UserBuilder().withName("Kraagesh").withAuthority(guardian).build();
+        User dominator = new UserBuilder().withName("Dominator").withAuthority(destroyer).build();
+
+        userRepository.save(kraagesh);
+        userRepository.save(dominator);
+
+        List<User> users = userRepository.findAllUsersHavingAuthority("destroyer");
+        assertTrue(users.size() == 1);
+        assertEquals("Dominator", users.get(0).getName());
     }
 
 }

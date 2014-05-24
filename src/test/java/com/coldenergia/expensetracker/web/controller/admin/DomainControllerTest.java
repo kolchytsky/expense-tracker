@@ -1,11 +1,12 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
+import com.coldenergia.expensetracker.builder.DomainBuilder;
 import com.coldenergia.expensetracker.domain.Domain;
 import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.web.controller.ControllerTest;
-import com.coldenergia.expensetracker.web.view.model.DomainForm;
-import com.coldenergia.expensetracker.web.view.model.DomainViewModel;
+import com.coldenergia.expensetracker.web.view.model.domain.DomainForm;
+import com.coldenergia.expensetracker.web.view.model.domain.DomainUsersForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -19,7 +20,6 @@ import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DE
 import static com.coldenergia.expensetracker.web.util.SecurityRequestPostProcessors.userDetailsService;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -108,6 +108,21 @@ public class DomainControllerTest extends ControllerTest {
                 .with(userDetailsService(DEFAULT_ADMIN_NAME)))
                 .andExpect(model().attribute("domains", notNullValue()))
                 .andExpect(view().name("admin/domains/list-domains"));
+    }
+
+    @Test
+    public void shouldShowSetDomainUsersFormPage() throws Exception {
+        Domain domain = new DomainBuilder().withId(4L).build();
+        when(domainService.findOne(4L)).thenReturn(domain);
+        when(domainService.findOneAndInitUserList(4L)).thenReturn(domain);
+
+        mockMvc.perform(get("/admin/domains/4/users/edit")
+                .with(userDetailsService(DEFAULT_ADMIN_NAME)))
+                .andExpect(model().attribute("domainUsersForm", notNullValue()))
+                .andExpect(model().attribute("domainUsersForm", is(DomainUsersForm.class)))
+                .andExpect(model().attribute("userMap", notNullValue()))
+                .andExpect(model().attribute("domain", notNullValue()))
+                .andExpect(view().name("admin/domains/edit-domain-users"));
     }
 
     @Test

@@ -23,6 +23,13 @@ public interface DomainService {
      * */
     Domain setDomainUsers(Long domainId, Set<Long> userIds);
 
+    Domain findOne(Long id);
+
+    /**
+     * Finds a domain by its identifier plus initializes (lazy) domain user list.
+     * */
+    Domain findOneAndInitUserList(Long id);
+
     List<Domain> findAll();
 
 }

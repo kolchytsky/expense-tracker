@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static com.coldenergia.expensetracker.ancillary.CollectionUtils.listFromIterable;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
+
 /**
  * User: coldenergia
  * Date: 5/10/14
@@ -80,6 +83,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) {
         return userRepository.findByName(name);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return listFromIterable(userRepository.findAll());
+    }
+
+    @Override
+    public List<User> findAllSpenders() {
+        return userRepository.findAllUsersHavingAuthority(SPENDER_AUTHORITY_NAME);
     }
 
     private User saveUser(User user) {

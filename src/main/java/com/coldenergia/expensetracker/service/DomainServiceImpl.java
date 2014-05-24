@@ -7,6 +7,7 @@ import com.coldenergia.expensetracker.repository.DomainRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.DomainValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,8 @@ public class DomainServiceImpl implements DomainService {
     @Override
     public Domain save(Domain domain) {
         validate(domain);
-        if (isDomainNameAlreadyTaken(domain.getName())) {
+        boolean isNewDomain = (domain.getId() == null || !domainRepository.exists(domain.getId()));
+        if (isNewDomain && isDomainNameAlreadyTaken(domain.getName())) {
             throw new DomainNameIsTakenException("Name " + domain.getName() + " has already been taken");
         }
         return domainRepository.save(domain);
@@ -59,6 +61,19 @@ public class DomainServiceImpl implements DomainService {
         List<User> users = retrieveUsers(userIds);
         domain.setUsers(users);
         return save(domain);
+    }
+
+    @Override
+    public Domain findOne(Long id) {
+        return domainRepository.findOne(id);
+    }
+
+    @Override
+    public Domain findOneAndInitUserList(Long id) {
+        Domain domain = findOne(id);
+        // Initialize lazy-loaded user list by force
+        Hibernate.initialize(domain.getUsers());
+        return domain;
     }
 
     @Override

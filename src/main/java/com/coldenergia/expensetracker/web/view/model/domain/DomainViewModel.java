@@ -1,4 +1,4 @@
-package com.coldenergia.expensetracker.web.view.model;
+package com.coldenergia.expensetracker.web.view.model.domain;
 
 /**
  * User: coldenergia

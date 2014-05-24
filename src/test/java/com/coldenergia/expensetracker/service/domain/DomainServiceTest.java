@@ -90,6 +90,12 @@ public class DomainServiceTest {
         verify(domainRepository).findAll();
     }
 
+    @Test
+    public void shouldFindDomain() {
+        domainService.findOne(4L);
+        verify(domainRepository).findOne(4L);
+    }
+
     private void assertExceptionOnSave(Domain invalid, String errorCode) {
         assertExceptionOnSave(invalid, errorCode, "Should've thrown an exception here");
     }

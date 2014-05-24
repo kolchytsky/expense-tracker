@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.User;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,5 +37,12 @@ public interface UserService {
     User saveUserWithNewPassword(User user, Set<String> authorityNames, String rawPassword);
 
     User findByName(String name);
+
+    List<User> findAll();
+
+    /**
+     * @return List of users who have the "spender" authority.
+     * */
+    List<User> findAllSpenders();
 
 }

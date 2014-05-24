@@ -12,6 +12,9 @@ body {
 
 .create-domain-form, .create-user-form {
     max-width: 330px;
+}
+
+.create-domain-form, .create-user-form, .domain-users-form {
     padding: 15px;
     margin: 0 auto;
 }
