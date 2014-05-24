@@ -28,6 +28,11 @@ public class DomainBuilder {
         return domain;
     }
 
+    public DomainBuilder withId(Long id) {
+        domain.setId(id);
+        return this;
+    }
+
     public DomainBuilder withName(String name) {
         domain.setName(name);
         return this;

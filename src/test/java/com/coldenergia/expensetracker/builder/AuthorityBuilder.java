@@ -3,6 +3,7 @@ package com.coldenergia.expensetracker.builder;
 import com.coldenergia.expensetracker.domain.Authority;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
  * User: coldenergia
@@ -10,6 +11,10 @@ import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.AD
  * Time: 8:27 PM
  */
 public class AuthorityBuilder {
+
+    public static final Authority SPENDER_AUTHORITY = new AuthorityBuilder().withName(SPENDER_AUTHORITY_NAME).build();
+
+    public static final Authority ADMIN_AUTHORITY = new AuthorityBuilder().withName(ADMIN_AUTHORITY_NAME).build();
 
     private Authority authority;
 

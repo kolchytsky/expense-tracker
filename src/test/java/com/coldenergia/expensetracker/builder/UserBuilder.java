@@ -31,7 +31,7 @@ public class UserBuilder {
             createdDate = new Date();
         }
         user.setCreated(createdDate);
-        List<Authority> authorities = new ArrayList<Authority>();
+        List<Authority> authorities = new ArrayList<>();
         authorities.add(new AuthorityBuilder().build());
         user.setAuthorities(authorities);
     }
@@ -61,11 +61,22 @@ public class UserBuilder {
     }
 
     public UserBuilder withAuthorities(Authority[] authorities) {
-        List<Authority> authorityList = new ArrayList<Authority>(authorities.length);
+        List<Authority> authorityList = new ArrayList<>(authorities.length);
         for (Authority a : authorities) {
             authorityList.add(a);
         }
         user.setAuthorities(authorityList);
+        return this;
+    }
+
+    /**
+     * Constructs a user with authority list containing one authority element.
+     * @param authority the only authority to comprise the user authority list.
+     * */
+    public UserBuilder withAuthority(Authority authority) {
+        List<Authority> authorities = new ArrayList<>(1);
+        authorities.add(authority);
+        user.setAuthorities(authorities);
         return this;
     }
 

@@ -1,32 +1,19 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.builder.AuthorityBuilder;
-import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * User: coldenergia
  * Date: 5/12/14
  * Time: 10:31 PM
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { IntegrationTestsConfiguration.class })
-@Transactional
-@TransactionConfiguration(defaultRollback = true)
-public class AuthorityServiceIntegrationTest {
+public class AuthorityServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     private AuthorityService authorityService;

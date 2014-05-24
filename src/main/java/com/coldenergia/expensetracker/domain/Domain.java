@@ -16,7 +16,7 @@ public class Domain {
     @GeneratedValue
     private Long id;
 
-    @Column(length = 40)
+    @Column(length = 40, unique = true)
     private String name;
 
     /*
