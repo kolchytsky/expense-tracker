@@ -4,7 +4,13 @@ body {
     background-color: #eee;
 }
 
-.form-signin, .create-user-form {
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.create-domain-form, .create-user-form {
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
