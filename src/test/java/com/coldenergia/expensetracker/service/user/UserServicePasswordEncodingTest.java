@@ -1,9 +1,11 @@
-package com.coldenergia.expensetracker.service;
+package com.coldenergia.expensetracker.service.user;
 
 import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
+import com.coldenergia.expensetracker.service.UserService;
+import com.coldenergia.expensetracker.service.UserServiceImpl;
 import com.coldenergia.expensetracker.validator.UserValidator;
 import org.junit.Before;
 import org.junit.Test;
