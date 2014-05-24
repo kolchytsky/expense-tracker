@@ -46,6 +46,9 @@ public class DomainServiceImpl implements DomainService {
     @Override
     public Domain save(Domain domain) {
         validate(domain);
+        if (isDomainNameAlreadyTaken(domain.getName())) {
+            throw new DomainNameIsTakenException("Name " + domain.getName() + " has already been taken");
+        }
         return domainRepository.save(domain);
     }
 
@@ -72,6 +75,10 @@ public class DomainServiceImpl implements DomainService {
             userList.add(user);
         }
         return userList;
+    }
+
+    private boolean isDomainNameAlreadyTaken(String name) {
+        return domainRepository.findByName(name) != null;
     }
 
     private boolean hasSpenderAuthority(User user) {

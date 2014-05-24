@@ -4,6 +4,7 @@ import com.coldenergia.expensetracker.domain.Domain;
 
 import java.util.Set;
 
+// TODO: When creating a new domain, a new default ROOT category should be created and associated with this domain
 /**
  * User: coldenergia
  * Date: 5/24/14
@@ -11,6 +12,9 @@ import java.util.Set;
  */
 public interface DomainService {
 
+    /**
+     * @throws DomainNameIsTakenException If the domain name already identifies some other domain.
+     * */
     Domain save(Domain domain);
 
     /**

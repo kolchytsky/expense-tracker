@@ -9,4 +9,7 @@ import org.springframework.data.repository.CrudRepository;
  * Time: 3:36 PM
  */
 public interface DomainRepository extends CrudRepository<Domain, Long> {
+
+    Domain findByName(String name);
+
 }

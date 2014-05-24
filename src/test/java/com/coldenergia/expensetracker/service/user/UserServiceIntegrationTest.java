@@ -4,6 +4,7 @@ import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.service.ServiceIntegrationTest;
+import com.coldenergia.expensetracker.service.UserNameIsTakenException;
 import com.coldenergia.expensetracker.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class UserServiceIntegrationTest extends ServiceIntegrationTest {
         try {
             userService.save(gkublokImpostor);
             fail("Should've thrown an exception when attempting to save a user with a non-unique name");
-        } catch (Exception expected) {}
+        } catch (UserNameIsTakenException expected) {}
     }
 
 }

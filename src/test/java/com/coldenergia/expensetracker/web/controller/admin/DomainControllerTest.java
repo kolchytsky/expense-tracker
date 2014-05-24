@@ -1,10 +1,13 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
+import com.coldenergia.expensetracker.domain.Domain;
+import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.web.controller.ControllerTest;
 import com.coldenergia.expensetracker.web.view.model.DomainForm;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +18,9 @@ import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DE
 import static com.coldenergia.expensetracker.web.util.SecurityRequestPostProcessors.userDetailsService;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -93,6 +98,24 @@ public class DomainControllerTest extends ControllerTest {
     @Test
     public void shouldRedirectToLoginIfUnauthenticated() throws Exception {
         mockMvc.perform(get("/admin/domains/new")).andExpect(redirectedUrlPattern("**/login*"));
+    }
+
+    @Test
+    public void shouldInformUserAboutTakenDomainNameAndNotThrowingAnyExceptions() throws Exception {
+        ArgumentMatcher<Domain> domainWithTakenNameMatcher = new ArgumentMatcher<Domain>() {
+            @Override
+            public boolean matches(Object argument) {
+                return "Taken_name".equals(((Domain) argument).getName());
+            }
+        };
+
+        when(domainService.save(argThat(domainWithTakenNameMatcher))).thenThrow(DomainNameIsTakenException.class);
+
+        mockMvc.perform(
+                addCsrfToken(post("/admin/domains"))
+                        .param(DOMAIN_FORM_NAME_PARAM, "Taken_name")
+                        .with(userDetailsService(DEFAULT_ADMIN_NAME)))
+                .andExpect(view().name("admin/domains/new-domain"));
     }
 
 }

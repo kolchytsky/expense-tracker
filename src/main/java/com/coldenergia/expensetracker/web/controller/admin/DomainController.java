@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
 import com.coldenergia.expensetracker.domain.Domain;
+import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.web.view.model.DomainForm;
 import com.coldenergia.expensetracker.web.view.model.validator.DomainFormValidator;
@@ -43,7 +44,12 @@ public class DomainController {
         if (result.hasErrors()) {
             return "admin/domains/new-domain";
         }
-        domainService.save(map(domainForm));
+        try {
+            domainService.save(map(domainForm));
+        } catch (DomainNameIsTakenException e) {
+            result.rejectValue("name", "domain.name.has.already.been.taken");
+            return "admin/domains/new-domain";
+        }
         return "redirect:/admin/domains";
     }
 

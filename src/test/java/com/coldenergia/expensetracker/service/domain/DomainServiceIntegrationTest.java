@@ -3,6 +3,7 @@ package com.coldenergia.expensetracker.service.domain;
 import com.coldenergia.expensetracker.builder.DomainBuilder;
 import com.coldenergia.expensetracker.domain.Domain;
 import com.coldenergia.expensetracker.repository.DomainRepository;
+import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.service.ServiceIntegrationTest;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class DomainServiceIntegrationTest extends ServiceIntegrationTest {
         try {
             domainService.save(acatanaClone);
             fail("Should've thrown an exception when attempting to save a domain with a non-unique name");
-        } catch (Exception expected) {}
+        } catch (DomainNameIsTakenException expected) {}
     }
 
 }

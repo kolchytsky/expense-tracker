@@ -6,7 +6,7 @@ package com.coldenergia.expensetracker.service;
  * Date: 5/22/14
  * Time: 9:59 PM
  */
-public class UserNameIsTakenException extends RuntimeException {
+public class UserNameIsTakenException extends ServiceException {
 
     public UserNameIsTakenException() {}
 
