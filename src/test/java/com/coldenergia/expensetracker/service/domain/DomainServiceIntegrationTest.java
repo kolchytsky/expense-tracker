@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+// TODO: Think about a method to test setDomainUsers
 /**
  * User: coldenergia
  * Date: 5/24/14

@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.Domain;
 
+import java.util.List;
 import java.util.Set;
 
 // TODO: When creating a new domain, a new default ROOT category should be created and associated with this domain
@@ -21,5 +22,7 @@ public interface DomainService {
      * Sets domain users. The users must have "spender" authorities.
      * */
     Domain setDomainUsers(Long domainId, Set<Long> userIds);
+
+    List<Domain> findAll();
 
 }

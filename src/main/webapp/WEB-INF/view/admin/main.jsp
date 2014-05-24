@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <jsp:include page="../include/top.jsp"/>
-<a href="${contextPath}/admin/users/new">Create a new user</a>
-<a href="${contextPath}/admin/domains/new">Create a new domain</a>
+i18n me!<br>
+<a href="${contextPath}/admin/users/new">Create a new user</a><br>
+<a href="${contextPath}/admin/domains">List all domains</a><br>
+<a href="${contextPath}/admin/domains/new">Create a new domain</a><br>
 <jsp:include page="../include/bottom.jsp"/>

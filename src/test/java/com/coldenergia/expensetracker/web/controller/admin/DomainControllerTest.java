@@ -5,6 +5,7 @@ import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.web.controller.ControllerTest;
 import com.coldenergia.expensetracker.web.view.model.DomainForm;
+import com.coldenergia.expensetracker.web.view.model.DomainViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -18,6 +19,7 @@ import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DE
 import static com.coldenergia.expensetracker.web.util.SecurityRequestPostProcessors.userDetailsService;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -98,6 +100,14 @@ public class DomainControllerTest extends ControllerTest {
     @Test
     public void shouldRedirectToLoginIfUnauthenticated() throws Exception {
         mockMvc.perform(get("/admin/domains/new")).andExpect(redirectedUrlPattern("**/login*"));
+    }
+
+    @Test
+    public void shouldShowListOfAllDomains() throws Exception {
+        mockMvc.perform(get("/admin/domains")
+                .with(userDetailsService(DEFAULT_ADMIN_NAME)))
+                .andExpect(model().attribute("domains", notNullValue()))
+                .andExpect(view().name("admin/domains/list-domains"));
     }
 
     @Test

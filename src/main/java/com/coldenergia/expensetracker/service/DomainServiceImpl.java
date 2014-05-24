@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.coldenergia.expensetracker.ancillary.CollectionUtils.listFromIterable;
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
@@ -61,24 +61,33 @@ public class DomainServiceImpl implements DomainService {
         return save(domain);
     }
 
+    @Override
+    public List<Domain> findAll() {
+        Iterable<Domain> domains = domainRepository.findAll();
+        return listFromIterable(domains);
+    }
+
     private List<User> retrieveUsers(Iterable<Long> userIds) {
         Iterable<User> users = userRepository.findAll(userIds);
-        if (users == null || !users.iterator().hasNext()) {
-            return new ArrayList<>();
-        }
-        List<User> userList = new ArrayList<>();
-        for (User user : users) {
-            if (!hasSpenderAuthority(user)) {
-                String msg = "User " + user.getName() + " doesn't have " + SPENDER_AUTHORITY_NAME + " authority.";
-                throw new ServiceException(msg);
-            }
-            userList.add(user);
-        }
+        List<User> userList = listFromIterable(users);
+        checkThatUserListContainsSpendersOnly(userList);
         return userList;
     }
 
     private boolean isDomainNameAlreadyTaken(String name) {
         return domainRepository.findByName(name) != null;
+    }
+
+    /**
+     * @throws ServiceException If any of the users doesn't have a SPENDER authority.
+     * */
+    private void checkThatUserListContainsSpendersOnly(List<User> users) {
+        for (User user : users) {
+            if (!hasSpenderAuthority(user)) {
+                String msg = "User " + user.getName() + " doesn't have " + SPENDER_AUTHORITY_NAME + " authority.";
+                throw new ServiceException(msg);
+            }
+        }
     }
 
     private boolean hasSpenderAuthority(User user) {
