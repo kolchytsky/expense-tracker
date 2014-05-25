@@ -15,13 +15,18 @@ public class CategoryBuilder {
     public CategoryBuilder() {
         category = new Category();
         category.setName("integrated weapon systems");
-        category.setDomain(null);
+        category.setDomain(new DomainBuilder().build());
         category.setChildCategories(null);
         category.setParentCategory(null);
     }
 
     public Category build() {
         return category;
+    }
+
+    public CategoryBuilder withId(Long id) {
+        category.setId(id);
+        return this;
     }
 
     public CategoryBuilder withName(String name) {

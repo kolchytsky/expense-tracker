@@ -13,8 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * User: coldenergia
@@ -92,8 +91,11 @@ public class DomainServiceTest {
 
     @Test
     public void shouldFindDomain() {
-        domainService.findOne(4L);
-        verify(domainRepository).findOne(4L);
+        Domain domain = new DomainBuilder().withId(4L).build();
+        when(domainRepository.findOne(4L)).thenReturn(domain);
+        Domain result = domainService.findOne(4L);
+        assertNotNull(result);
+        assertEquals(4L, (long) result.getId());
     }
 
     private void assertExceptionOnSave(Domain invalid, String errorCode) {
