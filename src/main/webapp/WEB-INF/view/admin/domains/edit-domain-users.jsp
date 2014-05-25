@@ -11,7 +11,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/view/include/top.jsp"/>
 <div class="row">
-  <form:form action="${contextPath}/admin/domains/${domain.id}/users/edit"
+  <form:form action="${contextPath}/admin/domains/${domain.id}/users"
              modelAttribute="domainUsersForm" method="post" cssClass="domain-users-form">
     <h2><spring:message code="choose.domain.users" /> ${domain.name}</h2>
 

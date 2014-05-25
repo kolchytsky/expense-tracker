@@ -87,6 +87,13 @@ public class DomainController {
         return "admin/domains/edit-domain-users";
     }
 
+    @RequestMapping(value = "/{domainId}/users", method = RequestMethod.POST)
+    public String processDomainUsersCreationForm(@PathVariable Long domainId, DomainUsersForm domainUsersForm) {
+        Domain domain = domainService.findOne(domainId);
+        domainService.setDomainUsers(domainId, domainUsersForm.getUserIds());
+        return "redirect:/admin/domains";
+    }
+
     /**
      * Constructs a map with userId as key and user name as value.
      * This map will be used by Spring MVC to render checkbox list.

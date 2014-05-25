@@ -53,6 +53,8 @@ public class DomainControllerTest extends ControllerTest {
 
     public static final String DOMAIN_FORM_NAME_PARAM = "name";
 
+    public static final String DOMAIN_USERS_FORM_USER_IDS_PARAM = "userIds";
+
     @Before
     public void setup() {
         this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
@@ -123,6 +125,19 @@ public class DomainControllerTest extends ControllerTest {
                 .andExpect(model().attribute("userMap", notNullValue()))
                 .andExpect(model().attribute("domain", notNullValue()))
                 .andExpect(view().name("admin/domains/edit-domain-users"));
+    }
+
+    @Test
+    public void shouldSetDomainUsers() throws Exception {
+        Domain domain = new DomainBuilder().withId(4L).build();
+        when(domainService.findOne(4L)).thenReturn(domain);
+
+        mockMvc.perform(
+                addCsrfToken(post("/admin/domains/4/users")
+                        .param(DOMAIN_USERS_FORM_USER_IDS_PARAM, "7", "2004")
+                        .with(userDetailsService(DEFAULT_ADMIN_NAME))))
+                .andExpect(status().isMovedTemporarily())
+                .andExpect(redirectedUrl("/admin/domains"));
     }
 
     @Test
