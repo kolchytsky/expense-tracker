@@ -2,18 +2,14 @@ package com.coldenergia.expensetracker.service.domain;
 
 import com.coldenergia.expensetracker.builder.DomainBuilder;
 import com.coldenergia.expensetracker.domain.Domain;
-import com.coldenergia.expensetracker.repository.DomainRepository;
-import com.coldenergia.expensetracker.repository.UserRepository;
-import com.coldenergia.expensetracker.service.DomainService;
-import com.coldenergia.expensetracker.service.DomainServiceImpl;
 import com.coldenergia.expensetracker.service.ServiceException;
-import com.coldenergia.expensetracker.validator.DomainValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * User: coldenergia

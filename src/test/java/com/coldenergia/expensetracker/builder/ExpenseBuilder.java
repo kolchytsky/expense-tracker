@@ -15,7 +15,7 @@ public class ExpenseBuilder {
     public ExpenseBuilder() {
         expense = new Expense();
         expense.setName("military purchases");
-        expense.setCategory(null);
+        expense.setCategory(new CategoryBuilder().build());
     }
 
     public Expense build() {

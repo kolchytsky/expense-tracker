@@ -1,6 +1,8 @@
 package com.coldenergia.expensetracker.internal.test.data;
 
+import com.coldenergia.expensetracker.builder.CategoryBuilder;
 import com.coldenergia.expensetracker.builder.DomainBuilder;
+import com.coldenergia.expensetracker.domain.Category;
 import com.coldenergia.expensetracker.domain.Domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ROOT_CATEGORY_NAME;
 
 /**
  * User: coldenergia
@@ -24,9 +28,19 @@ public class TestDataInitializer {
     @Autowired
     private EntityManager entityManager;
 
+    /**
+     * A test domain name.
+     * */
     public static final String ACATANA = "Acatana";
 
     private static Map<String, Domain> DOMAINS = new HashMap<>();
+
+    /**
+     * A test category name.
+     * */
+    public static final String MILITARY_RESEARCH = "Military Research";
+
+    private static Map<String, Category> CATEGORIES = new HashMap<>();
 
     /*
     * As for transactions, I am still unsure about Spring Test Context:
@@ -40,6 +54,7 @@ public class TestDataInitializer {
         LOGGER.info("Started inserting data for integration tests...");
         entityManager.getTransaction().begin();
         createDomains();
+        createCategories();
         entityManager.getTransaction().commit();
         LOGGER.info("Finished inserting data for integration tests...");
     }
@@ -47,7 +62,7 @@ public class TestDataInitializer {
     private void createDomains() {
         // We may run into a problem with this - but then we'll issue a check against the database
         if (domains(ACATANA) == null) {
-            Domain acatana = new DomainBuilder().withName("Acatana").withNoUsers().build();
+            Domain acatana = new DomainBuilder().withName(ACATANA).withNoUsers().build();
             entityManager.persist(acatana);
             DOMAINS.put(ACATANA, acatana);
         }
@@ -55,6 +70,29 @@ public class TestDataInitializer {
 
     public static Domain domains(String domainName) {
         return DOMAINS.get(domainName);
+    }
+
+    private void createCategories() {
+        if (categories(MILITARY_RESEARCH) == null) {
+            // Won't be putting Acatana root category into categories map
+            Category rootForAcatana = new CategoryBuilder()
+                    .withName(ROOT_CATEGORY_NAME)
+                    .withDomain(domains(ACATANA))
+                    .build();
+            entityManager.persist(rootForAcatana);
+
+            Category militaryResearch = new CategoryBuilder()
+                    .withName(MILITARY_RESEARCH)
+                    .withDomain(domains(ACATANA))
+                    .withParentCategory(rootForAcatana)
+                    .build();
+            entityManager.persist(militaryResearch);
+            CATEGORIES.put(MILITARY_RESEARCH, militaryResearch);
+        }
+    }
+
+    public static Category categories(String categoryName) {
+        return CATEGORIES.get(categoryName);
     }
 
 }
