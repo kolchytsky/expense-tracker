@@ -4,6 +4,7 @@ import com.coldenergia.expensetracker.domain.Domain;
 import com.coldenergia.expensetracker.domain.User;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: coldenergia
@@ -40,6 +41,19 @@ public class DomainBuilder {
 
     public DomainBuilder withUsers(User[] users) {
         domain.setUsers(Arrays.asList(users));
+        return this;
+    }
+
+    public DomainBuilder withUsers(List<User> users) {
+        domain.setUsers(users);
+        return this;
+    }
+
+    /**
+     * Constructs domain with no users.
+     * */
+    public DomainBuilder withNoUsers() {
+        domain.setUsers(null);
         return this;
     }
 

@@ -39,11 +39,11 @@ public class DomainServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Test
     public void shouldNotSaveDomainWithNonUniqueName() {
-        Domain acatana = new DomainBuilder().withName("Acatana").build();
-        domainService.save(acatana);
-        Domain acatanaClone = new DomainBuilder().withName("Acatana").build();
+        Domain junkyard = new DomainBuilder().withName("Junkyard").build();
+        domainService.save(junkyard);
+        Domain junkyardClone = new DomainBuilder().withName("Junkyard").build();
         try {
-            domainService.save(acatanaClone);
+            domainService.save(junkyardClone);
             fail("Should've thrown an exception when attempting to save a domain with a non-unique name");
         } catch (DomainNameIsTakenException expected) {}
     }

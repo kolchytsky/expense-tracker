@@ -8,6 +8,8 @@ import com.coldenergia.expensetracker.service.ServiceIntegrationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.ACATANA;
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.domains;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -24,11 +26,9 @@ public class CategoryServiceIntegrationTest extends ServiceIntegrationTest {
     @Autowired
     private CategoryService categoryService;
 
-    // TODO: Create a test data initializer, finally.
-
     @Test
     public void shouldSaveCategory() {
-        Category category = new CategoryBuilder().build();
+        Category category = new CategoryBuilder().withDomain(domains(ACATANA)).build();
         long initialCount = categoryRepository.count();
         categoryService.save(category);
         long finalCount = categoryRepository.count();

@@ -1,4 +1,4 @@
-package com.coldenergia.expensetracker.config.test;
+package com.coldenergia.expensetracker.internal;
 
 import com.coldenergia.expensetracker.config.JpaConfiguration;
 import com.coldenergia.expensetracker.config.SecurityConfiguration;
@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         TestDataSourceConfiguration.class,
         JpaConfiguration.class,
-        SecurityConfiguration.class
+        SecurityConfiguration.class,
+        IntegrationTestDataConfiguration.class
 })
 public class IntegrationTestsConfiguration {}

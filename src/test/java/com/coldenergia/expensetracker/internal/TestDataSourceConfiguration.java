@@ -1,4 +1,4 @@
-package com.coldenergia.expensetracker.config.test;
+package com.coldenergia.expensetracker.internal;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

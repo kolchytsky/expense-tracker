@@ -1,6 +1,6 @@
 package com.coldenergia.expensetracker.repository;
 
-import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
+import com.coldenergia.expensetracker.internal.IntegrationTestsConfiguration;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

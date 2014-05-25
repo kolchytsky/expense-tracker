@@ -1,6 +1,6 @@
 package com.coldenergia.expensetracker.domain;
 
-import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
+import com.coldenergia.expensetracker.internal.IntegrationTestsConfiguration;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;

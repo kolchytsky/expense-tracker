@@ -1,6 +1,6 @@
 package com.coldenergia.expensetracker.defaultdata;
 
-import com.coldenergia.expensetracker.config.test.IntegrationTestsConfiguration;
+import com.coldenergia.expensetracker.internal.IntegrationTestsConfiguration;
 import com.coldenergia.expensetracker.repository.AuthorityRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import org.junit.Test;

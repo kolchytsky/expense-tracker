@@ -1,6 +1,6 @@
 package com.coldenergia.expensetracker.config;
 
-import com.coldenergia.expensetracker.config.test.TestDataSourceConfiguration;
+import com.coldenergia.expensetracker.internal.TestDataSourceConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
