@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.Expense;
+import com.coldenergia.expensetracker.domain.ExpenseDetail;
 
 /**
  * User: coldenergia
@@ -10,5 +11,7 @@ import com.coldenergia.expensetracker.domain.Expense;
 public interface ExpenseService {
 
     Expense save(Expense expense);
+
+    ExpenseDetail save(ExpenseDetail expenseDetail);
 
 }

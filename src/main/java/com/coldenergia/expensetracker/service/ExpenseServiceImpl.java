@@ -1,8 +1,10 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.Expense;
+import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import com.coldenergia.expensetracker.repository.ExpenseDetailRepository;
 import com.coldenergia.expensetracker.repository.ExpenseRepository;
+import com.coldenergia.expensetracker.validator.ExpenseDetailValidator;
 import com.coldenergia.expensetracker.validator.ExpenseValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +26,18 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     private final ExpenseValidator expenseValidator;
 
+    private final ExpenseDetailValidator expenseDetailValidator;
+
     @Autowired
     public ExpenseServiceImpl(
             ExpenseRepository expenseRepository,
             ExpenseDetailRepository expenseDetailRepository,
-            ExpenseValidator expenseValidator) {
+            ExpenseValidator expenseValidator,
+            ExpenseDetailValidator expenseDetailValidator) {
         this.expenseRepository = expenseRepository;
         this.expenseDetailRepository = expenseDetailRepository;
         this.expenseValidator = expenseValidator;
+        this.expenseDetailValidator = expenseDetailValidator;
     }
 
     @Override
@@ -40,8 +46,21 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.save(expense);
     }
 
+    @Override
+    public ExpenseDetail save(ExpenseDetail expenseDetail) {
+        validate(expenseDetail);
+        return expenseDetailRepository.save(expenseDetail);
+    }
+
     private void validate(Expense expense) {
         ValidationResult result = expenseValidator.validate(expense);
+        if (result.hasErrors()) {
+            throw new ServiceException(result.getAggregatedErrorCodes());
+        }
+    }
+
+    private void validate(ExpenseDetail expenseDetail) {
+        ValidationResult result = expenseDetailValidator.validate(expenseDetail);
         if (result.hasErrors()) {
             throw new ServiceException(result.getAggregatedErrorCodes());
         }

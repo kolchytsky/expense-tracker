@@ -1,19 +1,13 @@
 package com.coldenergia.expensetracker.service.expense;
 
 import com.coldenergia.expensetracker.builder.ExpenseBuilder;
+import com.coldenergia.expensetracker.builder.ExpenseDetailBuilder;
 import com.coldenergia.expensetracker.domain.Expense;
-import com.coldenergia.expensetracker.repository.ExpenseDetailRepository;
-import com.coldenergia.expensetracker.repository.ExpenseRepository;
-import com.coldenergia.expensetracker.service.ExpenseService;
-import com.coldenergia.expensetracker.service.ExpenseServiceImpl;
-import com.coldenergia.expensetracker.service.ServiceException;
-import com.coldenergia.expensetracker.validator.ExpenseValidator;
+import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -21,23 +15,11 @@ import static org.mockito.Mockito.verify;
  * Date: 5/25/14
  * Time: 4:58 PM
  */
-public class ExpenseServiceTest {
-
-    private ExpenseRepository expenseRepository;
-
-    private ExpenseDetailRepository expenseDetailRepository;
-
-    private ExpenseService expenseService;
+public class ExpenseServiceTest extends AbstractExpenseServiceTest {
 
     @Before
     public void setup() {
-        expenseRepository = mock(ExpenseRepository.class);
-        expenseDetailRepository = mock(ExpenseDetailRepository.class);
-        expenseService = new ExpenseServiceImpl(
-                expenseRepository,
-                expenseDetailRepository,
-                new ExpenseValidator()
-        );
+        super.setup();
     }
 
     @Test
@@ -76,14 +58,19 @@ public class ExpenseServiceTest {
         assertExceptionOnSave(expense, "expense.category.null");
     }
 
-    private void assertExceptionOnSave(Expense invalid, String errorCode) {
-        try {
-            expenseService.save(invalid);
-            fail("Should've thrown an exception here");
-        } catch (ServiceException expected) {
-            assertNotNull(expected.getMessage());
-            assertTrue(expected.getMessage().contains(errorCode));
-        }
+    @Test
+    public void shouldSaveExpenseDetail() {
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().build();
+        expenseService.save(expenseDetail);
+        verify(expenseDetailRepository).save(expenseDetail);
     }
+
+    @Test
+    public void shouldNotSaveExpenseDetailWhichDoesNotBelongToExpense() {
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().withExpense(null).build();
+        assertExceptionOnSave(expenseDetail, "expense.detail.expense.null");
+    }
+
+    // TODO: Test for no paydate
 
 }

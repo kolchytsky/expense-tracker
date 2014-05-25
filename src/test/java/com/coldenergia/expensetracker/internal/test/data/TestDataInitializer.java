@@ -2,8 +2,10 @@ package com.coldenergia.expensetracker.internal.test.data;
 
 import com.coldenergia.expensetracker.builder.CategoryBuilder;
 import com.coldenergia.expensetracker.builder.DomainBuilder;
+import com.coldenergia.expensetracker.builder.ExpenseBuilder;
 import com.coldenergia.expensetracker.domain.Category;
 import com.coldenergia.expensetracker.domain.Domain;
+import com.coldenergia.expensetracker.domain.Expense;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,13 @@ public class TestDataInitializer {
 
     private static Map<String, Category> CATEGORIES = new HashMap<>();
 
+    /**
+     * A test expense name.
+     * */
+    public static final String SHOCK_RIFLE = "Shock Rifle model 4";
+
+    private static Map<String, Expense> EXPENSES = new HashMap<>();
+
     /*
     * As for transactions, I am still unsure about Spring Test Context:
     * Since the EntityManager runs outside the container,
@@ -55,6 +64,7 @@ public class TestDataInitializer {
         entityManager.getTransaction().begin();
         createDomains();
         createCategories();
+        createExpenses();
         entityManager.getTransaction().commit();
         LOGGER.info("Finished inserting data for integration tests...");
     }
@@ -93,6 +103,21 @@ public class TestDataInitializer {
 
     public static Category categories(String categoryName) {
         return CATEGORIES.get(categoryName);
+    }
+
+    private void createExpenses() {
+        if (expenses(SHOCK_RIFLE) == null) {
+            Expense shockRifle = new ExpenseBuilder()
+                    .withName(SHOCK_RIFLE)
+                    .withCategory(categories(MILITARY_RESEARCH))
+                    .build();
+            entityManager.persist(shockRifle);
+            EXPENSES.put(SHOCK_RIFLE, shockRifle);
+        }
+    }
+
+    public static Expense expenses(String expenseName) {
+        return EXPENSES.get(expenseName);
     }
 
 }

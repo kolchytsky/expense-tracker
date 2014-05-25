@@ -18,7 +18,7 @@ public class ExpenseDetailBuilder {
 
     public ExpenseDetailBuilder() {
         expenseDetail = new ExpenseDetail();
-        expenseDetail.setExpense(null);
+        expenseDetail.setExpense(new ExpenseBuilder().build());
         expenseDetail.setFullPrice(new BigDecimal(4));
         expenseDetail.setPayDate(new Date());
         expenseDetail.setPricePerUnit(null);
@@ -28,6 +28,11 @@ public class ExpenseDetailBuilder {
 
     public ExpenseDetail build() {
         return expenseDetail;
+    }
+
+    public ExpenseDetailBuilder withId(Long id) {
+        expenseDetail.setId(id);
+        return this;
     }
 
     public ExpenseDetailBuilder withExpense(Expense expense) {
@@ -57,6 +62,30 @@ public class ExpenseDetailBuilder {
 
     public ExpenseDetailBuilder withPayDate(Date payDate) {
         expenseDetail.setPayDate(payDate);
+        return this;
+    }
+
+    /**
+     * Constructs a 'Basic' expense detail.
+     * */
+    public ExpenseDetailBuilder basicExpense() {
+        this
+                .withFullPrice(BigDecimal.TEN)
+                .withQuantity(null)
+                .withUnit(null)
+                .withPricePerUnit(null);
+        return this;
+    }
+
+    /**
+     * Constructs a 'Detailed' expense detail.
+     * */
+    public ExpenseDetailBuilder detailedExpense() {
+        this
+                .withQuantity(BigDecimal.ONE)
+                .withUnit(new UnitBuilder().build())
+                .withPricePerUnit(BigDecimal.valueOf(4.3))
+                .withFullPrice(null);
         return this;
     }
 

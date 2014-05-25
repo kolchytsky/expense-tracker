@@ -1,7 +1,9 @@
 package com.coldenergia.expensetracker.service.expense;
 
 import com.coldenergia.expensetracker.builder.ExpenseBuilder;
+import com.coldenergia.expensetracker.builder.ExpenseDetailBuilder;
 import com.coldenergia.expensetracker.domain.Expense;
+import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import com.coldenergia.expensetracker.repository.ExpenseDetailRepository;
 import com.coldenergia.expensetracker.repository.ExpenseRepository;
 import com.coldenergia.expensetracker.service.ExpenseService;
@@ -9,8 +11,7 @@ import com.coldenergia.expensetracker.service.ServiceIntegrationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.MILITARY_RESEARCH;
-import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.categories;
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.*;
 import static org.junit.Assert.*;
 
 /**
@@ -38,6 +39,17 @@ public class ExpenseServiceIntegrationTest extends ServiceIntegrationTest {
         long finalCount = expenseRepository.count();
         assertEquals(1L, finalCount - initialCount);
         assertNotNull(expense.getId());
+    }
+
+    @Test
+    public void shouldSaveExpenseDetail() {
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().withExpense(expenses(SHOCK_RIFLE)).build();
+        assertNull(expenseDetail.getId());
+        long initialCount = expenseDetailRepository.count();
+        expenseService.save(expenseDetail);
+        long finalCount = expenseDetailRepository.count();
+        assertEquals(1L, finalCount - initialCount);
+        assertNotNull(expenseDetail.getId());
     }
 
 }
