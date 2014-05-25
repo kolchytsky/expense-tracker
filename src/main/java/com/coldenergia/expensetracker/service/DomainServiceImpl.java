@@ -1,8 +1,10 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.Authority;
+import com.coldenergia.expensetracker.domain.Category;
 import com.coldenergia.expensetracker.domain.Domain;
 import com.coldenergia.expensetracker.domain.User;
+import com.coldenergia.expensetracker.repository.CategoryRepository;
 import com.coldenergia.expensetracker.repository.DomainRepository;
 import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.DomainValidator;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.coldenergia.expensetracker.ancillary.CollectionUtils.listFromIterable;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ROOT_CATEGORY_NAME;
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
@@ -29,6 +32,8 @@ public class DomainServiceImpl implements DomainService {
 
     private final DomainRepository domainRepository;
 
+    private final CategoryRepository categoryRepository;
+
     private final UserRepository userRepository;
 
     private final DomainValidator domainValidator;
@@ -36,9 +41,11 @@ public class DomainServiceImpl implements DomainService {
     @Autowired
     public DomainServiceImpl(
             DomainRepository domainRepository,
+            CategoryRepository categoryRepository,
             UserRepository userRepository,
             DomainValidator domainValidator) {
         this.domainRepository = domainRepository;
+        this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.domainValidator = domainValidator;
     }
@@ -47,10 +54,15 @@ public class DomainServiceImpl implements DomainService {
     @Override
     public Domain save(Domain domain) {
         validate(domain);
+
         boolean isNewDomain = (domain.getId() == null || !domainRepository.exists(domain.getId()));
-        if (isNewDomain && isDomainNameAlreadyTaken(domain.getName())) {
-            throw new DomainNameIsTakenException("Name " + domain.getName() + " has already been taken");
+        if (isNewDomain) {
+            if (isDomainNameAlreadyTaken(domain.getName())) {
+                throw new DomainNameIsTakenException("Name " + domain.getName() + " has already been taken");
+            }
+            createRootCategoryForDomain(domain);
         }
+
         return domainRepository.save(domain);
     }
 
@@ -80,6 +92,16 @@ public class DomainServiceImpl implements DomainService {
     public List<Domain> findAll() {
         Iterable<Domain> domains = domainRepository.findAll();
         return listFromIterable(domains);
+    }
+
+    private void createRootCategoryForDomain(Domain domain) {
+        Category category = new Category();
+        category.setName(ROOT_CATEGORY_NAME);
+        category.setDomain(domain);
+        category.setParentCategory(null);
+        category.setChildCategories(null);
+
+        categoryRepository.save(category);
     }
 
     private List<User> retrieveUsers(Iterable<Long> userIds) {

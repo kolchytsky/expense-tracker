@@ -18,11 +18,12 @@ public class DomainBuilder {
     public DomainBuilder() {
         domain = new Domain();
         domain.setName("Rrajigar");
-        User[] users = {
+        /*User[] users = {
                 new UserBuilder().withName("Enigma").build(),
                 new UserBuilder().withName("Divisor").build()
         };
-        domain.setUsers(Arrays.asList(users));
+        domain.setUsers(Arrays.asList(users));*/
+        domain.setUsers(null);
     }
 
     public Domain build() {

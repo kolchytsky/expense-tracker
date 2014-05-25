@@ -31,13 +31,7 @@ import static org.mockito.Mockito.when;
  * Date: 5/24/14
  * Time: 1:25 PM
  */
-public class SetDomainUsersTest {
-
-    private DomainRepository domainRepository;
-
-    private UserRepository userRepository;
-
-    private DomainService domainService;
+public class SetDomainUsersTest extends AbstractDomainServiceTest {
 
     private User gkublokAdmin;
 
@@ -49,9 +43,7 @@ public class SetDomainUsersTest {
 
     @Before
     public void setup() {
-        domainRepository = mock(DomainRepository.class);
-        userRepository = mock(UserRepository.class);
-        domainService = new DomainServiceImpl(domainRepository, userRepository, new DomainValidator());
+        super.setup();
 
         thoraxSpender = new UserBuilder().withId(7L).withAuthority(AuthorityBuilder.SPENDER_AUTHORITY).build();
         cobaltSpender = new UserBuilder().withId(1010L).withAuthority(AuthorityBuilder.SPENDER_AUTHORITY).build();

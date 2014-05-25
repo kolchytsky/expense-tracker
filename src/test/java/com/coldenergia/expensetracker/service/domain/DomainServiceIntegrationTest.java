@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.service.domain;
 
 import com.coldenergia.expensetracker.builder.DomainBuilder;
 import com.coldenergia.expensetracker.domain.Domain;
+import com.coldenergia.expensetracker.repository.CategoryRepository;
 import com.coldenergia.expensetracker.repository.DomainRepository;
 import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
@@ -9,9 +10,7 @@ import com.coldenergia.expensetracker.service.ServiceIntegrationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 // TODO: Think about a method to test setDomainUsers
 /**
@@ -25,14 +24,17 @@ public class DomainServiceIntegrationTest extends ServiceIntegrationTest {
     private DomainRepository domainRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private DomainService domainService;
 
     @Test
     public void shouldSaveDomain() {
         Domain domain = new DomainBuilder().build();
-        Long initialCount = domainRepository.count();
+        long initialCount = domainRepository.count();
         domainService.save(domain);
-        Long finalCount = domainRepository.count();
+        long finalCount = domainRepository.count();
         assertEquals(1L, finalCount - initialCount);
         assertNotNull(domain.getId());
     }
@@ -46,6 +48,15 @@ public class DomainServiceIntegrationTest extends ServiceIntegrationTest {
             domainService.save(junkyardClone);
             fail("Should've thrown an exception when attempting to save a domain with a non-unique name");
         } catch (DomainNameIsTakenException expected) {}
+    }
+
+    @Test
+    public void shouldCreateRootCategory() {
+        Domain domain = new DomainBuilder().build();
+        long initialCategoryCount = categoryRepository.count();
+        domainService.save(domain);
+        long finalCategoryCount = categoryRepository.count();
+        assertEquals(1L, finalCategoryCount - initialCategoryCount);
     }
 
 }

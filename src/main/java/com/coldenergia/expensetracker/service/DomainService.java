@@ -5,7 +5,6 @@ import com.coldenergia.expensetracker.domain.Domain;
 import java.util.List;
 import java.util.Set;
 
-// TODO: When creating a new domain, a new default ROOT category should be created and associated with this domain
 /**
  * User: coldenergia
  * Date: 5/24/14

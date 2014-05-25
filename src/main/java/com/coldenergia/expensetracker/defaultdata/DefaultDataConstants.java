@@ -15,6 +15,11 @@ public final class DefaultDataConstants {
 
     public static final String SPENDER_AUTHORITY_NAME = "SPENDER";
 
+    /**
+     * The name for root category created upon new domain creation.
+     * */
+    public static final String ROOT_CATEGORY_NAME = "root";
+
     private DefaultDataConstants() {
         // Restrict instantiation
     }

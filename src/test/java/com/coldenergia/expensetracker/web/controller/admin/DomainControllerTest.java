@@ -1,7 +1,9 @@
 package com.coldenergia.expensetracker.web.controller.admin;
 
 import com.coldenergia.expensetracker.builder.DomainBuilder;
+import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.Domain;
+import com.coldenergia.expensetracker.domain.User;
 import com.coldenergia.expensetracker.service.DomainNameIsTakenException;
 import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.web.controller.ControllerTest;
@@ -114,7 +116,11 @@ public class DomainControllerTest extends ControllerTest {
 
     @Test
     public void shouldShowSetDomainUsersFormPage() throws Exception {
-        Domain domain = new DomainBuilder().withId(4L).build();
+        User[] users = {
+                new UserBuilder().withName("Enigma").build(),
+                new UserBuilder().withName("Divisor").build()
+        };
+        Domain domain = new DomainBuilder().withId(4L).withUsers(users).build();
         when(domainService.findOne(4L)).thenReturn(domain);
         when(domainService.findOneAndInitUserList(4L)).thenReturn(domain);
 

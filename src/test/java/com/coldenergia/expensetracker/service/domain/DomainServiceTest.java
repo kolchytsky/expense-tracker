@@ -20,19 +20,11 @@ import static org.mockito.Mockito.*;
  * Date: 5/24/14
  * Time: 10:10 AM
  */
-public class DomainServiceTest {
-
-    private DomainRepository domainRepository;
-
-    private UserRepository userRepository;
-
-    private DomainService domainService;
+public class DomainServiceTest extends AbstractDomainServiceTest {
 
     @Before
     public void setup() {
-        domainRepository = mock(DomainRepository.class);
-        userRepository = mock(UserRepository.class);
-        domainService = new DomainServiceImpl(domainRepository, userRepository, new DomainValidator());
+        super.setup();
     }
 
     @Test
