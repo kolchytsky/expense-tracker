@@ -5,6 +5,7 @@ import com.coldenergia.expensetracker.domain.Expense;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.*;
 import static org.junit.Assert.*;
 
 /**
@@ -23,6 +24,15 @@ public class ExpenseRepositoryIntegrationTest extends RepositoryIntegrationTest 
         Expense retrievedExpense = expenseRepository.save(expense);
         assertNotNull(retrievedExpense);
         assertEquals(expense, retrievedExpense);
+    }
+
+    @Test
+    public void shouldFindExistingExpenseByNameAndDomainId() {
+        String name = expenses(SHOCK_RIFLE).getName();
+        Long domainId = domains(ACATANA).getId();
+        Expense result = expenseRepository.findByNameAndDomainId(name, domainId);
+        assertEquals(expenses(SHOCK_RIFLE).getId(), result.getId());
+        assertEquals(SHOCK_RIFLE, result.getName());
     }
 
 }

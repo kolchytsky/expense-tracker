@@ -71,6 +71,10 @@ public class ExpenseServiceTest extends AbstractExpenseServiceTest {
         assertExceptionOnSave(expenseDetail, "expense.detail.expense.null");
     }
 
-    // TODO: Test for no paydate
+    @Test
+    public void shouldNotSaveExpenseDetailWithoutPayDate() {
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().withPayDate(null).build();
+        assertExceptionOnSave(expenseDetail, "expense.detail.pay.date.null");
+    }
 
 }

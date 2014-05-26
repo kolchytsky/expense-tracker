@@ -52,6 +52,12 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseDetailRepository.save(expenseDetail);
     }
 
+    @Override
+    public ExpenseDetail logExpense(ExpenseDetail expenseDetail, String expenseName, Long domainId) {
+        save(expenseDetail);
+        return null;
+    }
+
     private void validate(Expense expense) {
         ValidationResult result = expenseValidator.validate(expense);
         if (result.hasErrors()) {

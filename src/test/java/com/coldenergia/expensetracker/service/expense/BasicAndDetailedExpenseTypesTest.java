@@ -69,6 +69,34 @@ public class BasicAndDetailedExpenseTypesTest extends AbstractExpenseServiceTest
         assertExceptionOnSave(invalid, "expense.detail.invalid.type");
     }
 
-    // TODO: Test for negative values, etc.
+    @Test
+    public void shouldNotSaveExpenseDetailWithNegativeOrZeroPrice() {
+        ExpenseDetail invalid = new ExpenseDetailBuilder().detailedExpense()
+                .withPricePerUnit(BigDecimal.valueOf(-1)).build();
+        assertExceptionOnSave(invalid, "expense.detail.price.per.unit.negative.or.zero");
+
+        invalid = new ExpenseDetailBuilder().detailedExpense()
+                .withPricePerUnit(BigDecimal.ZERO).build();
+        assertExceptionOnSave(invalid, "expense.detail.price.per.unit.negative.or.zero");
+
+        invalid = new ExpenseDetailBuilder().basicExpense()
+                .withFullPrice(BigDecimal.valueOf(-1)).build();
+        assertExceptionOnSave(invalid, "expense.detail.full.price.negative.or.zero");
+
+        invalid = new ExpenseDetailBuilder().basicExpense()
+                .withFullPrice(BigDecimal.ZERO).build();
+        assertExceptionOnSave(invalid, "expense.detail.full.price.negative.or.zero");
+    }
+
+    @Test
+    public void shouldNotSaveDetailedExpenseDetailWithNegativeOrZeroQuantity() {
+        ExpenseDetail invalid = new ExpenseDetailBuilder().detailedExpense()
+                .withQuantity(BigDecimal.valueOf(-1)).build();
+        assertExceptionOnSave(invalid, "expense.detail.quantity.negative.or.zero");
+
+        invalid = new ExpenseDetailBuilder().detailedExpense()
+                .withQuantity(BigDecimal.ZERO).build();
+        assertExceptionOnSave(invalid, "expense.detail.quantity.negative.or.zero");
+    }
 
 }

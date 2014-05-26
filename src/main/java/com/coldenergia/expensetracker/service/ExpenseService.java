@@ -14,4 +14,14 @@ public interface ExpenseService {
 
     ExpenseDetail save(ExpenseDetail expenseDetail);
 
+    /**
+     * This method is the primary method which is meant to log expenses.
+     * A new {@link ExpenseDetail} will be created.
+     * If there's no {@link Expense} with the same name as {@code expenseName}
+     * for that domain, then a new {@link Expense} will be created as well.<br>
+     * Also, the newly created {@link Expense}s will belong to the root
+     * {@link com.coldenergia.expensetracker.domain.Category} for that domain.
+     * */
+    ExpenseDetail logExpense(ExpenseDetail expenseDetail, String expenseName, Long domainId);
+
 }
