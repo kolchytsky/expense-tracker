@@ -52,4 +52,50 @@ public class ExpenseServiceIntegrationTest extends ServiceIntegrationTest {
         assertNotNull(expenseDetail.getId());
     }
 
+    @Test
+    public void shouldLogExpenseWithExistingName() {
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().basicExpense().build();
+        String expenseName = expenses(SHOCK_RIFLE).getName();
+        long initialExpenseCount = expenseRepository.count();
+        long initialExpenseDetailCount = expenseDetailRepository.count();
+
+        ExpenseDetail detail = expenseService.logExpense(expenseDetail, expenseName, domains(ACATANA).getId());
+
+        long finalExpenseCount = expenseRepository.count();
+        long finalExpenseDetailCount = expenseDetailRepository.count();
+
+        assertEquals("Shouldn't have created a new expense",
+                0L, finalExpenseCount - initialExpenseCount);
+        assertEquals("Should've created a new expense detail",
+                1L, finalExpenseDetailCount - initialExpenseDetailCount);
+
+        assertNotNull(detail);
+        assertNotNull(detail.getId());
+        assertEquals(expenses(SHOCK_RIFLE).getId(), detail.getExpense().getId());
+    }
+
+    @Test
+    public void shouldLogExpenseWithNonExistingName() {
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().detailedExpense().build();
+        String expenseName = "Flak Cannon";
+        long initialExpenseCount = expenseRepository.count();
+        long initialExpenseDetailCount = expenseDetailRepository.count();
+
+        ExpenseDetail detail = expenseService.logExpense(expenseDetail, expenseName, domains(ACATANA).getId());
+
+        long finalExpenseCount = expenseRepository.count();
+        long finalExpenseDetailCount = expenseDetailRepository.count();
+
+        assertEquals("Should've created a new expense",
+                1L, finalExpenseCount - initialExpenseCount);
+        assertEquals("Should've created a new expense detail",
+                1L, finalExpenseDetailCount - initialExpenseDetailCount);
+
+        assertNotNull(detail);
+        assertNotNull(detail.getId());
+        assertEquals(expenseName, detail.getExpense().getName());
+
+        // TODO: You forgot about auto-unit creation + remember that it will be the controller's responsibility to check that the user can edit the domain with the domain id
+    }
+
 }

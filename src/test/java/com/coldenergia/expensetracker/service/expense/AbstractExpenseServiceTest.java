@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.service.expense;
 
 import com.coldenergia.expensetracker.domain.Expense;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
+import com.coldenergia.expensetracker.repository.CategoryRepository;
 import com.coldenergia.expensetracker.repository.ExpenseDetailRepository;
 import com.coldenergia.expensetracker.repository.ExpenseRepository;
 import com.coldenergia.expensetracker.service.ExpenseService;
@@ -27,15 +28,19 @@ public class AbstractExpenseServiceTest {
 
     protected ExpenseDetailRepository expenseDetailRepository;
 
+    protected CategoryRepository categoryRepository;
+
     protected ExpenseService expenseService;
 
     @Before
     public void setup() {
         expenseRepository = mock(ExpenseRepository.class);
         expenseDetailRepository = mock(ExpenseDetailRepository.class);
+        categoryRepository = mock(CategoryRepository.class);
         expenseService = new ExpenseServiceImpl(
                 expenseRepository,
                 expenseDetailRepository,
+                categoryRepository,
                 new ExpenseValidator(),
                 new ExpenseDetailValidator()
         );

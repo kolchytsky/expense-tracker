@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.ACATANA;
 import static org.junit.Assert.*;
+
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.domains;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ROOT_CATEGORY_NAME;
 
 /**
  * User: coldenergia
@@ -67,6 +71,15 @@ public class CategoryRepositoryIntegrationTest extends RepositoryIntegrationTest
         assertEquals(weapons, retrievedWeapons);
         assertEquals(weapons, retrievedRifles.getParentCategory());
         assertEquals(rifles, retrievedWeapons.getChildCategories().get(0));
+    }
+
+    @Test
+    public void shouldGetDomainRootCategory() {
+        Long domainId = domains(ACATANA).getId();
+        Category rootCategory = categoryRepository.getDomainRootCategory(domainId);
+        assertNotNull(rootCategory);
+        assertEquals(domainId, rootCategory.getDomain().getId());
+        assertEquals(ROOT_CATEGORY_NAME, rootCategory.getName());
     }
 
 }
