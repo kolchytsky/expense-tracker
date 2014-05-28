@@ -24,7 +24,7 @@ public class ExpenseDetailMappingIntegrationTest extends MappingIntegrationTest 
         assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "id");
         assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "expense_id");
         assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "quantity");
-        assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "unit_id");
+        assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "unit");
         assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "price_per_unit");
         assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "full_price");
         assertTableHasColumn(getEntityManager(), EXPENSE_DETAILS_TABLE_NAME, "pay_date");

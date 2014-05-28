@@ -2,7 +2,6 @@ package com.coldenergia.expensetracker.service.expense;
 
 import com.coldenergia.expensetracker.builder.ExpenseBuilder;
 import com.coldenergia.expensetracker.builder.ExpenseDetailBuilder;
-import com.coldenergia.expensetracker.builder.UnitBuilder;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import org.junit.Test;
 
@@ -37,7 +36,7 @@ public class BasicAndDetailedExpenseTypesTest extends AbstractExpenseServiceTest
         ExpenseDetail detailed = new ExpenseDetailBuilder()
                 .withExpense(new ExpenseBuilder().build())
                 .withQuantity(BigDecimal.ONE)
-                .withUnit(new UnitBuilder().build())
+                .withUnit("lumen")
                 .withPricePerUnit(BigDecimal.valueOf(4.3))
                 .withFullPrice(null)
                 .build();
@@ -62,7 +61,7 @@ public class BasicAndDetailedExpenseTypesTest extends AbstractExpenseServiceTest
         invalid = new ExpenseDetailBuilder().basicExpense().withPricePerUnit(BigDecimal.ONE).build();
         assertExceptionOnSave(invalid, "expense.detail.invalid.type");
 
-        invalid = new ExpenseDetailBuilder().basicExpense().withUnit(new UnitBuilder().build()).build();
+        invalid = new ExpenseDetailBuilder().basicExpense().withUnit("lumen").build();
         assertExceptionOnSave(invalid, "expense.detail.invalid.type");
 
         invalid = new ExpenseDetailBuilder().basicExpense().withQuantity(BigDecimal.ONE).build();

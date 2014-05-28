@@ -56,22 +56,14 @@ CREATE TABLE expenses(
 	CONSTRAINT expense_category_fk FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE units(
-	id INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(10) NOT NULL,
-	CONSTRAINT unit_pk PRIMARY KEY (id),
-	CONSTRAINT unit_name_uk UNIQUE KEY (name)
-);
-
 CREATE TABLE expense_details(
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	expense_id BIGINT NOT NULL,
 	full_price DECIMAL(19, 4),
 	quantity DECIMAL(19, 4),
-	unit_id INT,
+	unit VARCHAR(10),
 	price_per_unit DECIMAL(19, 4),
 	pay_date DATE NOT NULL,
 	CONSTRAINT expense_detail_pk PRIMARY KEY (id),
-	CONSTRAINT expense_detail_expense_fk FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT expense_detail_unit_fk FOREIGN KEY (unit_id) REFERENCES units(id) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT expense_detail_expense_fk FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

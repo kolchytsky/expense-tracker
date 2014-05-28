@@ -1,7 +1,6 @@
 package com.coldenergia.expensetracker.validator;
 
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
-import com.coldenergia.expensetracker.domain.Unit;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -46,7 +45,7 @@ public class ExpenseDetailValidator {
                 result.rejectValue("pricePerUnit", "expense.detail.price.per.unit.negative.or.zero");
             }
 
-            Unit unit = expenseDetail.getUnit();
+            String unit = expenseDetail.getUnit();
             if (unit == null) {
                 result.reject("expense.detail.invalid.type");
             }

@@ -41,11 +41,10 @@ public class ExpenseDetail {
     private BigDecimal quantity;
 
     /**
-     * Is populated for 'Detailed' expense type.
+     * Unit of measurement. Is populated for 'Detailed' expense type.
      * */
-    @ManyToOne
-    @JoinColumn(name = "unit_id")
-    private Unit unit;
+    @Column(length = 10)
+    private String unit;
 
     /**
      * Is populated for 'Detailed' expense type.
@@ -87,11 +86,11 @@ public class ExpenseDetail {
         this.quantity = quantity;
     }
 
-    public Unit getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 

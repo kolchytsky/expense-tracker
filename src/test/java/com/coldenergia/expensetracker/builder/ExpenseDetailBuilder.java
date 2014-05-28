@@ -2,7 +2,6 @@ package com.coldenergia.expensetracker.builder;
 
 import com.coldenergia.expensetracker.domain.Expense;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
-import com.coldenergia.expensetracker.domain.Unit;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -55,7 +54,7 @@ public class ExpenseDetailBuilder {
         return this;
     }
 
-    public ExpenseDetailBuilder withUnit(Unit unit) {
+    public ExpenseDetailBuilder withUnit(String unit) {
         expenseDetail.setUnit(unit);
         return this;
     }
@@ -83,7 +82,7 @@ public class ExpenseDetailBuilder {
     public ExpenseDetailBuilder detailedExpense() {
         this
                 .withQuantity(BigDecimal.ONE)
-                .withUnit(new UnitBuilder().build())
+                .withUnit("lumen")
                 .withPricePerUnit(BigDecimal.valueOf(4.3))
                 .withFullPrice(null);
         return this;
