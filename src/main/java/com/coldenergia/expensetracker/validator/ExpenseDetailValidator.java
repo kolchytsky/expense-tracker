@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.validator;
 
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -48,6 +49,10 @@ public class ExpenseDetailValidator {
             String unit = expenseDetail.getUnit();
             if (unit == null) {
                 result.reject("expense.detail.invalid.type");
+            } else if (StringUtils.isEmpty(unit)) {
+                result.rejectValue("unit", "expense.detail.unit.empty");
+            } else if (unit.length() > 10) {
+                result.rejectValue("unit", "expense.detail.unit.too.long");
             }
 
             BigDecimal quantity = expenseDetail.getQuantity();

@@ -94,8 +94,6 @@ public class ExpenseServiceIntegrationTest extends ServiceIntegrationTest {
         assertNotNull(detail);
         assertNotNull(detail.getId());
         assertEquals(expenseName, detail.getExpense().getName());
-
-        // TODO: You forgot about auto-unit creation + remember that it will be the controller's responsibility to check that the user can edit the domain with the domain id
     }
 
 }

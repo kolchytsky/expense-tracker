@@ -77,4 +77,24 @@ public class ExpenseServiceTest extends AbstractExpenseServiceTest {
         assertExceptionOnSave(expenseDetail, "expense.detail.pay.date.null");
     }
 
+    @Test
+    public void shouldNotSaveDetailedExpenseWithEmptyUnit() {
+        ExpenseDetail invalid = new ExpenseDetailBuilder().detailedExpense().withUnit("").build();
+        assertExceptionOnSave(invalid, "expense.detail.unit.empty");
+    }
+
+    @Test
+    public void shouldNotSaveDetailedExpenseWithUnitExceedingTenChars() {
+        String invalidUnit = StringUtils.repeat("a", 11);
+        ExpenseDetail invalid = new ExpenseDetailBuilder().detailedExpense().withUnit(invalidUnit).build();
+        assertExceptionOnSave(invalid, "expense.detail.unit.too.long");
+    }
+
+    @Test
+    public void shouldSaveDetailedExpenseWithUnitNotExceedingTenChars() {
+        String validUnit = StringUtils.repeat("a", 10);
+        ExpenseDetail valid = new ExpenseDetailBuilder().detailedExpense().withUnit(validUnit).build();
+        expenseService.save(valid);
+    }
+
 }
