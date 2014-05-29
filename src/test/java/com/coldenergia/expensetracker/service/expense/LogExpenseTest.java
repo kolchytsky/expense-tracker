@@ -4,13 +4,13 @@ import com.coldenergia.expensetracker.builder.CategoryBuilder;
 import com.coldenergia.expensetracker.builder.DomainBuilder;
 import com.coldenergia.expensetracker.builder.ExpenseBuilder;
 import com.coldenergia.expensetracker.builder.ExpenseDetailBuilder;
-import com.coldenergia.expensetracker.domain.Category;
-import com.coldenergia.expensetracker.domain.Domain;
-import com.coldenergia.expensetracker.domain.Expense;
-import com.coldenergia.expensetracker.domain.ExpenseDetail;
+import com.coldenergia.expensetracker.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -86,6 +86,19 @@ public class LogExpenseTest extends AbstractExpenseServiceTest {
         verify(expenseDetailRepository).save(expenseDetailArgumentCaptor.capture());
         ExpenseDetail expenseDetail = expenseDetailArgumentCaptor.getValue();
         assertEquals(redeemerExpense, expenseDetail.getExpense());
+    }
+
+    @Test
+    public void shouldSaveExpenseBatch() {
+        ExpenseDetail detail1 = new ExpenseDetailBuilder().detailedExpense().build();
+        ExpenseDetail detail2 = new ExpenseDetailBuilder().basicExpense().build();
+        List<NamedExpenseDetailHolder> expenses = new ArrayList<>(2);
+        expenses.add(new NamedExpenseDetailHolder(detail1, "name1"));
+        expenses.add(new NamedExpenseDetailHolder(detail2, "name2"));
+
+        expenseService.logExpenses(expenses, domain.getId());
+
+        verify(expenseDetailRepository, times(2)).save(any(ExpenseDetail.class));
     }
 
 }

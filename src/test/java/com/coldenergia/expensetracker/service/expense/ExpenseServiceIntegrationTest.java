@@ -4,12 +4,16 @@ import com.coldenergia.expensetracker.builder.ExpenseBuilder;
 import com.coldenergia.expensetracker.builder.ExpenseDetailBuilder;
 import com.coldenergia.expensetracker.domain.Expense;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
+import com.coldenergia.expensetracker.domain.NamedExpenseDetailHolder;
 import com.coldenergia.expensetracker.repository.ExpenseDetailRepository;
 import com.coldenergia.expensetracker.repository.ExpenseRepository;
 import com.coldenergia.expensetracker.service.ExpenseService;
 import com.coldenergia.expensetracker.service.ServiceIntegrationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.*;
 import static org.junit.Assert.*;
@@ -94,6 +98,24 @@ public class ExpenseServiceIntegrationTest extends ServiceIntegrationTest {
         assertNotNull(detail);
         assertNotNull(detail.getId());
         assertEquals(expenseName, detail.getExpense().getName());
+    }
+
+    @Test
+    public void shouldSaveExpenseBatch() {
+        ExpenseDetail detail1 = new ExpenseDetailBuilder().detailedExpense().build();
+        ExpenseDetail detail2 = new ExpenseDetailBuilder().basicExpense().build();
+        List<NamedExpenseDetailHolder> expenses = new ArrayList<>(2);
+        expenses.add(new NamedExpenseDetailHolder(detail1, "name1"));
+        expenses.add(new NamedExpenseDetailHolder(detail2, "name2"));
+
+        long initialExpenseDetailCount = expenseDetailRepository.count();
+
+        List<ExpenseDetail> results = expenseService.logExpenses(expenses, domains(ACATANA).getId());
+
+        long finalExpenseDetailCount = expenseDetailRepository.count();
+
+        assertEquals(2L, finalExpenseDetailCount - initialExpenseDetailCount);
+        assertFalse(results.isEmpty());
     }
 
 }

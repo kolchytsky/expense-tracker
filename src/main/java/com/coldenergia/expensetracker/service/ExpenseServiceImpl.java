@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.Expense;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
+import com.coldenergia.expensetracker.domain.NamedExpenseDetailHolder;
 import com.coldenergia.expensetracker.repository.CategoryRepository;
 import com.coldenergia.expensetracker.repository.ExpenseDetailRepository;
 import com.coldenergia.expensetracker.repository.ExpenseRepository;
@@ -11,6 +12,9 @@ import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: coldenergia
@@ -45,18 +49,21 @@ public class ExpenseServiceImpl implements ExpenseService {
         this.expenseDetailValidator = expenseDetailValidator;
     }
 
+    @Transactional
     @Override
     public Expense save(Expense expense) {
         validate(expense);
         return expenseRepository.save(expense);
     }
 
+    @Transactional
     @Override
     public ExpenseDetail save(ExpenseDetail expenseDetail) {
         validate(expenseDetail);
         return expenseDetailRepository.save(expenseDetail);
     }
 
+    @Transactional
     @Override
     public ExpenseDetail logExpense(ExpenseDetail expenseDetail, String expenseName, Long domainId) {
         Expense existingExpense = expenseRepository.findByNameAndDomainId(expenseName, domainId);
@@ -73,6 +80,21 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         save(expenseDetail);
         return expenseDetail;
+    }
+
+    @Transactional
+    @Override
+    public List<ExpenseDetail> logExpenses(List<NamedExpenseDetailHolder> expenses, Long domainId) {
+        List<ExpenseDetail> results = new ArrayList<>(expenses.size());
+        for (NamedExpenseDetailHolder expenseHolder : expenses) {
+            ExpenseDetail result = logExpense(
+                    expenseHolder.getExpenseDetail(),
+                    expenseHolder.getExpenseName(),
+                    domainId
+            );
+            results.add(result);
+        }
+        return results;
     }
 
     private void validate(Expense expense) {

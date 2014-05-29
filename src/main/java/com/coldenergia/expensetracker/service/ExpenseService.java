@@ -2,6 +2,9 @@ package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.Expense;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
+import com.coldenergia.expensetracker.domain.NamedExpenseDetailHolder;
+
+import java.util.List;
 
 /**
  * User: coldenergia
@@ -23,5 +26,12 @@ public interface ExpenseService {
      * {@link com.coldenergia.expensetracker.domain.Category} for that domain.
      * */
     ExpenseDetail logExpense(ExpenseDetail expenseDetail, String expenseName, Long domainId);
+
+    /**
+     * Logs expenses in batches. The contract is the same as for the
+     * {@link ExpenseService#logExpense(com.coldenergia.expensetracker.domain.ExpenseDetail, String, Long)}
+     * method.
+     * */
+    List<ExpenseDetail> logExpenses(List<NamedExpenseDetailHolder> expenses, Long domainId);
 
 }
