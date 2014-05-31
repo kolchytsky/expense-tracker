@@ -70,6 +70,7 @@ var xpnsTrckr = {
                 xpnsTrckr.expenseCreation.addNewExpenseEntry();
                 return false;
             });
+            $('#paydate-datetimepicker').datetimepicker();
         }
     }
 };

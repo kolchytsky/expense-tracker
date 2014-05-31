@@ -11,18 +11,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:include page="/WEB-INF/view/include/top.jsp"/>
+<!-- TODO: Including a stylesheet here is disastrous. Seems like you're doomed to use Sitemesh. -->
+<link href="${contextPath}/resources/css/datepicker/bootstrap-datetimepicker.css" rel="stylesheet">
 <div class="row">
   <form:form action="${contextPath}/domains/${currentDomainId}/expenses" modelAttribute="expensesForm" method="post"
              cssClass="expenses-form" id="expenses-form">
     <h2><spring:message code="log.expenses" /></h2>
 
     <div class="row">
-      <fieldset>
-        <form:label path="payDate"><spring:message code="expenses.pay.date" /></form:label>
-        <form:input path="payDate" maxlength="40" cssClass="form-control" />
-        <form:errors path="payDate" cssClass="text-danger" />
-        <form:errors path="expenseFormList" cssClass="text-danger" />
-      </fieldset>
+      <div class="col-md-6">
+        <fieldset>
+          <div class="form-group">
+            <form:label path="payDate"><spring:message code="expenses.pay.date" /></form:label>
+            <div class="input-group date" id="paydate-datetimepicker">
+              <form:input path="payDate" maxlength="30" cssClass="form-control" />
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+          </div>
+          <form:errors path="payDate" cssClass="text-danger" />
+          <form:errors path="expenseFormList" cssClass="text-danger" />
+        </fieldset>
+      </div>
     </div>
 
     <div id="expenses-form-wrapper">
@@ -34,7 +43,7 @@
                 <form:label path="expenseFormList[${loopStatus.index}].expenseName">
                   <spring:message code="expense.name" />
                 </form:label>
-                <form:input path="expenseFormList[${loopStatus.index}].expenseName" maxlength="40" cssClass="form-control" />
+                <form:input path="expenseFormList[${loopStatus.index}].expenseName" maxlength="60" cssClass="form-control" />
               </div>
             </div>
             <div class="col-md-6">
@@ -59,7 +68,7 @@
                     <form:label path="expenseFormList[${loopStatus.index}].fullPrice">
                       <spring:message code="expense.full.price" />
                     </form:label>
-                    <form:input path="expenseFormList[${loopStatus.index}].fullPrice" maxlength="40" cssClass="form-control" />
+                    <form:input path="expenseFormList[${loopStatus.index}].fullPrice" maxlength="11" cssClass="form-control" />
                   </div>
                 </div>
                 <div class="tab-pane expense-detailed" id="detailed${loopStatus.index}">
@@ -69,7 +78,7 @@
                         <form:label path="expenseFormList[${loopStatus.index}].unit">
                           <spring:message code="expense.unit" />
                         </form:label>
-                        <form:input path="expenseFormList[${loopStatus.index}].unit" maxlength="40" cssClass="form-control" />
+                        <form:input path="expenseFormList[${loopStatus.index}].unit" maxlength="10" cssClass="form-control" />
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -77,7 +86,7 @@
                         <form:label path="expenseFormList[${loopStatus.index}].quantity">
                           <spring:message code="expense.quantity" />
                         </form:label>
-                        <form:input path="expenseFormList[${loopStatus.index}].quantity" maxlength="40" cssClass="form-control" />
+                        <form:input path="expenseFormList[${loopStatus.index}].quantity" maxlength="11" cssClass="form-control" />
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -85,7 +94,7 @@
                         <form:label path="expenseFormList[${loopStatus.index}].pricePerUnit">
                           <spring:message code="expense.price.per.unit" />
                         </form:label>
-                        <form:input path="expenseFormList[${loopStatus.index}].pricePerUnit" maxlength="40" cssClass="form-control" />
+                        <form:input path="expenseFormList[${loopStatus.index}].pricePerUnit" maxlength="11" cssClass="form-control" />
                       </div>
                     </div>
                   </div>
@@ -119,6 +128,8 @@
   </form:form>
 </div>
 <jsp:include page="/WEB-INF/view/include/bottom.jsp"/>
+<script src="${contextPath}/resources/js/datepicker/moment-with-langs.js"></script>
+<script src="${contextPath}/resources/js/datepicker/bootstrap-datetimepicker.js"></script>
 <script>
   xpnsTrckr.expenseCreation.init();
   xpnsTrckr.expenseCreation.expenseEntryCount = ${fn:length(expensesForm.expenseFormList)};
