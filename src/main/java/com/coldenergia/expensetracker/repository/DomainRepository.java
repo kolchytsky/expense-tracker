@@ -29,4 +29,7 @@ public interface DomainRepository extends CrudRepository<Domain, Long> {
     @Query("select d from Domain d where :name in (select u.name from d.users u)")
     List<Domain> findDomainsAccessibleByUser(@Param("name") String userName);
 
+    @Query("select d from Domain d where d.id = :domainId and :name in (select u.name from d.users u)")
+    Domain findOneAccessibleByUser(@Param("domainId") Long domainId, @Param("name") String userName);
+
 }

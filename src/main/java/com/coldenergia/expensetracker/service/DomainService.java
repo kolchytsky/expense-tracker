@@ -24,6 +24,8 @@ public interface DomainService {
 
     Domain findOne(Long id);
 
+    Domain findOneAccessibleByUser(Long domainId, String userName);
+
     /**
      * Finds a domain by its identifier plus initializes (lazy) domain user list.
      * */

@@ -58,4 +58,21 @@ public class DomainRepositoryIntegrationTest extends RepositoryIntegrationTest {
         assertFalse(domains.contains(inaccessible));
     }
 
+    @Test
+    public void shouldFindOneAccessibleByUser() {
+        Domain accessible = new DomainBuilder().withName("accessible").withUser(users(THORAX)).build();
+        Domain inaccessible = new DomainBuilder().withName("inaccessible").build();
+        domainRepository.save(accessible);
+        domainRepository.save(inaccessible);
+
+        String userName = users(THORAX).getName();
+
+        Domain accessibleResult = domainRepository.findOneAccessibleByUser(accessible.getId(), userName);
+        assertNotNull(accessibleResult);
+        assertEquals(accessible, accessibleResult);
+
+        Domain inaccessibleResult = domainRepository.findOneAccessibleByUser(inaccessible.getId(), userName);
+        assertNull(inaccessibleResult);
+    }
+
 }

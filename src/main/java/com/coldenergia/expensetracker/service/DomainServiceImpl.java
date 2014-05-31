@@ -81,6 +81,11 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
+    public Domain findOneAccessibleByUser(Long domainId, String userName) {
+        return domainRepository.findOneAccessibleByUser(domainId, userName);
+    }
+
+    @Override
     public Domain findOneAndInitUserList(Long id) {
         Domain domain = findOne(id);
         // Initialize lazy-loaded user list by force

@@ -61,7 +61,7 @@ public abstract class ControllerTest {
             UserSecurityDetails adminDetails = new UserSecurityDetails();
             adminDetails.setUsername(DEFAULT_ADMIN_NAME);
             adminDetails.setPassword(new BCryptPasswordEncoder().encode(DEFAULT_ADMIN_PASSWORD));
-            List<String> adminAuthorityNames = new ArrayList<String>(1);
+            List<String> adminAuthorityNames = new ArrayList<>(1);
             adminAuthorityNames.add(ADMIN_AUTHORITY_NAME);
             adminDetails.setAuthorities(adminAuthorityNames);
             return adminDetails;
@@ -71,7 +71,7 @@ public abstract class ControllerTest {
             UserSecurityDetails spenderDetails = new UserSecurityDetails();
             spenderDetails.setUsername(THORAX);
             spenderDetails.setPassword(new BCryptPasswordEncoder().encode(THORAX_PASSWORD));
-            List<String> spenderAuthorityNames = new ArrayList<String>(1);
+            List<String> spenderAuthorityNames = new ArrayList<>(1);
             spenderAuthorityNames.add(SPENDER_AUTHORITY_NAME);
             spenderDetails.setAuthorities(spenderAuthorityNames);
             return spenderDetails;
