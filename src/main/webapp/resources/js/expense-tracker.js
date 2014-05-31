@@ -19,31 +19,6 @@ var xpnsTrckr = {
 
             $('.expense-form-errors', expenseRow).html('');
 
-            /*$('[id^=expenseFormList]', expenseRow).each(function(index, field) {
-                field = $(field);
-                field.attr('id', field.attr('id').replace(/0/, rowIndex));
-                field.val('');
-            });
-            $('[name^=expenseFormList]', expenseRow).each(function(index, field) {
-                field = $(field);
-                field.attr('name', field.attr('name').replace(/0/, rowIndex));
-                field.val('');
-            });
-            $('[for^=expenseFormList]', expenseRow).each(function(index, field) {
-                field = $(field);
-                field.attr('for', field.attr('for').replace(/0/, rowIndex));
-                field.val('');
-            });
-            $('[id^=basic]', expenseRow).each(function(index, field) {
-                field = $(field);
-                field.attr('id', field.attr('id').replace(/0/, rowIndex));
-                field.val('');
-            });
-            $('[id^=detailed]', expenseRow).each(function(index, field) {
-                field = $(field);
-                field.attr('id', field.attr('id').replace(/0/, rowIndex));
-                field.val('');
-            });*/
             xpnsTrckr.expenseCreation._replaceIndexesInAttrs(expenseRow, '[id^=expenseFormList]', 'id', 0, rowIndex);
             xpnsTrckr.expenseCreation._replaceIndexesInAttrs(expenseRow, '[name^=expenseFormList]', 'name', 0, rowIndex);
             xpnsTrckr.expenseCreation._replaceIndexesInAttrs(expenseRow, '[for^=expenseFormList]', 'for', 0, rowIndex);

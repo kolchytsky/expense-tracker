@@ -93,4 +93,15 @@ public class ExpenseLogControllerTest extends ControllerTest {
                 .andExpect(redirectedUrl("/domains/" + targetDomain.getId()));*/
     }
 
+    @Test
+    public void shouldNotProcessExpensesFormIfSpenderDoesntHaveAccessToDomain() throws Exception {
+        Domain inaccessible = new DomainBuilder().withId(5L).build();
+        when(domainService.findOneAccessibleByUser(inaccessible.getId(), THORAX)).thenReturn(null);
+
+        mockMvc.perform(addCsrfToken(
+                post("/domains/" + inaccessible.getId() + "/expenses")
+                        .with(userDetailsService(THORAX))))
+                .andExpect(status().isForbidden());
+    }
+
 }

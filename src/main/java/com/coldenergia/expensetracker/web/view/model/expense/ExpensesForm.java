@@ -1,6 +1,7 @@
 package com.coldenergia.expensetracker.web.view.model.expense;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,8 +13,8 @@ public class ExpensesForm {
 
     private List<ExpenseForm> expenseFormList;
 
-    // TODO: Change to date or something else later.
-    private String payDate;
+    // TODO: Change to joda time later.
+    private Date payDate;
 
     public ExpensesForm() {
         this.expenseFormList = new ArrayList<>();
@@ -27,11 +28,11 @@ public class ExpensesForm {
         this.expenseFormList = expenseFormList;
     }
 
-    public String getPayDate() {
+    public Date getPayDate() {
         return payDate;
     }
 
-    public void setPayDate(String payDate) {
+    public void setPayDate(Date payDate) {
         this.payDate = payDate;
     }
 

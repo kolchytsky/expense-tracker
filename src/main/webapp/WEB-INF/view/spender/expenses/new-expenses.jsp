@@ -23,7 +23,7 @@
         <fieldset>
           <div class="form-group">
             <form:label path="payDate"><spring:message code="expenses.pay.date" /></form:label>
-            <div class="input-group date" id="paydate-datetimepicker">
+            <div class="input-group date" id="paydate-datetimepicker" data-date-format="DD/MM/YYYY hh:mm A">
               <form:input path="payDate" maxlength="30" cssClass="form-control" />
               <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>

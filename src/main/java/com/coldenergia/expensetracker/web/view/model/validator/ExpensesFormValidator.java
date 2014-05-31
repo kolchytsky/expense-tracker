@@ -1,6 +1,5 @@
 package com.coldenergia.expensetracker.web.view.model.validator;
 
-import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import com.coldenergia.expensetracker.web.view.model.expense.ExpenseForm;
 import com.coldenergia.expensetracker.web.view.model.expense.ExpensesForm;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +8,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,11 +43,6 @@ public class ExpensesFormValidator implements Validator {
                 ExpenseForm expenseForm = expenseForms.get(i);
                 validateExpenseForm(expenseForm, i, errors);
             }
-        }
-
-        String payDate = expensesForm.getPayDate();
-        if (payDate == null) {
-            errors.rejectValue("payDate", "you.havent.specified.pay.date");
         }
     }
 
