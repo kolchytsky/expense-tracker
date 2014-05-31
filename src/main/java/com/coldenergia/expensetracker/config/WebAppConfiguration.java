@@ -1,5 +1,6 @@
 package com.coldenergia.expensetracker.config;
 
+import com.coldenergia.expensetracker.web.interceptor.DomainSecurityInterceptor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,6 +23,7 @@ import java.util.Locale;
 @Configuration
 @ComponentScan(basePackages = {
         "com.coldenergia.expensetracker.web.controller",
+        "com.coldenergia.expensetracker.web.interceptor",
         "com.coldenergia.expensetracker.web.view.model.validator"
 })
 @EnableWebMvc
@@ -61,6 +63,7 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(domainSecurityInterceptor());
     }
 
     @Bean
@@ -85,6 +88,11 @@ public class WebAppConfiguration extends WebMvcConfigurerAdapter {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
+    }
+
+    @Bean
+    public DomainSecurityInterceptor domainSecurityInterceptor() {
+        return new DomainSecurityInterceptor();
     }
 
 }

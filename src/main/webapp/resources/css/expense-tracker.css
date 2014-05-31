@@ -66,3 +66,22 @@ body {
 .table-like-row [class*="col-"].has-button {
     padding: 8px 15px;
 }
+
+.expense-row {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+}
+
+.expense-row .expense-form-errors.has-errors {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.expense-row .expense-basic .form-group .form-control {
+    width: auto;
+}
+
+.expense-entry-add-btn {
+    margin: 15px auto;
+}

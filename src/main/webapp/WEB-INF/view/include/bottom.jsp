@@ -10,5 +10,6 @@
 <script src="${contextPath}/resources/js/jquery-1.11.1.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+<script src="${contextPath}/resources/js/expense-tracker.js"></script>
 </body>
 </html>

@@ -13,6 +13,8 @@
   <h2>${currentDomain.name}</h2>
 </div>
 <div class="row">
-  <a href="#" class="btn btn-default">i18n me! Log expenses against this domain</a>
+  <a href="${contextPath}/domains/${currentDomain.id}/expenses/new" class="btn btn-default">
+    i18n me! Log expenses against this domain
+  </a>
 </div>
 <jsp:include page="/WEB-INF/view/include/bottom.jsp"/>
