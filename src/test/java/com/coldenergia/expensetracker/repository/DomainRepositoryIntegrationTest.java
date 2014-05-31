@@ -5,7 +5,12 @@ import com.coldenergia.expensetracker.domain.Domain;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.users;
 import static org.junit.Assert.*;
+
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.THORAX;
 
 /**
  * User: coldenergia
@@ -23,6 +28,34 @@ public class DomainRepositoryIntegrationTest extends RepositoryIntegrationTest {
         Domain retrievedDomain = domainRepository.save(domain);
         assertNotNull(retrievedDomain);
         assertEquals(domain, retrievedDomain);
+    }
+
+    @Test
+    public void shouldFindDomainsAccessibleByUserByUserId() {
+        Domain accessible = new DomainBuilder().withName("accessible").withUser(users(THORAX)).build();
+        Domain inaccessible = new DomainBuilder().withName("inaccessible").build();
+        domainRepository.save(accessible);
+        domainRepository.save(inaccessible);
+
+        List<Domain> domains = domainRepository.findDomainsAccessibleByUser(users(THORAX).getId());
+
+        assertFalse(domains.isEmpty());
+        assertTrue(domains.contains(accessible));
+        assertFalse(domains.contains(inaccessible));
+    }
+
+    @Test
+    public void shouldFindDomainsAccessibleByUserByUserName() {
+        Domain accessible = new DomainBuilder().withName("accessible").withUser(users(THORAX)).build();
+        Domain inaccessible = new DomainBuilder().withName("inaccessible").build();
+        domainRepository.save(accessible);
+        domainRepository.save(inaccessible);
+
+        List<Domain> domains = domainRepository.findDomainsAccessibleByUser(users(THORAX).getName());
+
+        assertFalse(domains.isEmpty());
+        assertTrue(domains.contains(accessible));
+        assertFalse(domains.contains(inaccessible));
     }
 
 }

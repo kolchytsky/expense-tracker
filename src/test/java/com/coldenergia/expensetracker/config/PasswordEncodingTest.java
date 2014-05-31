@@ -2,6 +2,7 @@ package com.coldenergia.expensetracker.config;
 
 import com.coldenergia.expensetracker.builder.UserSecurityDetailsBuilder;
 import com.coldenergia.expensetracker.domain.UserSecurityDetails;
+import com.coldenergia.expensetracker.service.DomainService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +38,11 @@ public class PasswordEncodingTest {
         @Bean
         public UserDetailsService userDetailsService() {
             return mock(UserDetailsService.class);
+        }
+
+        @Bean
+        public DomainService domainService() {
+            return mock(DomainService.class);
         }
 
     }

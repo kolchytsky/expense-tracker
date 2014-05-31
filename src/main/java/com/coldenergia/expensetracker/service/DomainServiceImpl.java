@@ -89,6 +89,16 @@ public class DomainServiceImpl implements DomainService {
     }
 
     @Override
+    public List<Domain> findDomainsAccessibleByUser(Long userId) {
+        return domainRepository.findDomainsAccessibleByUser(userId);
+    }
+
+    @Override
+    public List<Domain> findDomainsAccessibleByUser(String userName) {
+        return domainRepository.findDomainsAccessibleByUser(userName);
+    }
+
+    @Override
     public List<Domain> findAll() {
         Iterable<Domain> domains = domainRepository.findAll();
         return listFromIterable(domains);

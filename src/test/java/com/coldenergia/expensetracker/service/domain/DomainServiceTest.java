@@ -86,6 +86,18 @@ public class DomainServiceTest extends AbstractDomainServiceTest {
         assertEquals(4L, (long) result.getId());
     }
 
+    @Test
+    public void shouldFindDomainsAccessibleByUserByUserId() {
+        domainService.findDomainsAccessibleByUser(4L);
+        verify(domainRepository).findDomainsAccessibleByUser(4L);
+    }
+
+    @Test
+    public void shouldFindDomainsAccessibleByUserByUserName() {
+        domainService.findDomainsAccessibleByUser("a");
+        verify(domainRepository).findDomainsAccessibleByUser("a");
+    }
+
     private void assertExceptionOnSave(Domain invalid, String errorCode) {
         assertExceptionOnSave(invalid, errorCode, "Should've thrown an exception here");
     }

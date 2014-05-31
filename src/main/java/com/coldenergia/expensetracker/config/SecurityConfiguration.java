@@ -1,5 +1,6 @@
 package com.coldenergia.expensetracker.config;
 
+import com.coldenergia.expensetracker.service.DomainService;
 import com.coldenergia.expensetracker.web.controller.AuthorityBasedAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ADMIN_AUTHORITY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
  * Configures Spring Security. This class is used in both the tests and production.<br>
@@ -27,6 +29,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private DomainService domainService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -66,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
-                    .successHandler(new AuthorityBasedAuthSuccessHandler())
+                    .successHandler(new AuthorityBasedAuthSuccessHandler(domainService))
                     .and()
                 .logout()
                     .permitAll()
@@ -74,6 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY_NAME)
+                    .antMatchers("/domain-selection").hasAuthority(SPENDER_AUTHORITY_NAME)
                     .anyRequest().authenticated();
     }
 

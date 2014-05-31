@@ -29,6 +29,10 @@ public interface DomainService {
      * */
     Domain findOneAndInitUserList(Long id);
 
+    List<Domain> findDomainsAccessibleByUser(Long userId);
+
+    List<Domain> findDomainsAccessibleByUser(String userName);
+
     List<Domain> findAll();
 
 }

@@ -3,6 +3,7 @@ package com.coldenergia.expensetracker.builder;
 import com.coldenergia.expensetracker.domain.Domain;
 import com.coldenergia.expensetracker.domain.User;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,7 +52,16 @@ public class DomainBuilder {
     }
 
     /**
-     * Constructs domain with no users.
+     * Constructs a domain with a single user.
+     * */
+    public DomainBuilder withUser(User user) {
+        List<User> users = new ArrayList<>(1);
+        users.add(user);
+        return withUsers(users);
+    }
+
+    /**
+     * Constructs a domain with no users.
      * */
     public DomainBuilder withNoUsers() {
         domain.setUsers(null);

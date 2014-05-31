@@ -53,6 +53,10 @@ public class DefaultDataInitializerIntegrationTest {
 
     @Test
     public void shouldCreateAuthoritiesIfThereArentAny() {
+        // Delete the test data which is already present in the database
+        userRepository.deleteAll();
+        authorityRepository.deleteAll();
+
         Long initialCount = authorityRepository.count();
         defaultDataInitializer.insertInitialDataIntoDb();
         Long finalCount = authorityRepository.count();

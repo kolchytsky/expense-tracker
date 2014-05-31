@@ -1,11 +1,7 @@
 package com.coldenergia.expensetracker.internal.test.data;
 
-import com.coldenergia.expensetracker.builder.CategoryBuilder;
-import com.coldenergia.expensetracker.builder.DomainBuilder;
-import com.coldenergia.expensetracker.builder.ExpenseBuilder;
-import com.coldenergia.expensetracker.domain.Category;
-import com.coldenergia.expensetracker.domain.Domain;
-import com.coldenergia.expensetracker.domain.Expense;
+import com.coldenergia.expensetracker.builder.*;
+import com.coldenergia.expensetracker.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ROOT_CATEGORY_NAME;
+import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 
 /**
  * User: coldenergia
@@ -29,6 +26,15 @@ public class TestDataInitializer {
 
     @Autowired
     private EntityManager entityManager;
+
+    /**
+     * A test spender user domain name.
+     * */
+    public static final String THORAX = "Thorax";
+
+    public static Map<String, User> USERS = new HashMap<>();
+
+    public static Map<String, Authority> AUTHORITIES = new HashMap<>();
 
     /**
      * A test domain name.
@@ -62,6 +68,8 @@ public class TestDataInitializer {
     public void insertTestDataIntoDb() {
         LOGGER.info("Started inserting data for integration tests...");
         entityManager.getTransaction().begin();
+        createAuthorities();
+        createUsers();
         createDomains();
         createCategories();
         createExpenses();
@@ -118,6 +126,33 @@ public class TestDataInitializer {
 
     public static Expense expenses(String expenseName) {
         return EXPENSES.get(expenseName);
+    }
+
+    private void createUsers() {
+        if (users(THORAX) == null) {
+            User thorax = new UserBuilder()
+                    .withName(THORAX)
+                    .withAuthority(authorities(SPENDER_AUTHORITY_NAME))
+                    .build();
+            entityManager.persist(thorax);
+            USERS.put(THORAX, thorax);
+        }
+    }
+
+    public static User users(String userName) {
+        return USERS.get(userName);
+    }
+
+    private void createAuthorities() {
+        if (authorities(SPENDER_AUTHORITY_NAME) == null) {
+            Authority spender = new AuthorityBuilder().withName(SPENDER_AUTHORITY_NAME).build();
+            entityManager.persist(spender);
+            AUTHORITIES.put(SPENDER_AUTHORITY_NAME, spender);
+        }
+    }
+
+    public static Authority authorities(String authorityName) {
+        return AUTHORITIES.get(authorityName);
     }
 
 }

@@ -70,6 +70,7 @@ public abstract class ControllerTest {
         private UserDetails constructSpenderDetails() {
             UserSecurityDetails spenderDetails = new UserSecurityDetails();
             spenderDetails.setUsername(THORAX);
+            spenderDetails.setPassword(new BCryptPasswordEncoder().encode(THORAX_PASSWORD));
             List<String> spenderAuthorityNames = new ArrayList<String>(1);
             spenderAuthorityNames.add(SPENDER_AUTHORITY_NAME);
             spenderDetails.setAuthorities(spenderAuthorityNames);
@@ -85,6 +86,8 @@ public abstract class ControllerTest {
      * a default name for a spender user in test context.
      * */
     public static final String THORAX = "Thorax";
+
+    public static final String THORAX_PASSWORD = "THX-2276";
 
     @Autowired
     protected WebApplicationContext wac;
