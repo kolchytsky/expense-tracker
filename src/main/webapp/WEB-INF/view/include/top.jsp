@@ -60,6 +60,33 @@
           </ul>
         </li-->
       </ul>
+      <sec:authorize access="hasAuthority('${adminAuthorityName}')">
+        <ul class="nav navbar-nav">
+          <!--li class="active"><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li-->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <spring:message code="manage.users" /> <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="${contextPath}/admin/domains"><spring:message code="manage.domains" /></a></li>
+              <li class="divider"></li>
+              <li><a href="${contextPath}/admin/users/new"><spring:message code="create.new.user" /></a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <spring:message code="manage.domains" /> <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="${contextPath}/admin/domains"><spring:message code="list.domains" /></a></li>
+              <li class="divider"></li>
+              <li><a href="${contextPath}/admin/domains/new"><spring:message code="create.new.domain" /></a></li>
+            </ul>
+          </li>
+        </ul>
+      </sec:authorize>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">

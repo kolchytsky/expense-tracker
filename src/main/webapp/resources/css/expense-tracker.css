@@ -10,7 +10,7 @@ body {
 }
 
 .create-domain-form, .create-user-form {
-    max-width: 330px;
+    max-width: 400px;
 }
 
 .create-domain-form, .create-user-form, .domain-users-form {

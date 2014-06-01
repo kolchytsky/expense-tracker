@@ -23,9 +23,18 @@
       Spring Security includes this automatically if Spring MVC form tag is used. --%>
     </fieldset>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">
-      <spring:message code="create" />
-    </button>
+    <div class="row">
+      <div class="col-md-8">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          <spring:message code="create" />
+        </button>
+      </div>
+      <div class="col-md-4">
+        <a href="${contextPath}/admin" class="btn btn-lg btn-default btn-block">
+          <spring:message code="cancel" />
+        </a>
+      </div>
+    </div>
   </form:form>
 </div>
 <jsp:include page="/WEB-INF/view/include/bottom.jsp"/>

@@ -1,19 +1,15 @@
 package com.coldenergia.expensetracker.web.listener;
 
+import com.coldenergia.expensetracker.defaultdata.DefaultDataConstants;
 import org.junit.Test;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
-import static com.coldenergia.expensetracker.web.ServletContextAttributeNames.CONTEXT_PATH;
-
-import static org.junit.Assert.assertEquals;
-
+import static com.coldenergia.expensetracker.web.ServletContextAttributeNames.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * User: coldenergia
@@ -32,6 +28,14 @@ public class InitAppListenerTest {
         verify(eventMock).getServletContext();
         verify(servletContextMock).getContextPath();
         verify(servletContextMock).setAttribute(eq(CONTEXT_PATH), anyString());
+        verify(servletContextMock).setAttribute(
+                eq(ADMIN_AUTHORITY_NAME),
+                eq(DefaultDataConstants.ADMIN_AUTHORITY_NAME)
+        );
+        verify(servletContextMock).setAttribute(
+                eq(SPENDER_AUTHORITY_NAME),
+                eq(DefaultDataConstants.SPENDER_AUTHORITY_NAME)
+        );
     }
 
 }

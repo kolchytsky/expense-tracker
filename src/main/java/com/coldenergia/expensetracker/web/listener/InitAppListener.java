@@ -1,11 +1,13 @@
 package com.coldenergia.expensetracker.web.listener;
 
+import com.coldenergia.expensetracker.defaultdata.DefaultDataConstants;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import static com.coldenergia.expensetracker.web.ServletContextAttributeNames.CONTEXT_PATH;
+import static com.coldenergia.expensetracker.web.ServletContextAttributeNames.*;
 
 /**
  * User: coldenergia
@@ -33,6 +35,8 @@ public class InitAppListener implements ServletContextListener {
         // Set context path to use in JSPs, like that:
         // '<script src="${contextPath}/resources/js/jquery-1.11.1.js"></script>'
         servletContext.setAttribute(CONTEXT_PATH, contextPath);
+        servletContext.setAttribute(ADMIN_AUTHORITY_NAME, DefaultDataConstants.ADMIN_AUTHORITY_NAME);
+        servletContext.setAttribute(SPENDER_AUTHORITY_NAME, DefaultDataConstants.SPENDER_AUTHORITY_NAME);
     }
 
     /**
