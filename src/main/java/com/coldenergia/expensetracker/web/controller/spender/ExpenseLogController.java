@@ -10,6 +10,7 @@ import com.coldenergia.expensetracker.web.view.model.validator.ExpensesFormValid
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,16 @@ public class ExpenseLogController {
         this.domainService = domainService;
         this.expenseService = expenseService;
         this.expensesFormValidator = expensesFormValidator;
+    }
+
+    @RequestMapping(value = "/domains/{domainId}/expenses", method = RequestMethod.GET)
+    public String listExpenses(@PathVariable("domainId") Long domainId, Model model, Pageable pageable) {
+        // TODO: Perhaps refactor this to return ExpenseViewModels
+        // (see http://stackoverflow.com/questions/21554977/
+        // should-services-always-return-dtos-or-can-they-also-return-domain-models/21569720#21569720 )
+        model.addAttribute("expenses", expenseService.findExpensesByDomainId(domainId, pageable));
+        model.addAttribute("currentDomainId", domainId);
+        return "spender/expenses/list-expenses";
     }
 
     @RequestMapping(value = "/domains/{domainId}/expenses/new", method = RequestMethod.GET)

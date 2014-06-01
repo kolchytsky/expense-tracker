@@ -3,6 +3,8 @@ package com.coldenergia.expensetracker.service;
 import com.coldenergia.expensetracker.domain.Expense;
 import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import com.coldenergia.expensetracker.domain.NamedExpenseDetailHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -33,5 +35,7 @@ public interface ExpenseService {
      * method.
      * */
     List<ExpenseDetail> logExpenses(List<NamedExpenseDetailHolder> expenses, Long domainId);
+
+    Page<ExpenseDetail> findExpensesByDomainId(Long domainId, Pageable pageable);
 
 }

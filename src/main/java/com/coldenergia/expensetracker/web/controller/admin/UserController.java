@@ -39,14 +39,14 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String listUsers(Model model, Pageable pageable) {
+        // TODO: Perhaps refactor this to return UserViewModels
         model.addAttribute("users", userService.findAll(pageable));
         return "admin/users/list-users";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initCreationForm(Model model) {
-        // TODO: Consider specifying route mappings somewhere, or at least /admin prefix
-        // TODO: Make a nicer form. Have a label and then its input on a newline.
+        // TODO: Implement a better pagination everywhere (with first / last etc.) and smaller page size
         model.addAttribute("userForm", new UserForm());
         setAuthorityNames(model);
         return "admin/users/new-user";

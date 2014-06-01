@@ -11,19 +11,20 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 
-import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.DEFAULT_ADMIN_NAME;
 import static com.coldenergia.expensetracker.web.util.SecurityRequestPostProcessors.userDetailsService;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * User: coldenergia
@@ -61,6 +62,17 @@ public class ExpenseLogControllerTest extends ControllerTest {
         super.setup();
         targetDomain = new DomainBuilder().withId(4L).build();
         when(domainService.findOneAccessibleByUser(targetDomain.getId(), THORAX)).thenReturn(targetDomain);
+    }
+
+    @Test
+    public void shouldListExpensesForSpender() throws Exception {
+        when(expenseService.findExpensesByDomainId(eq(targetDomain.getId()), any(Pageable.class)))
+                .thenReturn(mock(Page.class));
+
+        mockMvc.perform(get("/domains/" + targetDomain.getId() + "/expenses").with(userDetailsService(THORAX)))
+                .andExpect(view().name("spender/expenses/list-expenses"))
+                .andExpect(model().attribute("expenses", notNullValue()))
+                .andExpect(status().isOk());
     }
 
     @Test

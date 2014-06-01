@@ -44,6 +44,10 @@ public class ExpensesFormValidator implements Validator {
                 validateExpenseForm(expenseForm, i, errors);
             }
         }
+
+        if (expensesForm.getPayDate() == null) {
+            errors.rejectValue("payDate", "you.havent.specified.pay.date");
+        }
     }
 
     private void validateExpenseForm(ExpenseForm expenseForm, int index, Errors errors) {

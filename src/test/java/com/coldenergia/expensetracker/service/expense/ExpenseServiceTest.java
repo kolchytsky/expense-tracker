@@ -7,8 +7,11 @@ import com.coldenergia.expensetracker.domain.ExpenseDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.data.domain.Pageable;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * User: coldenergia
@@ -95,6 +98,15 @@ public class ExpenseServiceTest extends AbstractExpenseServiceTest {
         String validUnit = StringUtils.repeat("a", 10);
         ExpenseDetail valid = new ExpenseDetailBuilder().detailedExpense().withUnit(validUnit).build();
         expenseService.save(valid);
+    }
+
+    @Test
+    public void shouldFindExpensesByDomainId() {
+        Pageable pageable = mock(Pageable.class);
+        when(pageable.getPageSize()).thenReturn(20);
+        when(pageable.getPageNumber()).thenReturn(1);
+        expenseService.findExpensesByDomainId(4L, pageable);
+        verify(expenseDetailRepository).findByExpenseCategoryDomainId(4L, pageable);
     }
 
 }

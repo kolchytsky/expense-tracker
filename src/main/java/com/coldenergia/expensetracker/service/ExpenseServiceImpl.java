@@ -10,6 +10,8 @@ import com.coldenergia.expensetracker.validator.ExpenseDetailValidator;
 import com.coldenergia.expensetracker.validator.ExpenseValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,6 +97,11 @@ public class ExpenseServiceImpl implements ExpenseService {
             results.add(result);
         }
         return results;
+    }
+
+    @Override
+    public Page<ExpenseDetail> findExpensesByDomainId(Long domainId, Pageable pageable) {
+        return expenseDetailRepository.findByExpenseCategoryDomainId(domainId, pageable);
     }
 
     private void validate(Expense expense) {
