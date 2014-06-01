@@ -26,7 +26,7 @@ public class ExpenseDetailRepositoryIntegrationTest extends RepositoryIntegratio
 
     @Test
     public void shouldSaveExpenseDetail() {
-        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().build();
+        ExpenseDetail expenseDetail = new ExpenseDetailBuilder().withExpense(expenses(SHOCK_RIFLE)).build();
         ExpenseDetail retrievedExpenseDetail = expenseDetailRepository.save(expenseDetail);
         assertNotNull(retrievedExpenseDetail);
         assertEquals(expenseDetail, retrievedExpenseDetail);

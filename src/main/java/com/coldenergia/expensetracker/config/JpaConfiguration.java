@@ -43,7 +43,7 @@ public class JpaConfiguration {
         factory.setJpaVendorAdapter(jpaVendorAdapter);
         factory.setPackagesToScan("com.coldenergia.expensetracker.domain");
         factory.setDataSource(dataSource);
-        turnOnHibernateSqlOutput(factory);
+        //turnOnHibernateSqlOutput(factory);
         factory.afterPropertiesSet();
 
         return factory.getObject();

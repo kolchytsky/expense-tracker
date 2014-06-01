@@ -1,6 +1,7 @@
 CREATE TABLE users(
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(40) NOT NULL,
+  password VARCHAR(60) NOT NULL,
 	created_date DATETIME NOT NULL,
 	CONSTRAINT user_pk PRIMARY KEY (id),
 	CONSTRAINT user_name_uk UNIQUE KEY (name)

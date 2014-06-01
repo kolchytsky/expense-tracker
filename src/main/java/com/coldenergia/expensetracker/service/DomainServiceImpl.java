@@ -60,10 +60,16 @@ public class DomainServiceImpl implements DomainService {
             if (isDomainNameAlreadyTaken(domain.getName())) {
                 throw new DomainNameIsTakenException("Name " + domain.getName() + " has already been taken");
             }
+        }
+
+        domainRepository.save(domain);
+
+        if (isNewDomain) {
+            // First we should save the domain, and only then its category, otherwise domain_id is null for category
             createRootCategoryForDomain(domain);
         }
 
-        return domainRepository.save(domain);
+        return domain;
     }
 
     @Transactional

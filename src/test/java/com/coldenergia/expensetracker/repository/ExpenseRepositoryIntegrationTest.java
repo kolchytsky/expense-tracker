@@ -6,7 +6,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * User: coldenergia
@@ -20,7 +21,7 @@ public class ExpenseRepositoryIntegrationTest extends RepositoryIntegrationTest 
 
     @Test
     public void shouldSaveExpense() {
-        Expense expense = new ExpenseBuilder().build();
+        Expense expense = new ExpenseBuilder().withCategory(categories(MILITARY_RESEARCH)).build();
         Expense retrievedExpense = expenseRepository.save(expense);
         assertNotNull(retrievedExpense);
         assertEquals(expense, retrievedExpense);

@@ -45,10 +45,20 @@ public class JpaAssertions {
         session.doWork(new Work() {
             @Override
             public void execute(Connection connection) throws SQLException {
-                ResultSet columns = connection.getMetaData().getColumns(null, null, tableName.toUpperCase(Locale.ENGLISH), null);
+                ResultSet columns = connection.getMetaData().getColumns(null, null, tableName.toLowerCase(Locale.ENGLISH), null);
                 while (columns.next()) {
                     if (columns.getString(4).equalsIgnoreCase(columnName)) {
                         resultCollector.found = true;
+                    }
+                }
+                if (!resultCollector.found) {
+                    // If for some reason it was unable to find the column, perhaps it was due to different naming of tables
+                    // MariaDB and HSQLDB do differ in this aspect - the former uses lowercase, and the latter - uppercase
+                    columns = connection.getMetaData().getColumns(null, null, tableName.toUpperCase(Locale.ENGLISH), null);
+                    while (columns.next()) {
+                        if (columns.getString(4).equalsIgnoreCase(columnName)) {
+                            resultCollector.found = true;
+                        }
                     }
                 }
             }

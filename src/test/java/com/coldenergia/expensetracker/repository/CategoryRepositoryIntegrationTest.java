@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 
-import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.ACATANA;
-import static org.junit.Assert.*;
-
-import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.domains;
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.ROOT_CATEGORY_NAME;
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.ACATANA;
+import static com.coldenergia.expensetracker.internal.test.data.TestDataInitializer.domains;
+import static org.junit.Assert.*;
 
 /**
  * User: coldenergia
@@ -28,13 +27,13 @@ public class CategoryRepositoryIntegrationTest extends RepositoryIntegrationTest
 
     @Before
     public void setUp() {
-        rifles = new CategoryBuilder().withName("rifles").build();
-        weapons = new CategoryBuilder().withName("weapons").build();
+        rifles = new CategoryBuilder().withName("rifles").withDomain(domains(ACATANA)).build();
+        weapons = new CategoryBuilder().withName("weapons").withDomain(domains(ACATANA)).build();
     }
 
     @Test
     public void shouldSaveCategory() {
-        Category category = new CategoryBuilder().build();
+        Category category = new CategoryBuilder().withDomain(domains(ACATANA)).build();
         Category retrievedCategory = categoryRepository.save(category);
         assertNotNull(retrievedCategory);
         assertEquals(category, retrievedCategory);
