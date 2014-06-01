@@ -3,6 +3,7 @@ package com.coldenergia.expensetracker.web.controller;
 import com.coldenergia.expensetracker.builder.CsrfTokenBuilder;
 import com.coldenergia.expensetracker.config.SecurityConfiguration;
 import com.coldenergia.expensetracker.domain.UserSecurityDetails;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -26,6 +28,7 @@ import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_PARA
 import static com.coldenergia.expensetracker.web.CsrfConstants.DEFAULT_CSRF_TOKEN_ATTR_NAME;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * User: coldenergia
@@ -94,6 +97,13 @@ public abstract class ControllerTest {
 
     @Autowired
     protected FilterChainProxy springSecurityFilterChain;
+
+    protected MockMvc mockMvc;
+
+    @Before
+    public void setup() {
+        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+    }
 
     /**
      * Adds CsrfToken as a request parameter and as a session attribute

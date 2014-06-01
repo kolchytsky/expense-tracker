@@ -41,30 +41,27 @@ public class LoginControllerTest extends ControllerTest {
 
     }
 
-    private MockMvc mockMvc;
-
     @Autowired
     private DomainService domainService;
 
     @Before
     public void setup() {
-        //this.mockMvc = webAppContextSetup(this.wac).build().alwaysExpect(status().isOk()).build();
-        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+        super.setup();
     }
 
     @Test
     public void shouldRenderLoginView() throws Exception {
-        this.mockMvc.perform(get("/login")).andExpect(view().name("login")).andExpect(status().isOk());
+        mockMvc.perform(get("/login")).andExpect(view().name("login")).andExpect(status().isOk());
     }
 
     @Test
     public void shouldRedirectToLoginForProtectedResources() throws Exception {
-        this.mockMvc.perform(get("/")).andExpect(redirectedUrlPattern("**/login*"));
+        mockMvc.perform(get("/")).andExpect(redirectedUrlPattern("**/login*"));
     }
 
     @Test
     public void shouldRedirectAdminToAdminMainPage() throws Exception {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 addCsrfToken(post("/login"))
                         .param("username", DEFAULT_ADMIN_NAME)
                         .param("password", DEFAULT_ADMIN_PASSWORD))
@@ -79,7 +76,7 @@ public class LoginControllerTest extends ControllerTest {
         multipleDomains.add(new DomainBuilder().build());
         when(domainService.findDomainsAccessibleByUser(THORAX)).thenReturn(multipleDomains);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 addCsrfToken(post("/login"))
                         .param("username", THORAX)
                         .param("password", THORAX_PASSWORD))
@@ -91,7 +88,7 @@ public class LoginControllerTest extends ControllerTest {
     public void shouldRedirectUserWhoHasAccessToNoDomainsToDomainSelectionPage() throws Exception {
         when(domainService.findDomainsAccessibleByUser(THORAX)).thenReturn(new ArrayList<Domain>());
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 addCsrfToken(post("/login"))
                         .param("username", THORAX)
                         .param("password", THORAX_PASSWORD))
@@ -106,7 +103,7 @@ public class LoginControllerTest extends ControllerTest {
         singleDomainList.add(domain);
         when(domainService.findDomainsAccessibleByUser(THORAX)).thenReturn(singleDomainList);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 addCsrfToken(post("/login"))
                         .param("username", THORAX)
                         .param("password", THORAX_PASSWORD))
@@ -116,7 +113,7 @@ public class LoginControllerTest extends ControllerTest {
 
     @Test
     public void shouldNotAllowToLoginWithoutCsrfToken() throws Exception {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/login")
                         .param("username", DEFAULT_ADMIN_NAME)
                         .param("password", "mandible"))

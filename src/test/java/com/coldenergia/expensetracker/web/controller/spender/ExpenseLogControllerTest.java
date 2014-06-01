@@ -48,8 +48,6 @@ public class ExpenseLogControllerTest extends ControllerTest {
 
     }
 
-    private MockMvc mockMvc;
-
     @Autowired
     private DomainService domainService;
 
@@ -60,7 +58,7 @@ public class ExpenseLogControllerTest extends ControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+        super.setup();
         targetDomain = new DomainBuilder().withId(4L).build();
         when(domainService.findOneAccessibleByUser(targetDomain.getId(), THORAX)).thenReturn(targetDomain);
     }

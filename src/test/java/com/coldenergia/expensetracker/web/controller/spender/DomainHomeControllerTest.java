@@ -41,14 +41,12 @@ public class DomainHomeControllerTest extends ControllerTest {
 
     }
 
-    private MockMvc mockMvc;
-
     @Autowired
     private DomainService domainService;
 
     @Before
     public void setup() {
-        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+        super.setup();
     }
 
     @Test

@@ -17,17 +17,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class ResourceAccessibilityTest extends ControllerTest {
 
-    private MockMvc mockMvc;
-
     @Before
     public void setup() {
-        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+        super.setup();
     }
 
     @Test
     public void shouldGrantAccessToResourcesToEveryone() throws Exception {
-        this.mockMvc.perform(get("/resources/css/expense-tracker.css")).andExpect(status().isOk());
-        this.mockMvc.perform(get("/resources/js/expense-tracker.js")).andExpect(status().isOk());
+        mockMvc.perform(get("/resources/css/expense-tracker.css")).andExpect(status().isOk());
+        mockMvc.perform(get("/resources/js/expense-tracker.js")).andExpect(status().isOk());
     }
 
 }

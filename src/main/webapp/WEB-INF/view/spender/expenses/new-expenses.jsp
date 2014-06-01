@@ -112,7 +112,8 @@
     <a href="#" class="expense-entry-add-btn btn btn-lg btn-primary btn-block">
       <spring:message code="add.one.more.expense" />
     </a>
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    Spring Security includes this automatically if Spring MVC form tag is used. --%>
     <div class="row">
       <div class="col-md-8">
         <button class="btn btn-lg btn-primary btn-block" type="submit">

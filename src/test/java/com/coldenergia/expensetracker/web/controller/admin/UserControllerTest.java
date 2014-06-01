@@ -44,8 +44,6 @@ public class UserControllerTest extends ControllerTest {
 
     }
 
-    private MockMvc mockMvc;
-
     @Autowired
     private UserService userService;
 
@@ -57,7 +55,7 @@ public class UserControllerTest extends ControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+        super.setup();
     }
 
     @Test

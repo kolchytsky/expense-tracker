@@ -33,7 +33,8 @@
         </c:forEach>
         <form:errors path="authority" cssClass="text-danger" />
       </div>
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+      <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+      Spring Security includes this automatically if Spring MVC form tag is used. --%>
     </fieldset>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">

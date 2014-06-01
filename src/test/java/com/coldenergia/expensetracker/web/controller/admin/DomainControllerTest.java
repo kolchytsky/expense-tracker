@@ -48,8 +48,6 @@ public class DomainControllerTest extends ControllerTest {
 
     }
 
-    private MockMvc mockMvc;
-
     @Autowired
     private DomainService domainService;
 
@@ -59,7 +57,7 @@ public class DomainControllerTest extends ControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = webAppContextSetup(this.wac).addFilters(springSecurityFilterChain).build();
+        super.setup();
     }
 
     @Test

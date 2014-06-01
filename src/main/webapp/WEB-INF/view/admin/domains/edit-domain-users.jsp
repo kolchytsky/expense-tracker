@@ -23,7 +23,8 @@
           </div>
         </c:forEach>
       </div>
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+      <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+      Spring Security includes this automatically if Spring MVC form tag is used. --%>
     </fieldset>
 
     <button class="btn btn-lg btn-primary" type="submit">

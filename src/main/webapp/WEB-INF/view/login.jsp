@@ -9,7 +9,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   <jsp:include page="include/top.jsp"/>
-  <div class="row"><h1><spring:message code="expense.tracker" /></h1></div>
   <div class="row">
     <form action="${contextPath}/login" class="form-signin" role="form" method="post">
       <h2 class="form-signin-heading"><spring:message code="please.login" /></h2>
