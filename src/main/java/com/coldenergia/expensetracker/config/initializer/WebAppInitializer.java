@@ -48,4 +48,17 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         return new String[] { "/" };
     }
 
+    // THAT WON'T WORK HERE BECAUSE OF SPRING SECURITY!
+    /*@Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+
+        return new Filter[] {
+                new HiddenHttpMethodFilter(),
+                characterEncodingFilter
+        };
+    }*/
+
 }
