@@ -84,3 +84,7 @@ body {
 .expense-entry-add-btn {
     margin: 15px auto;
 }
+
+.logout-btn {
+    padding: 15px 12px;
+}

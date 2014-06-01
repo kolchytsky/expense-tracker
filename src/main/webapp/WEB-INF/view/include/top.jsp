@@ -61,12 +61,22 @@
         </li-->
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <spring:message code="change.language" /> <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="?lang=en"><spring:message code="english.language" /></a></li>
+            <li class="divider"></li>
+            <li><a href="?lang=uk_UA"><spring:message code="ukrainian.language" /></a></li>
+          </ul>
+        </li>
         <!--li class="active"><a href="./">Default</a></li>
         <li><a href="../navbar-static-top/">Static top</a></li-->
         <sec:authorize access="isAuthenticated()">
           <li>
-            <form:form action="${contextPath}/logout" method="post">
-              <button type="submit" class="btn btn-default"><spring:message code="logout" /></button>
+            <form:form id="logout-form" action="${contextPath}/logout" method="post">
+              <button type="submit" class="btn btn-default logout-btn"><spring:message code="logout" /></button>
             </form:form>
           </li>
         </sec:authorize>

@@ -77,6 +77,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .and()
                 .authorizeRequests()
+                    // Before having that, a request like /login?lang=uk_UA was redirected to /login and no l10n occurred
+                    .antMatchers("/login*").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/admin/**").hasAuthority(ADMIN_AUTHORITY_NAME)
                     .antMatchers("/domain-selection").hasAuthority(SPENDER_AUTHORITY_NAME)
