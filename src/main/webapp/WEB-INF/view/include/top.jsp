@@ -60,6 +60,7 @@
           </ul>
         </li-->
       </ul>
+
       <sec:authorize access="hasAuthority('${adminAuthorityName}')">
         <ul class="nav navbar-nav">
           <!--li class="active"><a href="#">Link</a></li>
@@ -87,6 +88,35 @@
           </li>
         </ul>
       </sec:authorize>
+
+      <sec:authorize access="hasAuthority('${spenderAuthorityName}')">
+        <c:if test="${currentDomain ne null}">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="${contextPath}/domains/${currentDomain.id}">${currentDomain.name}</a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <spring:message code="manage.expenses" /> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="${contextPath}/domains/${currentDomain.id}/expenses">
+                    <spring:message code="list.expenses" />
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="${contextPath}/domains/${currentDomain.id}/expenses/new">
+                    <spring:message code="log.expenses" />
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </c:if>
+      </sec:authorize>
+
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -102,7 +132,7 @@
         <li><a href="../navbar-static-top/">Static top</a></li-->
         <sec:authorize access="isAuthenticated()">
           <li>
-            <form:form id="logout-form" action="${contextPath}/logout" method="post">
+            <form:form id="logout-form" action="${contextPath}/logout" method="post" cssClass="navbar-form">
               <button type="submit" class="btn btn-default logout-btn"><spring:message code="logout" /></button>
             </form:form>
           </li>

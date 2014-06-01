@@ -25,7 +25,7 @@ public class DomainHomeController {
 
     @RequestMapping(value = "/domains/{domainId}", method = RequestMethod.GET)
     public String renderDomainHome(@PathVariable("domainId") Long domainId, Model model) {
-        model.addAttribute("currentDomain", domainService.findOne(domainId));
+        model.addAttribute("currentDomain", domainService.findOne(domainId)); // TODO: View models...
         return "spender/domain-home";
     }
 

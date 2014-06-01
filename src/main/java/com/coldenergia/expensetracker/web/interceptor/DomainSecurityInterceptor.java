@@ -37,6 +37,8 @@ public class DomainSecurityInterceptor implements HandlerInterceptor {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     // Stop processing this request further by returning false.
                     return false;
+                } else {
+                    request.setAttribute("currentDomain", domain); // TODO: Again, you forgot about view models
                 }
             }
         }
