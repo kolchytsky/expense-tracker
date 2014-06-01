@@ -70,7 +70,7 @@
               <spring:message code="manage.users" /> <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="${contextPath}/admin/domains"><spring:message code="manage.domains" /></a></li>
+              <li><a href="${contextPath}/admin/users"><spring:message code="list.users" /></a></li>
               <li class="divider"></li>
               <li><a href="${contextPath}/admin/users/new"><spring:message code="create.new.user" /></a></li>
             </ul>

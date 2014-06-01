@@ -11,6 +11,8 @@ import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -64,6 +66,16 @@ public class UserControllerTest extends ControllerTest {
                 .andExpect(view().name("admin/users/new-user"))
                 .andExpect(model().attribute("userForm", notNullValue()))
                 .andExpect(model().attribute("userForm", is(UserForm.class)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldListUsers() throws Exception {
+        when(userService.findAll(any(Pageable.class))).thenReturn(mock(Page.class));
+
+        mockMvc.perform(get("/admin/users").with(userDetailsService(DEFAULT_ADMIN_NAME)))
+                .andExpect(view().name("admin/users/list-users"))
+                .andExpect(model().attribute("users", notNullValue()))
                 .andExpect(status().isOk());
     }
 

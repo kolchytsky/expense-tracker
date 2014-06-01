@@ -4,17 +4,11 @@ import com.coldenergia.expensetracker.builder.AuthorityBuilder;
 import com.coldenergia.expensetracker.builder.UserBuilder;
 import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
-import com.coldenergia.expensetracker.repository.AuthorityRepository;
-import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.service.ServiceException;
-import com.coldenergia.expensetracker.service.UserService;
-import com.coldenergia.expensetracker.service.UserServiceImpl;
-import com.coldenergia.expensetracker.validator.UserValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,26 +19,19 @@ import java.util.Set;
 import static com.coldenergia.expensetracker.defaultdata.DefaultDataConstants.SPENDER_AUTHORITY_NAME;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * User: coldenergia
  * Date: 5/10/14
  * Time: 8:02 PM
  */
-public class UserServiceTest {
-
-    private UserService userService;
-
-    private AuthorityRepository authorityRepository;
-
-    private UserRepository userRepository;
+public class UserServiceTest extends AbstractUserServiceTest {
 
     @Before
     public void setup() {
-        authorityRepository = mock(AuthorityRepository.class);
-        userRepository = mock(UserRepository.class);
-        userService = new UserServiceImpl(authorityRepository, userRepository, new UserValidator(), mock(PasswordEncoder.class));
+        super.setup();
     }
 
     @Test

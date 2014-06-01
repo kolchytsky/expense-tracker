@@ -7,6 +7,8 @@ import com.coldenergia.expensetracker.repository.UserRepository;
 import com.coldenergia.expensetracker.validator.UserValidator;
 import com.coldenergia.expensetracker.validator.ValidationResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +90,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return listFromIterable(userRepository.findAll());
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override

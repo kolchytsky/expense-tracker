@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -16,6 +17,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import java.util.Locale;
 
 /**
+ * Web application configuration, which has spring data web support enabled.
+ * From Spring Data docs:
+ * Spring Data modules ships with a variety of web support if the module supports
+ * the repository programming model. The web related stuff requires Spring MVC JARs
+ * on the classpath, some of them even provide integration with Spring HATEOAS.<br>
  * User: coldenergia
  * Date: 5/9/14
  * Time: 4:47 PM
@@ -27,6 +33,7 @@ import java.util.Locale;
         "com.coldenergia.expensetracker.web.view.model.validator"
 })
 @EnableWebMvc
+@EnableSpringDataWebSupport
 public class WebAppConfiguration extends WebMvcConfigurerAdapter {
 
     /**

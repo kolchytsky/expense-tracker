@@ -1,6 +1,8 @@
 package com.coldenergia.expensetracker.repository;
 
 import com.coldenergia.expensetracker.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +23,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
      * */
     @Query("select u from User u where :authorityName in (select name from u.authorities)")
     List<User> findAllUsersHavingAuthority(@Param("authorityName") String authorityName);
+
+    Page<User> findAll(Pageable pageable);
 
 }

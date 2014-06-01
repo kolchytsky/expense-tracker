@@ -6,6 +6,7 @@ import com.coldenergia.expensetracker.service.UserService;
 import com.coldenergia.expensetracker.web.view.model.UserForm;
 import com.coldenergia.expensetracker.web.view.model.validator.UserFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,12 @@ public class UserController {
     public UserController(UserService userService, UserFormValidator userFormValidator) {
         this.userService = userService;
         this.userFormValidator = userFormValidator;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String listUsers(Model model, Pageable pageable) {
+        model.addAttribute("users", userService.findAll(pageable));
+        return "admin/users/list-users";
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)

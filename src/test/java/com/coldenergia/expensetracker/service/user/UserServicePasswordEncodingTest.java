@@ -24,22 +24,11 @@ import static org.mockito.Mockito.verify;
  * Date: 5/13/14
  * Time: 8:46 PM
  */
-public class UserServicePasswordEncodingTest {
-
-    private AuthorityRepository authorityRepository;
-
-    private UserService userService;
-
-    private UserRepository userRepository;
-
-    private PasswordEncoder passwordEncoder;
+public class UserServicePasswordEncodingTest extends AbstractUserServiceTest {
 
     @Before
     public void setup() {
-        authorityRepository = mock(AuthorityRepository.class);
-        userRepository = mock(UserRepository.class);
-        passwordEncoder = new BCryptPasswordEncoder();
-        userService = new UserServiceImpl(authorityRepository, userRepository, new UserValidator(), passwordEncoder);
+        super.setup();
     }
 
     @Test

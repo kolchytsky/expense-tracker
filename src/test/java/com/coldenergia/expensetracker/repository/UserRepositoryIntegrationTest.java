@@ -6,6 +6,9 @@ import com.coldenergia.expensetracker.domain.Authority;
 import com.coldenergia.expensetracker.domain.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -88,6 +91,51 @@ public class UserRepositoryIntegrationTest extends RepositoryIntegrationTest {
         List<User> users = userRepository.findAllUsersHavingAuthority("destroyer");
         assertTrue(users.size() == 1);
         assertEquals("Dominator", users.get(0).getName());
+    }
+
+    @Test
+    public void shouldFindUsersWithPageable() {
+        for (int i = 0; i < 40; i++) {
+            User user = new UserBuilder().withName("user" + i).build();
+            userRepository.save(user);
+        }
+        Pageable pageable = new Pageable() {
+            @Override
+            public int getPageNumber() {
+                return 1;
+            }
+            @Override
+            public int getPageSize() {
+                return 20;
+            }
+            @Override
+            public int getOffset() {
+                return 0;
+            }
+            @Override
+            public Sort getSort() {
+                return null;
+            }
+            @Override
+            public Pageable next() {
+                return null;
+            }
+            @Override
+            public Pageable previousOrFirst() {
+                return null;
+            }
+            @Override
+            public Pageable first() {
+                return null;
+            }
+            @Override
+            public boolean hasPrevious() {
+                return false;
+            }
+        };
+        Page<User> page = userRepository.findAll(pageable);
+        assertEquals(20, page.getNumberOfElements());
+        assertEquals(userRepository.count(), page.getTotalElements());
     }
 
 }

@@ -82,7 +82,6 @@ public class ExpenseLogController {
         return "redirect:/domains/" + domainId;
     }
 
-    // TODO: Create a logout button and a change locale button.
     // TODO: Definitely look into beanutils or something else.
     private List<NamedExpenseDetailHolder> map(ExpensesForm expensesForm) {
         List<ExpenseForm> expenseForms = expensesForm.getExpenseFormList();

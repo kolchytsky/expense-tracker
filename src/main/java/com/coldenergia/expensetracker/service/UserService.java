@@ -1,6 +1,8 @@
 package com.coldenergia.expensetracker.service;
 
 import com.coldenergia.expensetracker.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Set;
@@ -39,6 +41,8 @@ public interface UserService {
     User findByName(String name);
 
     List<User> findAll();
+
+    Page<User> findAll(Pageable pageable);
 
     /**
      * @return List of users who have the "spender" authority.
