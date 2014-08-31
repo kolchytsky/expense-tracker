@@ -38,4 +38,12 @@ public interface ExpenseService {
 
     Page<ExpenseDetail> findExpensesByDomainId(Long domainId, Pageable pageable);
 
+    /**
+     * Deletes {@link ExpenseDetail}s, whose identifiers are present in the id list.
+     * If some {@link Expense}s previously associated with the deleted details don't have
+     * any more details associated with them, these {@link Expense}s are deleted as well.
+     * @param expenseDetailsIdList List of {@link ExpenseDetail}s identifiers.
+     * */
+    void deleteExpensesByChildDetailsIdList(List<Long> expenseDetailsIdList);
+
 }

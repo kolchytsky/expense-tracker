@@ -1,7 +1,9 @@
-package com.coldenergia.expensetracker.repository;
+package com.coldenergia.expensetracker.repository.expense;
 
 import com.coldenergia.expensetracker.builder.ExpenseBuilder;
 import com.coldenergia.expensetracker.domain.Expense;
+import com.coldenergia.expensetracker.repository.ExpenseRepository;
+import com.coldenergia.expensetracker.repository.RepositoryIntegrationTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

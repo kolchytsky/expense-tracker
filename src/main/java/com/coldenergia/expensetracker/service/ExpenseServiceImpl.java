@@ -104,6 +104,20 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseDetailRepository.findByExpenseCategoryDomainId(domainId, pageable);
     }
 
+    @Transactional
+    @Override
+    public void deleteExpensesByChildDetailsIdList(List<Long> expenseDetailsIdList) {
+        List<Expense> expenses = expenseRepository.findExpensesByChildDetailsIdList(expenseDetailsIdList);
+        expenseDetailRepository.delete(expenseDetailsIdList);
+        for (Expense expense : expenses) {
+            long detailCount = expenseRepository.getExpenseDetailCountForExpense(expense);
+            boolean doesntHaveAnyDetailsLeft = detailCount == 0;
+            if (doesntHaveAnyDetailsLeft) {
+                expenseRepository.delete(expense);
+            }
+        }
+    }
+
     private void validate(Expense expense) {
         ValidationResult result = expenseValidator.validate(expense);
         if (result.hasErrors()) {

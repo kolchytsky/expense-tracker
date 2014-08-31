@@ -3,14 +3,12 @@ package com.coldenergia.expensetracker.domain;
 import javax.persistence.*;
 
 /**
+ * This is the core domain class. It characterizes the expense only using name and
+ * category, and does not concern itself with prices, as these can change over time.
  * User: coldenergia
  * Date: 5/2/14
  * Time: 6:49 PM
  */
-/**
- * This is the core domain class. It characterizes the expense only using name and
- * category, and does not concern itself with prices, as these can change over time.
- * */
 @Entity
 @Table(name = "expenses")
 public class Expense {
